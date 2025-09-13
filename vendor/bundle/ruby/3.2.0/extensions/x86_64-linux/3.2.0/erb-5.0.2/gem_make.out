@@ -1,0 +1,19 @@
+current directory: /home/gor/Desktop/ruby_projects/rails-project-65/vendor/bundle/ruby/3.2.0/gems/erb-5.0.2/ext/erb/escape
+/home/gor/.asdf/installs/ruby/3.2.2/bin/ruby extconf.rb
+checking for rb_ext_ractor_safe() in ruby.h... yes
+creating Makefile
+
+current directory: /home/gor/Desktop/ruby_projects/rails-project-65/vendor/bundle/ruby/3.2.0/gems/erb-5.0.2/ext/erb/escape
+make DESTDIR\= sitearchdir\=./.gem.20250913-62434-9o4q8x sitelibdir\=./.gem.20250913-62434-9o4q8x clean
+
+current directory: /home/gor/Desktop/ruby_projects/rails-project-65/vendor/bundle/ruby/3.2.0/gems/erb-5.0.2/ext/erb/escape
+make DESTDIR\= sitearchdir\=./.gem.20250913-62434-9o4q8x sitelibdir\=./.gem.20250913-62434-9o4q8x
+compiling escape.c
+linking shared-object erb/escape.so
+
+current directory: /home/gor/Desktop/ruby_projects/rails-project-65/vendor/bundle/ruby/3.2.0/gems/erb-5.0.2/ext/erb/escape
+make DESTDIR\= sitearchdir\=./.gem.20250913-62434-9o4q8x sitelibdir\=./.gem.20250913-62434-9o4q8x install
+/usr/bin/install -c -m 0755 escape.so ./.gem.20250913-62434-9o4q8x/erb
+
+current directory: /home/gor/Desktop/ruby_projects/rails-project-65/vendor/bundle/ruby/3.2.0/gems/erb-5.0.2/ext/erb/escape
+make DESTDIR\= sitearchdir\=./.gem.20250913-62434-9o4q8x sitelibdir\=./.gem.20250913-62434-9o4q8x clean

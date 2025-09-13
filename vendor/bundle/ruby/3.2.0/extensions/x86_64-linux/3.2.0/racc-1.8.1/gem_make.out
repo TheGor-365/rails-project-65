@@ -1,0 +1,18 @@
+current directory: /home/gor/Desktop/ruby_projects/rails-project-65/vendor/bundle/ruby/3.2.0/gems/racc-1.8.1/ext/racc/cparse
+/home/gor/.asdf/installs/ruby/3.2.2/bin/ruby extconf.rb
+creating Makefile
+
+current directory: /home/gor/Desktop/ruby_projects/rails-project-65/vendor/bundle/ruby/3.2.0/gems/racc-1.8.1/ext/racc/cparse
+make DESTDIR\= sitearchdir\=./.gem.20250913-62434-gpnnkw sitelibdir\=./.gem.20250913-62434-gpnnkw clean
+
+current directory: /home/gor/Desktop/ruby_projects/rails-project-65/vendor/bundle/ruby/3.2.0/gems/racc-1.8.1/ext/racc/cparse
+make DESTDIR\= sitearchdir\=./.gem.20250913-62434-gpnnkw sitelibdir\=./.gem.20250913-62434-gpnnkw
+compiling cparse.c
+linking shared-object racc/cparse.so
+
+current directory: /home/gor/Desktop/ruby_projects/rails-project-65/vendor/bundle/ruby/3.2.0/gems/racc-1.8.1/ext/racc/cparse
+make DESTDIR\= sitearchdir\=./.gem.20250913-62434-gpnnkw sitelibdir\=./.gem.20250913-62434-gpnnkw install
+/usr/bin/install -c -m 0755 cparse.so ./.gem.20250913-62434-gpnnkw/racc
+
+current directory: /home/gor/Desktop/ruby_projects/rails-project-65/vendor/bundle/ruby/3.2.0/gems/racc-1.8.1/ext/racc/cparse
+make DESTDIR\= sitearchdir\=./.gem.20250913-62434-gpnnkw sitelibdir\=./.gem.20250913-62434-gpnnkw clean

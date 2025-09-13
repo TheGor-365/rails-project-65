@@ -1,0 +1,38 @@
+current directory: /home/gor/Desktop/ruby_projects/rails-project-65/vendor/bundle/ruby/3.2.0/gems/bigdecimal-3.2.3/ext/bigdecimal
+/home/gor/.asdf/installs/ruby/3.2.2/bin/ruby extconf.rb
+checking for __builtin_clz()... yes
+checking for __builtin_clzl()... yes
+checking for __builtin_clzll()... yes
+checking for float.h... yes
+checking for math.h... yes
+checking for stdbool.h... yes
+checking for stdlib.h... yes
+checking for x86intrin.h... yes
+checking for _lzcnt_u32() in x86intrin.h... no
+checking for _lzcnt_u64() in x86intrin.h... no
+checking for intrin.h... no
+checking for ruby/atomic.h... yes
+checking for ruby/internal/has/builtin.h... yes
+checking for ruby/internal/static_assert.h... yes
+checking for rb_complex_real() in ruby.h... yes
+checking for rb_complex_imag() in ruby.h... yes
+checking for rb_opts_exception_p() in ruby.h... yes
+checking for rb_category_warn() in ruby.h... yes
+checking for RB_WARN_CATEGORY_DEPRECATED in ruby.h... yes
+creating Makefile
+
+current directory: /home/gor/Desktop/ruby_projects/rails-project-65/vendor/bundle/ruby/3.2.0/gems/bigdecimal-3.2.3/ext/bigdecimal
+make DESTDIR\= sitearchdir\=./.gem.20250913-62434-d8jges sitelibdir\=./.gem.20250913-62434-d8jges clean
+
+current directory: /home/gor/Desktop/ruby_projects/rails-project-65/vendor/bundle/ruby/3.2.0/gems/bigdecimal-3.2.3/ext/bigdecimal
+make DESTDIR\= sitearchdir\=./.gem.20250913-62434-d8jges sitelibdir\=./.gem.20250913-62434-d8jges
+compiling bigdecimal.c
+compiling missing.c
+linking shared-object bigdecimal.so
+
+current directory: /home/gor/Desktop/ruby_projects/rails-project-65/vendor/bundle/ruby/3.2.0/gems/bigdecimal-3.2.3/ext/bigdecimal
+make DESTDIR\= sitearchdir\=./.gem.20250913-62434-d8jges sitelibdir\=./.gem.20250913-62434-d8jges install
+/usr/bin/install -c -m 0755 bigdecimal.so ./.gem.20250913-62434-d8jges
+
+current directory: /home/gor/Desktop/ruby_projects/rails-project-65/vendor/bundle/ruby/3.2.0/gems/bigdecimal-3.2.3/ext/bigdecimal
+make DESTDIR\= sitearchdir\=./.gem.20250913-62434-d8jges sitelibdir\=./.gem.20250913-62434-d8jges clean
