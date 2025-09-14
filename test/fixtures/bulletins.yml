@@ -1,0 +1,13 @@
+first:
+  title: "Смартфон в хорошем состоянии"
+  description: "Полный комплект. Без сколов и царапин."
+  category: one
+  user: one
+  created_at: <%= 2.days.ago %>
+
+second:
+  title: "Куртка зимняя"
+  description: "Размер L. Тёплая, почти новая."
+  category: two
+  user: two
+  created_at: <%= 1.day.ago %>
