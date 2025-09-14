@@ -17,7 +17,68 @@
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
   </head>
 
-  <body>
-    <%= yield %>
+  <body class="d-flex flex-column min-vh-100">
+    <header>
+      <div class="container mb-2">
+        <div class="d-flex flex-wrap align-items-center py-2 border-bottom">
+          <div class="navbar navbar-expand-md navbar-light me-auto">
+            <%= link_to "Доска объявлений", root_path, class: "navbar-brand me-md-4" %>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarToggler">
+              <ul class="nav nav-pills flex-grow-1 navbar-nav me-auto">
+                <li class="nav-item me-2">
+                  <%= link_to "Главная", root_path, class: "nav-link text-dark" %>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <ul class="nav nav-pills align-items-center">
+            <% if defined?(signed_in?) && signed_in? %>
+              <li class="nav-item me-2">
+                <span class="navbar-text">
+                  Привет, <%= (current_user&.name.presence || current_user&.email) %>
+                </span>
+              </li>
+              <li class="nav-item">
+                <%= button_to "Выйти", signout_path, method: :delete, class: "btn btn-outline-secondary btn-sm" %>
+              </li>
+            <% else %>
+              <li class="nav-item">
+                <%= button_to "Войти через GitHub", auth_request_path('github'), method: :post, class: "btn btn-primary btn-sm", data: { turbo: false } %>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Флеш-сообщения -->
+      <div class="container">
+        <% flash.each do |type, message| %>
+          <% bs = case type.to_s
+                 when "notice" then "success"
+                 when "alert"  then "danger"
+                 else "info"
+                 end %>
+          <div class="alert alert-<%= bs %> mt-2" role="alert"><%= message %></div>
+        <% end %>
+      </div>
+    </header>
+
+    <main class="flex-grow-1">
+      <div class="container py-3">
+        <%= yield %>
+      </div>
+    </main>
+
+    <footer class="bg-dark text-light mt-auto">
+      <div class="container-xl">
+        <div class="row py-2">Хекслет</div>
+      </div>
+    </footer>
   </body>
 </html>

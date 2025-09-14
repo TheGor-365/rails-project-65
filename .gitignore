@@ -1,4 +1,5 @@
 /.bundle
+/.env.local
 /.env*
 !/.env*.erb
 /log/*
