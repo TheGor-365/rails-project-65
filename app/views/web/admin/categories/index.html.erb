@@ -1,0 +1,40 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2 class="mb-0">Категории</h2>
+  <%= link_to 'Объявления', admin_bulletins_path, class: 'btn btn-outline-secondary btn-sm' %>
+</div>
+
+<div class="row g-3">
+  <div class="col-12 col-lg-6">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Новая категория</h5>
+        <%= form_with model: @category, url: admin_categories_path, local: true do |f| %>
+          <div class="mb-3">
+            <%= f.label :name, 'Название', class: 'form-label' %>
+            <%= f.text_field :name, class: 'form-control', required: true %>
+          </div>
+          <%= f.submit 'Создать', class: 'btn btn-primary' %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12 col-lg-6">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title mb-3">Список</h5>
+        <ul class="list-group">
+          <% @categories.each do |c| %>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span><%= c.name %></span>
+              <span>
+                <%= link_to 'Редактировать', edit_admin_category_path(c), class: 'btn btn-sm btn-outline-primary me-2' %>
+                <%= link_to 'Удалить', admin_category_path(c), data: { turbo_method: :delete, turbo_confirm: 'Удалить категорию?' }, class: 'btn btn-sm btn-outline-danger' %>
+              </span>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

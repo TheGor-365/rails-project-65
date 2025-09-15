@@ -47,6 +47,9 @@
               <li class="nav-item">
                 <%= button_to "Выйти", signout_path, method: :delete, class: "btn btn-outline-secondary btn-sm" %>
               </li>
+              <% if current_user&.admin? %>
+                <%= link_to 'Админка', admin_categories_path, class: 'btn btn-sm btn-outline-light' %>
+              <% end %>
             <% else %>
               <li class="nav-item">
                 <%= button_to "Войти через GitHub", auth_request_path('github'), method: :post, class: "btn btn-primary btn-sm", data: { turbo: false } %>

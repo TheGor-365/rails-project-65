@@ -14,6 +14,7 @@ gem "bootsnap", require: false
 gem "rollbar"
 gem "omniauth-github"
 gem "omniauth-rails_csrf_protection"
+gem "pundit"
 gem "image_processing", "~> 1.2"
 
 group :development, :test do

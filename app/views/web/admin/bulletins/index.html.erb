@@ -1,0 +1,28 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2 class="mb-0">Объявления</h2>
+  <%= link_to 'Категории', admin_categories_path, class: 'btn btn-outline-secondary btn-sm' %>
+</div>
+
+<div class="row g-3">
+  <% @bulletins.each do |b| %>
+    <div class="col-12 col-lg-6">
+      <div class="card h-100">
+        <% if b.image.attached? %>
+          <%= image_tag b.image, class: 'card-img-top', alt: b.title %>
+        <% end %>
+        <div class="card-body">
+          <h5 class="card-title mb-1"><%= b.title %></h5>
+          <div class="text-muted small mb-2">
+            <%= b.category.name %> • <%= b.user&.email %>
+          </div>
+          <p class="card-text"><%= truncate(b.description, length: 160) %></p>
+          <div class="d-flex gap-2">
+            <%= link_to 'Редактировать', edit_admin_bulletin_path(b), class: 'btn btn-sm btn-outline-primary' %>
+            <%= link_to 'Удалить', admin_bulletin_path(b), class: 'btn btn-sm btn-outline-danger',
+                    data: { turbo_method: :delete, turbo_confirm: 'Удалить объявление?' } %>
+          </div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
