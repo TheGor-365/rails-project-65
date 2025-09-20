@@ -38,6 +38,13 @@
           </div>
 
           <ul class="nav nav-pills align-items-center">
+            <!-- DEV -->
+            <% if Rails.env.development? && signed_in? %>
+              <span class="badge text-bg-info ms-2">
+                <%= current_user.email.presence || 'no-email' %> / admin: <%= current_user.admin? %>
+              </span>
+            <% end %>
+            <!-- DEV -->
             <% if defined?(signed_in?) && signed_in? %>
               <li class="nav-item me-2">
                 <span class="navbar-text">
@@ -48,7 +55,7 @@
                 <%= button_to "Выйти", signout_path, method: :delete, class: "btn btn-outline-secondary btn-sm" %>
               </li>
               <% if current_user&.admin? %>
-                <%= link_to 'Админка', admin_categories_path, class: 'btn btn-sm btn-outline-light' %>
+                <%= link_to 'Админка', admin_categories_path, class: 'btn btn-sm btn-outline-dark' %>
               <% end %>
             <% else %>
               <li class="nav-item">
