@@ -1,0 +1,39 @@
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2 class="mb-0">Мои объявления</h2>
+  <%= link_to "Создать", new_bulletin_path, class: "btn btn-primary btn-sm" %>
+</div>
+
+<table class="table table-hover align-middle">
+  <thead>
+    <tr>
+      <th>Название</th>
+      <th>Категория</th>
+      <th>Статус</th>
+      <th class="text-end">Действия</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @bulletins.each do |b| %>
+      <tr>
+        <td class="w-50"><%= b.title %></td>
+        <td><%= b.category.name %></td>
+        <td>
+          <span class="badge text-bg-secondary"><%= b.state %></span>
+        </td>
+        <td class="text-end">
+          <% if b.may_to_moderate? %>
+            <%= button_to "На модерацию", to_moderate_bulletin_path(b),
+                  method: :patch, class: "btn btn-sm btn-outline-primary",
+                  data: { turbo_confirm: "Отправить объявление на модерацию?" } %>
+          <% end %>
+
+          <% if b.may_archive? %>
+            <%= button_to "В архив", archive_bulletin_path(b),
+                  method: :patch, class: "btn btn-sm btn-outline-secondary",
+                  data: { turbo_confirm: "Отправить в архив?" } %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

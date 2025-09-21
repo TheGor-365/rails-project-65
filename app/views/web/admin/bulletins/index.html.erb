@@ -3,26 +3,38 @@
   <%= link_to 'Категории', admin_categories_path, class: 'btn btn-outline-secondary btn-sm' %>
 </div>
 
-<div class="row g-3">
-  <% @bulletins.each do |b| %>
-    <div class="col-12 col-lg-6">
-      <div class="card h-100">
-        <% if b.image.attached? %>
-          <%= image_tag b.image, class: 'card-img-top', alt: b.title %>
-        <% end %>
-        <div class="card-body">
-          <h5 class="card-title mb-1"><%= b.title %></h5>
-          <div class="text-muted small mb-2">
-            <%= b.category.name %> • <%= b.user&.email %>
-          </div>
-          <p class="card-text"><%= truncate(b.description, length: 160) %></p>
-          <div class="d-flex gap-2">
-            <%= link_to 'Редактировать', edit_admin_bulletin_path(b), class: 'btn btn-sm btn-outline-primary' %>
-            <%= link_to 'Удалить', admin_bulletin_path(b), class: 'btn btn-sm btn-outline-danger',
-                    data: { turbo_method: :delete, turbo_confirm: 'Удалить объявление?' } %>
-          </div>
-        </div>
-      </div>
-    </div>
-  <% end %>
-</div>
+<table class="table table-hover align-middle">
+  <thead>
+    <tr>
+      <th>Название</th>
+      <th>Категория</th>
+      <th>Пользователь</th>
+      <th>Статус</th>
+      <th class="text-end">Действия</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @bulletins.each do |b| %>
+      <tr>
+        <td class="w-50"><%= link_to b.title, admin_bulletin_path(b) %></td>
+        <td><%= b.category.name %></td>
+        <td><%= b.user&.email || b.user&.name %></td>
+        <td><span class="badge text-bg-secondary"><%= b.state %></span></td>
+        <td class="text-end">
+          <% if b.may_publish? %>
+            <%= button_to "Опубликовать", publish_admin_bulletin_path(b),
+                  method: :patch, class: "btn btn-sm btn-success" %>
+          <% end %>
+          <% if b.may_reject? %>
+            <%= button_to "Отклонить", reject_admin_bulletin_path(b),
+                  method: :patch, class: "btn btn-sm btn-warning" %>
+          <% end %>
+          <% if b.may_archive? %>
+            <%= button_to "В архив", archive_admin_bulletin_path(b),
+                  method: :patch, class: "btn btn-sm btn-outline-secondary" %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

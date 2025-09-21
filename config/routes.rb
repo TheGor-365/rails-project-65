@@ -4,7 +4,15 @@ Rails.application.routes.draw do
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
 
   scope module: :web do
-    resources :bulletins, only: %i[index new create]
+    resources :bulletins, only: %i[index new create] do
+      member do
+        patch :to_moderate
+        patch :archive
+      end
+    end
+
+    resource :profile, only: :show, controller: :profiles, path: "profile"
+
     root "bulletins#index"
     post   'auth/:provider',          to: 'auth#request',   as: :auth_request
     get    'auth/:provider/callback', to: 'auth#callback',  as: :callback_auth
@@ -12,7 +20,13 @@ Rails.application.routes.draw do
 
     namespace :admin, module: :admin, as: :admin do
       resources :categories
-      resources :bulletins
+      resources :bulletins, only: %i[index show edit update destroy] do
+        member do
+          patch :publish
+          patch :reject
+          patch :archive
+        end
+      end
     end
   end
 end

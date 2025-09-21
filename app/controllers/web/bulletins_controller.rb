@@ -1,8 +1,9 @@
 class Web::BulletinsController < ApplicationController
-  before_action :require_login, only: %i[new create]
+  before_action :require_login, only: %i[new create to_moderate archive]
+  before_action :set_bulletin, only: %i[to_moderate archive]
 
   def index
-    @bulletins = Bulletin.includes(:category, :user).recent
+    @bulletins = Bulletin.published.includes(:category, :user).recent
   end
 
   def new
@@ -11,15 +12,36 @@ class Web::BulletinsController < ApplicationController
 
   def create
     @bulletin = current_user.bulletins.build(bulletin_params)
-
     if @bulletin.save
-      redirect_to root_path, notice: 'Объявление создано'
+      redirect_to profile_path, notice: "Объявление создано как черновик"
     else
       render :new, status: :unprocessable_entity
     end
   end
 
+  def to_moderate
+    authorize @bulletin, :to_moderate?
+    if @bulletin.to_moderate!
+      redirect_to profile_path, notice: "Отправлено на модерацию"
+    else
+      redirect_to profile_path, alert: "Не удалось отправить на модерацию"
+    end
+  end
+
+  def archive
+    authorize @bulletin, :archive?
+    if @bulletin.archive!
+      redirect_to profile_path, notice: "Отправлено в архив"
+    else
+      redirect_to profile_path, alert: "Не удалось отправить в архив"
+    end
+  end
+
   private
+
+  def set_bulletin
+    @bulletin = current_user.bulletins.find(params[:id])
+  end
 
   def bulletin_params
     params.require(:bulletin).permit(:title, :description, :category_id, :image)
@@ -27,7 +49,6 @@ class Web::BulletinsController < ApplicationController
 
   def require_login
     return if signed_in?
-
-    redirect_to root_path, alert: 'Для создания объявления войдите через GitHub'
+    redirect_to root_path, alert: "Войдите в аккаунт"
   end
 end
