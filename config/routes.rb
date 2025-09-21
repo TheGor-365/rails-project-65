@@ -14,7 +14,7 @@ Rails.application.routes.draw do
     resource :profile, only: :show, controller: :profiles, path: "profile"
 
     root "bulletins#index"
-    post   'auth/:provider',          to: 'auth#request',   as: :auth_request
+    post   'auth/:provider',          to: 'auth#oauth',     as: :auth_request
     get    'auth/:provider/callback', to: 'auth#callback',  as: :callback_auth
     delete 'signout',                 to: 'auth#destroy',   as: :signout
 
