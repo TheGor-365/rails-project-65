@@ -37,6 +37,14 @@ class Bulletin < ApplicationRecord
     end
   end
 
+  def self.ransackable_attributes(_auth = nil)
+    %w[title description state category_id user_id created_at updated_at id]
+  end
+
+  def self.ransackable_associations(_auth = nil)
+    %w[category user]
+  end
+
   private
 
   def validate_image_presence_and_size

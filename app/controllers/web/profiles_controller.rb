@@ -2,8 +2,9 @@ class Web::ProfilesController < ApplicationController
   before_action :require_login
 
   def show
-    @bulletins = current_user.bulletins.includes(:category).recent
-    @bulletin  = Bulletin.new
+    base = current_user.bulletins.includes(:category).recent
+    @q = base.ransack(params[:q])
+    @bulletins = @q.result(distinct: true).page(params[:page])
   end
 
   private

@@ -3,6 +3,35 @@
   <%= link_to 'Категории', admin_categories_path, class: 'btn btn-outline-secondary btn-sm' %>
 </div>
 
+<div class="p-3 bg-light rounded mb-3">
+  <%= search_form_for @q, url: admin_bulletins_path, method: :get do |f| %>
+    <div class="row g-2">
+      <div class="col-4">
+        <%= f.search_field :title_cont, class: "form-control", placeholder: "Название…" %>
+      </div>
+      <div class="col-3">
+        <%= f.select :category_id_eq,
+              options_from_collection_for_select(Category.order(:name), :id, :name, @q.category_id_eq),
+              { include_blank: "Любая категория" },
+              class: "form-select" %>
+      </div>
+      <div class="col-3">
+        <%= f.select :state_eq,
+              Bulletin.aasm.states.map(&:name),
+              { include_blank: "Любой статус" },
+              class: "form-select" %>
+      </div>
+      <div class="col-2">
+        <%= f.search_field :user_email_cont, class: "form-control", placeholder: "Email пользователя…" %>
+      </div>
+    </div>
+    <div class="mt-2">
+      <%= f.submit "Фильтровать", class: "btn btn-primary me-2" %>
+      <%= link_to "Сброс", admin_bulletins_path, class: "btn btn-outline-primary" %>
+    </div>
+  <% end %>
+</div>
+
 <table class="table table-hover align-middle">
   <thead>
     <tr>
@@ -38,3 +67,7 @@
     <% end %>
   </tbody>
 </table>
+
+<div class="mt-3">
+  <%= paginate @bulletins %>
+</div>

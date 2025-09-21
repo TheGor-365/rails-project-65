@@ -3,6 +3,38 @@
   <%= link_to "Создать", new_bulletin_path, class: "btn btn-primary btn-sm" %>
 </div>
 
+<div class="p-3 bg-light rounded mb-3">
+  <%= search_form_for @q, url: profile_path, method: :get do |f| %>
+    <div class="row my-2">
+      <div class="col-5">
+        <div class="mb-3">
+          <%= f.search_field :title_cont, class: "form-control", placeholder: "Название…" %>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="mb-3">
+          <%= f.select :category_id_eq,
+                options_from_collection_for_select(Category.order(:name), :id, :name, @q.category_id_eq),
+                { include_blank: "Любая категория" },
+                class: "form-select" %>
+        </div>
+      </div>
+      <div class="col-3">
+        <div class="mb-3">
+          <%= f.select :state_eq,
+                Bulletin.aasm.states.map(&:name),
+                { include_blank: "Любой статус" },
+                class: "form-select" %>
+        </div>
+      </div>
+    </div>
+    <div>
+      <%= f.submit "Искать", class: "btn btn-primary me-2" %>
+      <%= link_to "Сброс", profile_path, class: "btn btn-outline-primary" %>
+    </div>
+  <% end %>
+</div>
+
 <table class="table table-hover align-middle">
   <thead>
     <tr>
@@ -17,16 +49,13 @@
       <tr>
         <td class="w-50"><%= b.title %></td>
         <td><%= b.category.name %></td>
-        <td>
-          <span class="badge text-bg-secondary"><%= b.state %></span>
-        </td>
+        <td><span class="badge text-bg-secondary"><%= b.state %></span></td>
         <td class="text-end">
           <% if b.may_to_moderate? %>
             <%= button_to "На модерацию", to_moderate_bulletin_path(b),
                   method: :patch, class: "btn btn-sm btn-outline-primary",
                   data: { turbo_confirm: "Отправить объявление на модерацию?" } %>
           <% end %>
-
           <% if b.may_archive? %>
             <%= button_to "В архив", archive_bulletin_path(b),
                   method: :patch, class: "btn btn-sm btn-outline-secondary",
@@ -37,3 +66,7 @@
     <% end %>
   </tbody>
 </table>
+
+<div class="mt-3">
+  <%= paginate @bulletins %>
+</div>

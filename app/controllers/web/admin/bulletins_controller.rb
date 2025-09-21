@@ -2,7 +2,9 @@ class Web::Admin::BulletinsController < Web::Admin::BaseController
   before_action :set_bulletin, only: %i[show edit update destroy publish reject archive]
 
   def index
-    @bulletins = Bulletin.includes(:category, :user).order(created_at: :desc)
+    base = Bulletin.includes(:category, :user).order(created_at: :desc)
+    @q = base.ransack(params[:q])
+    @bulletins = @q.result(distinct: true).page(params[:page])
   end
 
   def show; end

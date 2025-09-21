@@ -16,6 +16,8 @@ gem "omniauth-github"
 gem "omniauth-rails_csrf_protection"
 gem "pundit"
 gem "aasm"
+gem "ransack"
+gem "kaminari"
 gem "image_processing", "~> 1.2"
 
 group :development, :test do

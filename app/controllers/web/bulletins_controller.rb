@@ -1,9 +1,11 @@
 class Web::BulletinsController < ApplicationController
   before_action :require_login, only: %i[new create to_moderate archive]
-  before_action :set_bulletin, only: %i[to_moderate archive]
+  before_action :set_bulletin,  only: %i[to_moderate archive]
 
   def index
-    @bulletins = Bulletin.published.includes(:category, :user).recent
+    base = Bulletin.published.includes(:category, :user).recent
+    @q = base.ransack(params[:q])
+    @bulletins = @q.result(distinct: true).page(params[:page])
   end
 
   def new
