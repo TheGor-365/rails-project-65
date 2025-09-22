@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ApplicationController < ActionController::Base
   include Pundit::Authorization
 
@@ -5,7 +7,9 @@ class ApplicationController < ActionController::Base
   helper_method :current_user, :signed_in?
 
   def current_user
-    @current_user ||= User.find_by(id: session[:user_id])
+    return @current_user if defined?(@current_user)
+
+    @current_user = User.find_by(id: session[:user_id])
   end
 
   def signed_in?
@@ -13,6 +17,6 @@ class ApplicationController < ActionController::Base
   end
 
   rescue_from Pundit::NotAuthorizedError do
-    redirect_to root_path, alert: 'Недостаточно прав'
+    redirect_to root_path, alert: t('app.errors.not_authorized')
   end
 end

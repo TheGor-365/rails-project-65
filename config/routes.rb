@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 Rails.application.routes.draw do
-  get "up" => "rails/health#show", as: :rails_health_check
-  get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
-  get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
+  get 'up' => 'rails/health#show', as: :rails_health_check
+  get 'service-worker' => 'rails/pwa#service_worker', as: :pwa_service_worker
+  get 'manifest' => 'rails/pwa#manifest', as: :pwa_manifest
 
   scope module: :web do
     resources :bulletins, only: %i[index new create] do
@@ -11,9 +13,9 @@ Rails.application.routes.draw do
       end
     end
 
-    resource :profile, only: :show, controller: :profiles, path: "profile"
+    resource :profile, only: :show, controller: :profiles, path: 'profile'
 
-    root "bulletins#index"
+    root 'bulletins#index'
     post   'auth/:provider',          to: 'auth#oauth',     as: :auth_request
     get    'auth/:provider/callback', to: 'auth#callback',  as: :callback_auth
     delete 'signout',                 to: 'auth#destroy',   as: :signout

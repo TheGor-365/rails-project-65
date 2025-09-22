@@ -1,0 +1,43 @@
+ru:
+  app:
+    errors:
+      not_authorized: "Недостаточно прав"
+      login_required: "Войдите в аккаунт"
+    auth:
+      github_no_email: "GitHub не вернул email. Разрешите доступ к email на GitHub и попробуйте снова."
+      login_success: "Вы вошли через GitHub"
+      login_failed: "Не удалось войти через GitHub"
+      logout_success: "Вы вышли"
+      github_no_email: "GitHub не вернул email. Разрешите доступ к email на GitHub и попробуйте снова."
+      github_failed: "Не удалось войти через GitHub"
+      signed_in: "Вы вошли через GitHub"
+      signed_out: "Вы вышли"
+      sign_in_first: "Войдите в аккаунт"
+  admin:
+    categories:
+      created: "Категория создана"
+      updated: "Категория обновлена"
+      deleted: "Категория удалена"
+    bulletins:
+      updated: "Объявление обновлено"
+      deleted: "Объявление удалено"
+      published: "Опубликовано"
+      publish_failed: "Не удалось опубликовать"
+      rejected: "Отклонено"
+      reject_failed: "Не удалось отклонить"
+      archived: "В архиве"
+      archive_failed: "Не удалось отправить в архив"
+  bulletins:
+    created_draft: "Объявление создано как черновик"
+    sent_to_moderation: "Отправлено на модерацию"
+    moderation_failed: "Не удалось отправить на модерацию"
+    sent_to_archive: "Отправлено в архив"
+    archive_failed: "Не удалось отправить в архив"
+  profiles:
+    login_required: "Войдите в аккаунт"
+    bulletins:
+      created_draft: "Объявление создано как черновик"
+      sent_to_moderation: "Отправлено на модерацию"
+      send_to_moderation_failed: "Не удалось отправить на модерацию"
+      sent_to_archive: "Отправлено в архив"
+      send_to_archive_failed: "Не удалось отправить в архив"

@@ -1,43 +1,49 @@
-class Web::Admin::CategoriesController < Web::Admin::BaseController
-  before_action :set_category, only: %i[edit update destroy]
+# frozen_string_literal: true
 
-  def index
-    @categories = Category.order(:name)
-    @category = Category.new
-  end
+module Web
+  module Admin
+    class CategoriesController < Web::Admin::BaseController
+      before_action :set_category, only: %i[edit update destroy]
 
-  def create
-    @category = Category.new(category_params)
-    if @category.save
-      redirect_to admin_categories_path, notice: 'Категория создана'
-    else
-      @categories = Category.order(:name)
-      render :index, status: :unprocessable_entity
+      def index
+        @categories = Category.order(:name)
+        @category = Category.new
+      end
+
+      def edit; end
+
+      def create
+        @category = Category.new(category_params)
+        if @category.save
+          redirect_to admin_categories_path, notice: t('admin.categories.created')
+        else
+          @categories = Category.order(:name)
+          render :index, status: :unprocessable_entity
+        end
+      end
+
+      def update
+        if @category.update(category_params)
+          redirect_to admin_categories_path, notice: t('admin.categories.updated')
+        else
+          render :edit, status: :unprocessable_entity
+        end
+      end
+
+      def destroy
+        @category.destroy
+        redirect_to admin_categories_path, notice: t('admin.categories.deleted')
+      end
+
+      private
+
+      def set_category
+        @category = Category.find(params[:id])
+      end
+
+      def category_params
+        params.require(:category).permit(:name)
+      end
     end
-  end
-
-  def edit; end
-
-  def update
-    if @category.update(category_params)
-      redirect_to admin_categories_path, notice: 'Категория обновлена'
-    else
-      render :edit, status: :unprocessable_entity
-    end
-  end
-
-  def destroy
-    @category.destroy
-    redirect_to admin_categories_path, notice: 'Категория удалена'
-  end
-
-  private
-
-  def set_category
-    @category = Category.find(params[:id])
-  end
-
-  def category_params
-    params.require(:category).permit(:name)
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Bulletin < ApplicationRecord
   belongs_to :category
   belongs_to :user
@@ -9,10 +11,11 @@ class Bulletin < ApplicationRecord
   validate  :validate_image_presence_and_size, on: :create
 
   scope :recent,    -> { order(created_at: :desc) }
-  scope :published, -> { where(state: "published") }
+  scope :published, -> { where(state: 'published') }
   scope :of_user,   ->(user) { where(user:) }
 
   include AASM
+
   aasm column: :state, whiny_transitions: false do
     state :draft, initial: true
     state :under_moderation
@@ -33,7 +36,7 @@ class Bulletin < ApplicationRecord
     end
 
     event :archive do
-      transitions from: [:under_moderation, :published, :rejected], to: :archived
+      transitions from: %i[under_moderation published rejected], to: :archived
     end
   end
 
@@ -48,9 +51,9 @@ class Bulletin < ApplicationRecord
   private
 
   def validate_image_presence_and_size
-    errors.add(:image, "должно быть добавлено") unless image.attached?
+    errors.add(:image, 'должно быть добавлено') unless image.attached?
     return unless image.attached?
 
-    errors.add(:image, "не более 5 МБ") if image.blob.byte_size > 5.megabytes
+    errors.add(:image, 'не более 5 МБ') if image.blob.byte_size > 5.megabytes
   end
 end

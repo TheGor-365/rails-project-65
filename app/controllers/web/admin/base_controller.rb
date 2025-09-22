@@ -1,15 +1,22 @@
-class Web::Admin::BaseController < ApplicationController
-  before_action :require_login
-  before_action :authorize_admin!
+# frozen_string_literal: true
 
-  private
+module Web
+  module Admin
+    class BaseController < ApplicationController
+      before_action :require_login
+      before_action :authorize_admin!
 
-  def require_login
-    return if signed_in?
-    redirect_to root_path, alert: 'Войдите в аккаунт'
-  end
+      private
 
-  def authorize_admin!
-    authorize :admin, :access?
+      def require_login
+        return if signed_in?
+
+        redirect_to root_path, alert: t('app.errors.login_required')
+      end
+
+      def authorize_admin!
+        authorize :admin, :access?
+      end
+    end
   end
 end

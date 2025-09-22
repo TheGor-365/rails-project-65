@@ -1,7 +1,26 @@
-inherit_gem: { rubocop-rails-omakase: rubocop.yml }
-
-require:
-  - rubocop-rails
+# .rubocop.yml
+inherit_mode:
+  merge:
+    - Exclude
 
 AllCops:
   NewCops: enable
+  TargetRubyVersion: 3.2
+
+# вместо require: rubocop-rails
+require: []
+
+plugins:
+  - rubocop-rails
+
+Style/Documentation:
+  Enabled: false
+
+Metrics/BlockLength:
+  Exclude:
+    - config/routes.rb
+    - config/environments/development.rb
+    - db/migrate/**/*
+
+Rails/I18nLocaleTexts:
+  Enabled: true

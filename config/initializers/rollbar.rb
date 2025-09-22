@@ -1,11 +1,11 @@
+# frozen_string_literal: true
+
 Rollbar.configure do |config|
-  config.access_token = ENV['ROLLBAR_ACCESS_TOKEN']
+  config.access_token = ENV.fetch('ROLLBAR_ACCESS_TOKEN', nil)
   config.enabled = config.access_token.present?
   config.environment = ENV['ROLLBAR_ENV'].presence || Rails.env
 
-  if Rails.env.test?
-    config.enabled = false
-  end
+  config.enabled = false if Rails.env.test?
 
   # config.person_method = "my_current_user"
   # config.person_id_method = "my_id"

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class BulletinPolicy < ApplicationPolicy
   def to_moderate?
     user.present? && record.user_id == user.id && record.may_to_moderate?
