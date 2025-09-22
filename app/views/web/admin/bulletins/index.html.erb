@@ -69,5 +69,5 @@
 </table>
 
 <div class="mt-3">
-  <%= paginate @bulletins %>
+  <%= paginate @bulletins, params: request.query_parameters %>
 </div>
