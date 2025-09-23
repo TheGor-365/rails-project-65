@@ -1,9 +1,14 @@
 # frozen_string_literal: true
 
 class BulletinPolicy < ApplicationPolicy
-  class Scope < Scope
+  class Scope
+    def initialize(user, scope)
+      @user = user
+      @scope = scope
+    end
+
     def resolve
-      scope.all
+      @scope.all
     end
   end
 
@@ -12,7 +17,7 @@ class BulletinPolicy < ApplicationPolicy
   end
 
   def show?
-    record.state == 'published' || owner?
+    record.state == "published" || owner?
   end
 
   def new?
@@ -23,12 +28,12 @@ class BulletinPolicy < ApplicationPolicy
     user.present?
   end
 
-  # Нужно для GET /bulletins/:id/edit
+  # нужно для GET /bulletins/:id/edit
   def edit?
     owner?
   end
 
-  # Нужно для PATCH/PUT /bulletins/:id
+  # нужно для PATCH/PUT /bulletins/:id
   def update?
     owner?
   end
