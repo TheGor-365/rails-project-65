@@ -16,6 +16,10 @@ AllCops:
     - "config/application.rb"
     - "vendor/**/*"
 
+Layout/SpaceInsideArrayLiteralBrackets:
+  Exclude:
+    - 'code/test/**/*'
+    - 'test/**/*'
 Style/StringLiterals:
   Enabled: false
 Style/Documentation:

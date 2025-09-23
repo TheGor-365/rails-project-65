@@ -6,6 +6,7 @@ module Web
     def start
       redirect_to "/auth/#{params[:provider]}", allow_other_host: true
     end
+
     # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
     # GET /auth/:provider/callback
     def callback

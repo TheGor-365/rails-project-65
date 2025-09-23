@@ -70,7 +70,7 @@ module Web
     end
 
     def authenticate!
-      redirect_to root_path, alert: 'Войдите в аккаунт' unless signed_in?
+      redirect_to root_path, alert: t('flash.auth.sign_in') unless signed_in?
     end
 
     def bulletin_params
