@@ -18,25 +18,25 @@ module Web
       @categories = Category.order(:name)
     end
 
+    def edit
+      authorize @bulletin
+      @categories = Category.order(:name)
+    end
+
     def create
       @bulletin = current_user.bulletins.build(bulletin_params)
       if @bulletin.save
-        redirect_to profile_path, notice: 'Объявление создано как черновик'
+        redirect_to profile_path, notice: t('flash.bulletins.created_draft')
       else
         @categories = Category.order(:name)
         render :new, status: :unprocessable_entity
       end
     end
 
-    def edit
-      authorize @bulletin
-      @categories = Category.order(:name)
-    end
-
     def update
       authorize @bulletin
       if @bulletin.update(bulletin_params)
-        redirect_to profile_path, notice: 'Отправлено на модерацию'
+        redirect_to profile_path, notice: t('flash.bulletins.sent_to_moderation')
       else
         @categories = Category.order(:name)
         render :edit, status: :unprocessable_entity
@@ -47,9 +47,9 @@ module Web
       authorize @bulletin
       if @bulletin.may_to_moderate?
         @bulletin.to_moderate!
-        redirect_to profile_path, notice: 'Отправлено на модерацию'
+        redirect_to profile_path, notice: t('flash.bulletins.sent_to_moderation')
       else
-        redirect_to profile_path, alert: 'Не удалось отправить на модерацию'
+        redirect_to profile_path, alert: t('flash.bulletins.send_failed')
       end
     end
 
@@ -57,9 +57,9 @@ module Web
       authorize @bulletin
       if @bulletin.may_archive?
         @bulletin.archive!
-        redirect_to profile_path, notice: 'Отправлено в архив'
+        redirect_to profile_path, notice: t('flash.bulletins.archived')
       else
-        redirect_to profile_path, alert: 'Не удалось отправить в архив'
+        redirect_to profile_path, alert: t('flash.bulletins.archive_failed')
       end
     end
 

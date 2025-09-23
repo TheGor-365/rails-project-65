@@ -6,16 +6,15 @@ module Web
     def start
       redirect_to "/auth/#{params[:provider]}", allow_other_host: true
     end
-
+    # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
     # GET /auth/:provider/callback
     def callback
       auth = @_request.env['omniauth.auth']
-      info = auth && (auth['info'] || auth[:info]) || {}
+      info = (auth && (auth['info'] || auth[:info])) || {}
 
       email = info['email'] || info[:email]
       if email.blank?
-        return redirect_to root_path,
-                           alert: 'GitHub не вернул email. Разрешите доступ к email на GitHub и попробуйте снова.'
+        redirect_to root_path, alert: t('flash.auth.github_email_missing') and return
       end
 
       user = User.find_or_initialize_by(email:)
@@ -24,21 +23,22 @@ module Web
         user.save!
       end
 
-      admin_email = ENV['ADMIN_EMAIL']
+      admin_email = ENV.fetch('ADMIN_EMAIL', nil)
       if admin_email.present? && email.to_s.casecmp(admin_email.to_s).zero? && !user.admin?
         user.update!(admin: true)
       end
 
       session[:user_id] = user.id
-      redirect_to root_path, notice: 'Вы вошли через GitHub'
+      redirect_to root_path, notice: t('flash.auth.github_login_success')
     rescue StandardError
-      redirect_to root_path, alert: 'Не удалось войти через GitHub'
+      redirect_to root_path, alert: t('flash.auth.github_login_fail')
     end
+    # rubocop:enable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 
     # DELETE /signout
     def destroy
       reset_session
-      redirect_to root_path, notice: 'Вы вышли'
+      redirect_to root_path, notice: t('flash.auth.logged_out')
     end
   end
 end

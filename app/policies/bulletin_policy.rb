@@ -17,7 +17,7 @@ class BulletinPolicy < ApplicationPolicy
   end
 
   def show?
-    record.state == "published" || owner?
+    record.state == 'published' || owner?
   end
 
   def new?

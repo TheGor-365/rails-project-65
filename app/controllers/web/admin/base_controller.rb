@@ -8,12 +8,9 @@ module Web
       private
 
       def authenticate_admin!
-        unless signed_in?
-          redirect_to root_path, alert: 'Войдите в аккаунт' and return
-        end
-        unless current_user.admin?
-          redirect_to root_path, alert: 'Недостаточно прав'
-        end
+        return redirect_to(root_path, alert: t('flash.auth.sign_in')) unless signed_in?
+        return if current_user.admin?
+        redirect_to root_path, alert: t('flash.auth.no_rights')
       end
     end
   end

@@ -15,41 +15,41 @@ module Web
 
       def update
         if @bulletin.update(bulletin_params)
-          redirect_to admin_bulletins_path, notice: 'Объявление обновлено'
+          redirect_to admin_bulletins_path, notice: t('flash.admin.bulletins.updated')
         else
-          render :edit, status: :unprocessable_entity
+          redirect_to admin_bulletins_path, notice: t('flash.admin.bulletins.update_failed')
         end
       end
 
       def destroy
         @bulletin.destroy
-        redirect_to admin_bulletins_path, notice: 'Объявление удалено'
+        redirect_to admin_bulletins_path, notice: t('flash.admin.bulletins.deleted')
       end
 
       def publish
         if @bulletin.may_publish?
           @bulletin.publish!
-          redirect_to admin_bulletins_path, notice: 'Опубликовано'
+          redirect_to admin_bulletins_path, notice: t('flash.admin.bulletins.published')
         else
-          redirect_to admin_bulletins_path, alert: 'Не удалось опубликовать'
+          redirect_to admin_bulletins_path, alert: t('flash.admin.bulletins.publish_failed')
         end
       end
 
       def reject
         if @bulletin.may_reject?
           @bulletin.reject!
-          redirect_to admin_bulletins_path, notice: 'Отклонено'
+          redirect_to admin_bulletins_path, notice: t('flash.admin.bulletins.rejected')
         else
-          redirect_to admin_bulletins_path, alert: 'Не удалось отклонить'
+          redirect_to admin_bulletins_path, alert: t('flash.admin.bulletins.reject_failed')
         end
       end
 
       def archive
         if @bulletin.may_archive?
           @bulletin.archive!
-          redirect_to admin_bulletins_path, notice: 'В архиве'
+          redirect_to admin_bulletins_path, notice: t('flash.admin.bulletins.archived')
         else
-          redirect_to admin_bulletins_path, alert: 'Не удалось отправить в архив'
+          redirect_to admin_bulletins_path, alert: t('flash.admin.bulletins.archive_failed')
         end
       end
 
