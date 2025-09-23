@@ -8,9 +8,16 @@ on:
 jobs:
   scan_ruby:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Add Bundler platforms (scan)
+        run: |
+          bundle lock --add-platform ruby
+          bundle lock --add-platform x86_64-linux
+          bundle lock --add-platform aarch64-linux-gnu
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -27,6 +34,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Add Bundler platforms (lint)
+        run: |
+          bundle lock --add-platform ruby
+          bundle lock --add-platform x86_64-linux
+          bundle lock --add-platform aarch64-linux-gnu
+
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -38,20 +51,18 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-    env:
-      RAILS_ENV: test
-      DISABLE_SPRING: 1
-      BUNDLE_FORCE_RUBY_PLATFORM: "true"
     steps:
       - name: Install packages
         run: sudo apt-get update && sudo apt-get install --no-install-recommends -y google-chrome-stable curl libjemalloc2 libvips sqlite3
 
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Configure bundler to skip dev/prod groups
+
+      - name: Add Bundler platforms (test)
         run: |
-          mkdir -p .bundle
-          printf -- "---\nBUNDLE_WITHOUT: \"development:production\"\n" > .bundle/config
+          bundle lock --add-platform ruby
+          bundle lock --add-platform x86_64-linux
+          bundle lock --add-platform aarch64-linux-gnu
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -59,13 +70,9 @@ jobs:
           ruby-version: .ruby-version
           bundler-cache: true
 
-      - name: Build assets (JS & CSS)
-        run: |
-          yarn install --frozen-lockfile
-          yarn build
-          yarn build:css
-
       - name: Run tests
+        env:
+          RAILS_ENV: test
         run: bin/rails db:test:prepare test test:system
 
       - name: Keep screenshots from failed system tests

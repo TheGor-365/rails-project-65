@@ -1,0 +1,13 @@
+<h2 class="mb-3"><%= @bulletin.title %></h2>
+
+<p class="text-muted mb-2">
+  Категория: <%= @bulletin.category.name %> · Автор: <%= @bulletin.user.name %>
+</p>
+
+<% if @bulletin.image.attached? %>
+  <div class="mb-3">
+    <%= image_tag @bulletin.image, class: "img-fluid rounded" %>
+  </div>
+<% end %>
+
+<p><%= simple_format(@bulletin.description) %></p>

@@ -1,26 +1,14 @@
-# .rubocop.yml
-inherit_mode:
-  merge:
-    - Exclude
-
-AllCops:
-  NewCops: enable
-  TargetRubyVersion: 3.2
-
-# вместо require: rubocop-rails
-require: []
+inherit_gem:
+  rubocop-rails-omakase: rubocop.yml
 
 plugins:
   - rubocop-rails
 
-Style/Documentation:
-  Enabled: false
+AllCops:
+  NewCops: enable
 
-Metrics/BlockLength:
-  Exclude:
-    - config/routes.rb
-    - config/environments/development.rb
-    - db/migrate/**/*
+Style/StringLiterals:
+  EnforcedStyle: single_quotes
 
-Rails/I18nLocaleTexts:
-  Enabled: true
+Layout/SpaceInsideArrayLiteralBrackets:
+  EnforcedStyle: no_space

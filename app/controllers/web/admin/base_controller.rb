@@ -3,19 +3,17 @@
 module Web
   module Admin
     class BaseController < ApplicationController
-      before_action :require_login
-      before_action :authorize_admin!
+      before_action :authenticate_admin!
 
       private
 
-      def require_login
-        return if signed_in?
-
-        redirect_to root_path, alert: t('app.errors.login_required')
-      end
-
-      def authorize_admin!
-        authorize :admin, :access?
+      def authenticate_admin!
+        unless signed_in?
+          redirect_to root_path, alert: 'Войдите в аккаунт' and return
+        end
+        unless current_user.admin?
+          redirect_to root_path, alert: 'Недостаточно прав'
+        end
       end
     end
   end

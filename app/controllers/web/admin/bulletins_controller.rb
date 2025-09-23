@@ -2,22 +2,20 @@
 
 module Web
   module Admin
-    class BulletinsController < Web::Admin::BaseController
-      before_action :set_bulletin, only: %i[show edit update destroy publish reject archive]
+    class BulletinsController < BaseController
+      before_action :set_bulletin, only: %i[publish reject archive edit update show destroy]
 
       def index
-        base = Bulletin.includes(:category, :user).order(created_at: :desc)
-        @q = base.ransack(params[:q])
-        @bulletins = @q.result(distinct: true).page(params[:page])
+        @q = Bulletin.ransack(params[:q])
+        @bulletins = @q.result.order(created_at: :desc).page(params[:page]).per(20)
       end
 
       def show; end
-
       def edit; end
 
       def update
         if @bulletin.update(bulletin_params)
-          redirect_to admin_bulletins_path, notice: t('admin.bulletins.updated')
+          redirect_to admin_bulletins_path, notice: 'Объявление обновлено'
         else
           render :edit, status: :unprocessable_entity
         end
@@ -25,33 +23,33 @@ module Web
 
       def destroy
         @bulletin.destroy
-        redirect_to admin_bulletins_path, notice: t('admin.bulletins.deleted')
+        redirect_to admin_bulletins_path, notice: 'Объявление удалено'
       end
 
       def publish
-        authorize @bulletin, :publish?
-        if @bulletin.publish!
-          redirect_to admin_bulletins_path, notice: t('admin.bulletins.published')
+        if @bulletin.may_publish?
+          @bulletin.publish!
+          redirect_to admin_bulletins_path, notice: 'Опубликовано'
         else
-          redirect_to admin_bulletins_path, alert:  t('admin.bulletins.publish_failed')
+          redirect_to admin_bulletins_path, alert: 'Не удалось опубликовать'
         end
       end
 
       def reject
-        authorize @bulletin, :reject?
-        if @bulletin.reject!
-          redirect_to admin_bulletins_path, notice: t('admin.bulletins.rejected')
+        if @bulletin.may_reject?
+          @bulletin.reject!
+          redirect_to admin_bulletins_path, notice: 'Отклонено'
         else
-          redirect_to admin_bulletins_path, alert:  t('admin.bulletins.reject_failed')
+          redirect_to admin_bulletins_path, alert: 'Не удалось отклонить'
         end
       end
 
       def archive
         if @bulletin.may_archive?
           @bulletin.archive!
-          redirect_to admin_bulletins_path, notice: t('admin.bulletins.archived')
+          redirect_to admin_bulletins_path, notice: 'В архиве'
         else
-          redirect_to admin_bulletins_path, alert:  t('admin.bulletins.archive_failed')
+          redirect_to admin_bulletins_path, alert: 'Не удалось отправить в архив'
         end
       end
 

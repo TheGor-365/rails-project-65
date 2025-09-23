@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   get 'manifest' => 'rails/pwa#manifest', as: :pwa_manifest
 
   scope module: :web do
-    resources :bulletins, only: %i[index new create] do
+    resources :bulletins, only: %i[index show new create edit update] do
       member do
         patch :to_moderate
         patch :archive
@@ -16,7 +16,8 @@ Rails.application.routes.draw do
     resource :profile, only: :show, controller: :profiles, path: 'profile'
 
     root 'bulletins#index'
-    post   'auth/:provider',          to: 'auth#oauth',     as: :auth_request
+
+    post   'auth/:provider',          to: 'auth#start',     as: :auth_request
     get    'auth/:provider/callback', to: 'auth#callback',  as: :callback_auth
     delete 'signout',                 to: 'auth#destroy',   as: :signout
 
