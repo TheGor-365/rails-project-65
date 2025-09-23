@@ -28,12 +28,10 @@ class BulletinPolicy < ApplicationPolicy
     user.present?
   end
 
-  # нужно для GET /bulletins/:id/edit
   def edit?
     owner?
   end
 
-  # нужно для PATCH/PUT /bulletins/:id
   def update?
     owner?
   end

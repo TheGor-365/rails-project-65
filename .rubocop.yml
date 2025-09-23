@@ -1,14 +1,5 @@
-inherit_gem:
-  rubocop-rails-omakase: rubocop.yml
-
-plugins:
-  - rubocop-rails
-
 AllCops:
   NewCops: enable
 
 Style/StringLiterals:
-  EnforcedStyle: single_quotes
-
-Layout/SpaceInsideArrayLiteralBrackets:
-  EnforcedStyle: no_space
+  Enabled: false
