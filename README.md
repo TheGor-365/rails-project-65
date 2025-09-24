@@ -84,6 +84,7 @@ ADMIN_EMAIL=you@example.com
 Администратор — видит админ-раздел /admin, может публиковать/отклонять и архивировать объявления, управлять категориями.
 
 
+
 ## Как сделать себя админом
 
 В проекте есть миграция, которая помечает пользователя из ADMIN_EMAIL как админа:
@@ -99,52 +100,76 @@ User.where(email: 'you@example.com').pluck(:email, :admin)
 ```
 
 
+
 ## Состояния объявлений (AASM)
 
 
 Колонка: state (string), значение по умолчанию — draft.
 
-Состояния:
+# Состояния:
 
-draft — начальное состояние.
-under_moderation — отправлено на модерацию.
-published — опубликовано (возможно только из under_moderation).
-rejected — отклонено (нужна доработка).
-archived — архив.
+draft             — начальное состояние.
 
-События:
+under_moderation  — отправлено на модерацию.
 
-to_moderate: draft → under_moderation
-publish: under_moderation → published
-reject: under_moderation → rejected
-archive: [under_moderation | published | rejected] → archived
+published         — опубликовано (возможно только из under_moderation).
+
+rejected          — отклонено (нужна доработка).
+
+archived          — архив.
+
+# События:
+
+to_moderate: draft                                  → under_moderation
+
+publish: under_moderation                           → published
+
+reject: under_moderation                            → rejected
+
+archive: [under_moderation | published | rejected]  → archived
 
 Главная страница (/) выводит только published.
 
 
+
 ## Основные маршруты
 
-Публичная часть:
+# Публичная часть:
 
-GET / — список опубликованных объявлений.
-GET /bulletins/new, POST /bulletins — создание объявления (нужна авторизация).
-PATCH /bulletins/:id/to_moderate — отправить своё объявление на модерацию.
-PATCH /bulletins/:id/archive — отправить своё объявление в архив.
-GET /profile — список своих объявлений и действия над ними.
+GET /                             — список опубликованных объявлений.
 
-Админ-панель:
+GET /bulletins/new,
 
-GET /admin/categories — CRUD категорий.
-GET /admin/bulletins — список объявлений.
-PATCH /admin/bulletins/:id/publish — публикация.
-PATCH /admin/bulletins/:id/reject — отклонение.
-PATCH /admin/bulletins/:id/archive — архив.
+POST /bulletins                   — создание объявления (нужна авторизация).
 
-Аутентификация:
+PATCH /bulletins/:id/to_moderate  — отправить своё объявление на модерацию.
 
-POST /auth/:provider — запрос на вход через GitHub.
-GET /auth/:provider/callback — коллбэк.
-DELETE /signout — выход.
+PATCH /bulletins/:id/archive      — отправить своё объявление в архив.
+
+GET /profile                      — список своих объявлений и действия над ними.
+
+
+# Админ-панель:
+
+GET /admin/categories               — CRUD категорий.
+
+GET /admin/bulletins                — список объявлений.
+
+PATCH /admin/bulletins/:id/publish  — публикация.
+
+PATCH /admin/bulletins/:id/reject   — отклонение.
+
+PATCH /admin/bulletins/:id/archive  — архив.
+
+
+# Аутентификация:
+
+POST /auth/:provider          — запрос на вход через GitHub.
+
+GET /auth/:provider/callback  — коллбэк.
+
+DELETE /signout               — выход.
+
 
 
 ## Запуск тестов и качество кода
@@ -158,12 +183,15 @@ bundle exec rubocop
 bundle exec slim-lint app/views
 ```
 
+
+
 ## Деплой
 
 
 Проект развёрнут на Render: https://rails-project-65-5ykr.onrender.com
 
-Ключевые моменты деплоя:
+
+# Ключевые моменты деплоя:
 
 Прогон миграций на проде обязателен (включая миграцию промоушена админа):
 
