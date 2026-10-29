@@ -11,7 +11,9 @@ module Web
       @bulletins = @q.result(distinct: true).page(params[:page]).per(12)
     end
 
-    def show; end
+    def show
+      authorize @bulletin
+    end
 
     def new
       @bulletin = current_user.bulletins.build
