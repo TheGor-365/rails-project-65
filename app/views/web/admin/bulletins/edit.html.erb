@@ -1,6 +1,6 @@
 <h2 class="mb-3">Редактировать объявление</h2>
 
-<%= form_with model: @bulletin, url: bulletin_path(@bulletin), method: :patch, local: true do |f| %>
+<%= form_with model: @bulletin, url: admin_bulletin_path(@bulletin), method: :patch, local: true do |f| %>
   <div class="mb-3">
     <%= f.label :title, "Название", class: "form-label" %>
     <%= f.text_field :title, class: "form-control", maxlength: 50, required: true %>
