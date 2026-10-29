@@ -19,6 +19,9 @@ Rails.application.routes.draw do
 
     post   'auth/:provider',          to: 'auth#start',     as: :auth_request
     get    'auth/:provider/callback', to: 'auth#callback',  as: :callback_auth
+    get 'auth/github/link', to: 'auth#link_form', as: :github_link_form
+    post 'auth/github/link', to: 'auth#prepare_link', as: :prepare_github_link
+
     delete 'signout',                 to: 'auth#destroy',   as: :signout
 
     namespace :admin, module: :admin, as: :admin do

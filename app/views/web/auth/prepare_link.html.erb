@@ -1,0 +1,8 @@
+<h1>Подтверждение GitHub</h1>
+<p>Подтвердите владение GitHub-аккаунтом.</p>
+
+<%= button_to "Подтвердить через GitHub",
+    "/auth/github",
+    method: :post,
+    form: { data: { turbo: false } },
+    class: "btn btn-primary" %>
