@@ -83,6 +83,87 @@ module Web
 
         assert_redirected_to root_path
       end
+
+      test 'admin can publish pending bulletin' do
+        sign_in(users(:admin))
+        bulletin = bulletins(:second)
+        bulletin.update!(state: 'under_moderation')
+
+        patch publish_admin_bulletin_path(bulletin)
+
+        assert_redirected_to admin_bulletins_path
+        assert_equal 'published', bulletin.reload.state
+      end
+
+      test 'admin can reject pending bulletin' do
+        sign_in(users(:admin))
+        bulletin = bulletins(:second)
+        bulletin.update!(state: 'under_moderation')
+
+        patch reject_admin_bulletin_path(bulletin)
+
+        assert_redirected_to admin_bulletins_path
+        assert_equal 'rejected', bulletin.reload.state
+      end
+
+      test 'admin can archive published bulletin' do
+        sign_in(users(:admin))
+        bulletin = bulletins(:first)
+
+        patch archive_admin_bulletin_path(bulletin)
+
+        assert_redirected_to admin_bulletins_path
+        assert_equal 'archived', bulletin.reload.state
+      end
+
+      test 'invalid moderation transitions do not change state' do
+        sign_in(users(:admin))
+        bulletin = bulletins(:second)
+
+        [
+          publish_admin_bulletin_path(bulletin),
+          reject_admin_bulletin_path(bulletin)
+        ].each do |path|
+          assert_no_changes -> { bulletin.reload.state } do
+            patch path
+          end
+          assert_redirected_to admin_bulletins_path
+        end
+
+        bulletin.update!(state: 'archived')
+
+        assert_no_changes -> { bulletin.reload.state } do
+          patch archive_admin_bulletin_path(bulletin)
+        end
+        assert_redirected_to admin_bulletins_path
+      end
+
+      test 'non admins cannot perform moderation actions' do
+        bulletin = bulletins(:second)
+        bulletin.update!(state: 'under_moderation')
+
+        paths = [
+          publish_admin_bulletin_path(bulletin),
+          reject_admin_bulletin_path(bulletin),
+          archive_admin_bulletin_path(bulletin)
+        ]
+
+        paths.each do |path|
+          assert_no_changes -> { bulletin.reload.state } do
+            patch path
+          end
+          assert_redirected_to root_path
+        end
+
+        sign_in(users(:one))
+
+        paths.each do |path|
+          assert_no_changes -> { bulletin.reload.state } do
+            patch path
+          end
+          assert_redirected_to root_path
+        end
+      end
     end
   end
 end
