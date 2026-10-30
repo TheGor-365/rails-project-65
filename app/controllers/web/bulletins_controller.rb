@@ -2,6 +2,7 @@
 
 module Web
   class BulletinsController < ApplicationController
+    include BulletinPhotoUploads
     before_action :set_bulletin, only: %i[show edit update to_moderate archive]
     before_action :authenticate!, only: %i[new create edit update to_moderate archive]
 
@@ -34,6 +35,7 @@ module Web
 
     def create
       @bulletin = current_user.bulletins.build(bulletin_params)
+      assign_uploaded_photos(@bulletin)
       if @bulletin.save
         redirect_to profile_path, notice: t('flash.bulletins.created_draft')
       else
@@ -44,6 +46,7 @@ module Web
 
     def update
       authorize @bulletin
+      assign_uploaded_photos(@bulletin)
       if @bulletin.update(bulletin_params)
         redirect_to profile_path, notice: t('flash.bulletins.sent_to_moderation')
       else
