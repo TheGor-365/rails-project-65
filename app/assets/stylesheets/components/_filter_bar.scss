@@ -8,7 +8,7 @@
 }
 .cl-filter-controls {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(180px, .55fr) auto auto;
+  grid-template-columns: minmax(0, 1fr) minmax(145px, .5fr) minmax(145px, .45fr) auto auto;
   align-items: center;
   gap: .7rem;
 }
