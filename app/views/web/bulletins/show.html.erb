@@ -13,7 +13,8 @@
       <div class="cl-detail-gallery">
         <% if gallery_images.any? %>
           <%= image_tag gallery_images.first, class: 'cl-detail-gallery__image',
-                alt: @bulletin.title, data: { gallery_target: 'main' } %>
+                alt: @bulletin.title, loading: 'eager', fetchpriority: 'high',
+                decoding: 'async', data: { gallery_target: 'main' } %>
         <% else %>
           <div class="cl-detail-gallery__empty"><i class="bi bi-image" aria-hidden="true"></i>Фотография не добавлена</div>
         <% end %>
@@ -25,7 +26,7 @@
                   aria: { label: "Фотография #{index + 1}", pressed: index.zero? },
                   data: { action: 'gallery#select', gallery_target: 'thumb',
                           gallery_src: url_for(photo), gallery_alt: "#{@bulletin.title}, фото #{index + 1}" } do %>
-              <%= image_tag photo, alt: '', loading: 'lazy' %>
+              <%= image_tag photo, alt: '', loading: 'lazy', decoding: 'async', width: 76, height: 61 %>
             <% end %>
           <% end %>
         </nav>
