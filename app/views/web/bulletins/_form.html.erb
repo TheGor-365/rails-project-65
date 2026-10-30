@@ -73,6 +73,19 @@
                 accept: 'image/jpeg,image/png,image/webp', required: !editing %>
           <span>JPEG, PNG или WebP · до 5 МБ</span>
         </div>
+        <% if editing && bulletin.photos.attached? %>
+          <div class="cl-editor-existing-photos" aria-label="Уже добавленные фотографии">
+            <% bulletin.photos.each do |photo| %>
+              <%= image_tag photo.variant(resize_to_fill: [ 160, 120 ]), alt: 'Дополнительная фотография', loading: 'lazy' %>
+            <% end %>
+          </div>
+        <% end %>
+        <div class="mt-3">
+          <%= f.label :photos, 'Дополнительные фотографии', class: 'form-label' %>
+          <%= f.file_field :photos, class: 'form-control', multiple: true,
+                accept: 'image/jpeg,image/png,image/webp' %>
+          <div class="form-text">До 4 дополнительных фотографий по 5 МБ. Новые файлы добавляются к существующим.</div>
+        </div>
       </section>
 
       <section class="cl-editor-tips" aria-labelledby="cl-editor-tips-heading">
