@@ -63,10 +63,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_31_061000) do
     t.integer "bulletin_id", null: false
     t.integer "buyer_id", null: false
     t.integer "seller_id", null: false
-    t.integer "buyer_last_read_message_id"
-    t.integer "seller_last_read_message_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "buyer_last_read_message_id"
+    t.integer "seller_last_read_message_id"
     t.index ["bulletin_id"], name: "index_conversations_on_bulletin_id"
     t.index ["bulletin_id", "buyer_id"], name: "index_conversations_on_bulletin_id_and_buyer_id", unique: true
     t.index ["buyer_id"], name: "index_conversations_on_buyer_id"
