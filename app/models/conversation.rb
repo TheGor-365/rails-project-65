@@ -8,7 +8,7 @@ class Conversation < ApplicationRecord
   has_many :messages, dependent: :destroy
   has_one :last_message, -> { order(created_at: :desc, id: :desc) }, class_name: 'Message'
 
-  validates :buyer_id, uniqueness: { scope: :bulletin_id }
+  # Uniqueness is enforced atomically by index_conversations_on_bulletin_id_and_buyer_id.
   validate :different_participants
   validate :correct_author
   validate :published_bulletin, on: :create
