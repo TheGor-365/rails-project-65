@@ -1,4 +1,11 @@
-<div class="container mt-4">
-  <h1 class="mb-3">Новая категория</h1>
-  <%= render 'form', category: @category %>
+<div class="cl-management-heading">
+  <div>
+    <p class="cl-eyebrow">Панель управления / Категории</p>
+    <h2>Новая категория</h2>
+    <p class="cl-management-lead">Создайте раздел для объявлений.</p>
+  </div>
+  <%= link_to 'К категориям', admin_categories_path, class: 'btn btn-outline-secondary' %>
 </div>
+<section class="cl-management-panel cl-management-form">
+  <%= render 'form', category: @category, submit_label: 'Создать категорию' %>
+</section>
