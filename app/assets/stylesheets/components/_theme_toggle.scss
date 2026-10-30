@@ -1,22 +1,20 @@
-// Only component responsible for the single sun/moon control.
+// Single Bootstrap Icon control, intentionally separate from account actions.
 .cl-theme-toggle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  inline-size: 2.5rem;
-  block-size: 2.5rem;
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  inline-size: 2.75rem;
+  block-size: 2.75rem;
   padding: 0;
-  border: 1px solid var(--cl-border);
-  border-radius: var(--cl-radius);
-  background-color: var(--cl-surface);
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
   color: var(--cl-text);
   cursor: pointer;
-  transition: background-color 140ms ease, border-color 140ms ease;
+  transition: background-color 140ms ease;
 }
 
-.cl-theme-toggle:hover {
-  background-color: var(--cl-hover);
-}
+.cl-theme-toggle:hover { background-color: var(--cl-hover); }
 
 .cl-theme-toggle:focus-visible {
   outline: 2px solid var(--cl-focus);
@@ -24,12 +22,10 @@
 }
 
 .cl-theme-toggle .bi {
-  font-size: 1.1rem;
+  font-size: 1.3rem;
   line-height: 1;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .cl-theme-toggle {
-    transition: none;
-  }
+  .cl-theme-toggle { transition: none; }
 }
