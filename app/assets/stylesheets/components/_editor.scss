@@ -1,0 +1,45 @@
+// Editor: one owner of bulletin create/edit styling for users and moderators.
+.cl-editor-heading { margin-bottom: 1.25rem; }
+.cl-editor-heading h2 { margin: 0; color: var(--cl-text); font-weight: 750; letter-spacing: -.035em; }
+.cl-editor-heading > p:last-child { max-width: 47rem; margin: .45rem 0 0; color: var(--cl-muted); }
+.cl-editor-grid { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(275px, 1fr); align-items: start; gap: 1.2rem; }
+.cl-editor-aside { display: grid; gap: 1.2rem; }
+.cl-editor-panel {
+  min-width: 0;
+  padding: 1.4rem;
+  border: 1px solid var(--cl-border);
+  border-radius: 1rem;
+  background: var(--cl-surface);
+  box-shadow: var(--cl-shadow);
+}
+.cl-editor-section-heading { display: flex; gap: .85rem; align-items: flex-start; margin-bottom: 1.3rem; }
+.cl-editor-step { display: inline-grid; place-items: center; width: 2.2rem; height: 2.2rem; flex: 0 0 auto; border-radius: .75rem; background: var(--cl-hover); color: var(--cl-accent); font-weight: 800; font-size: .84rem; }
+.cl-editor-section-heading h3 { margin: 0 0 .25rem; font-size: 1.07rem; font-weight: 750; }
+.cl-editor-section-heading p { margin: 0; color: var(--cl-muted); font-size: .84rem; }
+.cl-editor-form .form-label { color: var(--cl-text); font-weight: 650; }
+.cl-editor-form .form-control, .cl-editor-form .form-select { border-radius: .7rem; }
+.cl-editor-form .form-text { margin-top: .45rem; color: var(--cl-muted); }
+.cl-editor-upload {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: .7rem;
+  padding: 1.2rem;
+  border: 1px dashed var(--cl-border);
+  border-radius: .8rem;
+  background: var(--cl-surface-muted);
+}
+.cl-editor-upload > .bi { color: var(--cl-accent); font-size: 1.7rem; }
+.cl-editor-upload .form-label { margin: 0; }
+.cl-editor-upload > span { color: var(--cl-muted); font-size: .8rem; }
+.cl-editor-current-image { position: relative; margin-bottom: 1rem; overflow: hidden; border-radius: .75rem; background: var(--cl-surface-muted); }
+.cl-editor-current-image img { display: block; width: 100%; max-height: 13rem; object-fit: contain; }
+.cl-editor-current-image > span { display: block; padding: .5rem .7rem; color: var(--cl-muted); font-size: .8rem; }
+.cl-editor-tips { padding: 1.25rem; border: 1px solid var(--cl-border); border-radius: 1rem; background: var(--cl-surface-muted); }
+.cl-editor-tips h3 { display: flex; gap: .5rem; align-items: center; margin: 0 0 .8rem; font-size: .98rem; }
+.cl-editor-tips h3 .bi { color: var(--cl-accent); }
+.cl-editor-tips ul { padding-left: 1.1rem; margin-bottom: 0; color: var(--cl-muted); font-size: .85rem; line-height: 1.65; }
+.cl-editor-tips p { margin: .85rem 0 0; color: var(--cl-muted); font-size: .83rem; line-height: 1.6; }
+.cl-editor-actions { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: 1.2rem; }
+@media (max-width: 991.98px) { .cl-editor-grid { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 575.98px) { .cl-editor-panel { padding: 1rem; } .cl-editor-actions > * { flex: 1 0 auto; } }
