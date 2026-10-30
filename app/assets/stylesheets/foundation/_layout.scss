@@ -1,0 +1,110 @@
+// Shared application shell only. Page layout rules belong in pages/*.
+.cl-site-header {
+  background-color: var(--cl-surface);
+  border-bottom: 1px solid var(--cl-border);
+}
+
+.cl-navbar {
+  min-height: 4.25rem;
+  gap: 0.75rem;
+}
+
+.cl-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  color: var(--cl-text);
+  font-weight: 750;
+  letter-spacing: -0.035em;
+}
+
+.cl-brand:hover,
+.cl-brand:focus-visible {
+  color: var(--cl-text);
+}
+
+.cl-brand__mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 2.1rem;
+  block-size: 2.1rem;
+  border-radius: 0.65rem;
+  background-color: #315fd4;
+  color: #ffffff;
+  font-size: 1rem;
+}
+
+.cl-header-tools {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cl-menu-toggle {
+  inline-size: 2.5rem;
+  block-size: 2.5rem;
+  padding: 0.4rem;
+  border: 1px solid var(--cl-border);
+  border-radius: var(--cl-radius);
+}
+
+.cl-nav-link {
+  color: var(--cl-muted);
+  font-weight: 550;
+}
+
+.cl-nav-link:hover,
+.cl-nav-link:focus-visible {
+  color: var(--cl-text);
+}
+
+.cl-account-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cl-account-label {
+  color: var(--cl-muted);
+  font-size: 0.875rem;
+  max-inline-size: 14rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cl-site-footer {
+  border-top: 1px solid var(--cl-border);
+  background-color: var(--cl-surface);
+  color: var(--cl-muted);
+}
+
+.cl-site-footer__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding-block: 1.25rem;
+  font-size: 0.875rem;
+}
+
+.cl-site-footer__brand {
+  color: var(--cl-text);
+  font-weight: 700;
+}
+
+@media (max-width: 991.98px) {
+  .cl-navbar .navbar-collapse {
+    flex-basis: 100%;
+    padding-block: 0.5rem 0.75rem;
+  }
+
+  .cl-account-actions {
+    margin-top: 0.5rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--cl-border);
+  }
+}
