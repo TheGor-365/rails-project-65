@@ -33,6 +33,11 @@ class AuthenticatedWorkflowsTest < ApplicationSystemTestCase
       click_button 'Опубликовать'
     end
 
+    # Wait for the Turbo navigation and refreshed moderation row.
+    within('tr', text: bulletin.title) do
+      assert_text 'published'
+    end
+
     assert_equal 'published', bulletin.reload.state
 
     visit root_path
