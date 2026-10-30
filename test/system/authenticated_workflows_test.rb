@@ -44,6 +44,22 @@ class AuthenticatedWorkflowsTest < ApplicationSystemTestCase
     assert_link bulletin.title
   end
 
+  test 'admin navigation keeps theme and account actions separate' do
+    sign_in_with_github(users(:admin))
+    visit root_path
+
+    assert_link 'Админка'
+    assert_link 'Профиль'
+    assert_button 'Выйти'
+    assert_selector '.cl-theme-toggle', count: 1
+
+    assert page.evaluate_script(
+      "(() => { const theme = document.querySelector('.cl-theme-toggle').getBoundingClientRect(); " +
+      "const account = document.querySelector('.cl-account-actions').getBoundingClientRect(); " +
+      "return theme.left >= account.right - 2; })()"
+    )
+  end
+
   private
 
   def sign_in_with_github(user)

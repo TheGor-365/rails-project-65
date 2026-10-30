@@ -44,8 +44,8 @@ export default class extends Controller {
     const label = toDark ? "Включить тёмную тему" : "Включить светлую тему"
 
     document.documentElement.setAttribute("data-bs-theme", mode)
-    this.iconTarget.classList.toggle("bi-moon-stars", toDark)
-    this.iconTarget.classList.toggle("bi-sun", !toDark)
+    this.iconTarget.classList.toggle("bi-moon-fill", toDark)
+    this.iconTarget.classList.toggle("bi-sun-fill", !toDark)
     this.element.setAttribute("aria-label", label)
     this.element.setAttribute("title", label)
     this.element.setAttribute("aria-pressed", String(!toDark))

@@ -5,6 +5,9 @@
 }
 
 .cl-navbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
   min-height: 4.25rem;
   gap: 0.75rem;
 }
@@ -107,4 +110,12 @@
     padding-top: 0.75rem;
     border-top: 1px solid var(--cl-border);
   }
+}
+
+// Keep account controls on one flex row; wrapping occurs within their own area.
+.cl-navbar .navbar-collapse { min-width: 0; }
+.cl-account-actions > form { margin: 0; }
+.cl-account-actions .btn { white-space: nowrap; }
+@media (min-width: 992px) {
+  .cl-account-actions { justify-content: flex-end; }
 }
