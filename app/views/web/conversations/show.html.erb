@@ -1,0 +1,38 @@
+<nav class="cl-detail-breadcrumb" aria-label="Навигация">
+  <%= link_to conversations_path do %><i class="bi bi-arrow-left" aria-hidden="true"></i> Все переписки<% end %>
+</nav>
+
+<div class="cl-management-heading">
+  <div>
+    <p class="cl-eyebrow">Личный кабинет / Переписка</p>
+    <h2><%= @conversation.bulletin.title %></h2>
+    <p class="cl-management-lead">
+      <%= @conversation.buyer_id == current_user.id ? 'Автор' : 'Покупатель' %>:
+      <%= @conversation.other_participant(current_user).name.presence || 'Пользователь' %>
+    </p>
+  </div>
+  <% if @conversation.bulletin.published? || @conversation.bulletin.user_id == current_user.id %>
+    <%= link_to 'Объявление', bulletin_path(@conversation.bulletin), class: 'btn btn-outline-secondary' %>
+  <% end %>
+</div>
+
+<section class="cl-message-thread" aria-label="Сообщения в диалоге">
+  <% @messages.each do |message| %>
+    <article class="cl-message-bubble <%= 'cl-message-bubble--mine' if message.sender_id == current_user.id %>">
+      <div class="cl-message-bubble__meta">
+        <strong><%= message.sender_id == current_user.id ? 'Вы' : (message.sender.name.presence || 'Собеседник') %></strong>
+        <time datetime="<%= message.created_at.iso8601 %>"><%= message.created_at.strftime('%d.%m.%Y %H:%M') %></time>
+      </div>
+      <div class="cl-message-bubble__body"><%= message.body %></div>
+    </article>
+  <% end %>
+</section>
+<div class="mt-3 mb-4"><%= paginate @messages %></div>
+
+<section class="cl-management-panel cl-message-compose" aria-label="Ответить в диалоге">
+  <h3 class="h5 mb-3">Ответить</h3>
+  <%= form_with model: @message, url: conversation_messages_path(@conversation), local: true do |f| %>
+    <%= render 'web/conversations/message_fields', form: f, message: @message %>
+    <%= f.submit 'Отправить ответ', class: 'btn btn-primary' %>
+  <% end %>
+</section>

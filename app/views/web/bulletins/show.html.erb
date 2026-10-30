@@ -69,6 +69,11 @@
           <% end %>
         <% end %>
       <% end %>
+      <% if signed_in? && @bulletin.user_id != current_user.id && @bulletin.published? %>
+        <%= link_to new_bulletin_conversation_path(@bulletin), class: 'btn btn-primary cl-detail-panel__action' do %>
+          <i class='bi bi-chat-dots' aria-hidden='true'></i> Написать автору
+        <% end %>
+      <% end %>
       <%= link_to root_path(q: { category_id_eq: @bulletin.category_id }),
             class: 'btn btn-outline-primary cl-detail-panel__action' do %>
         Другие в этой категории <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
