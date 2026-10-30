@@ -94,11 +94,8 @@ class Bulletin < ApplicationRecord
     change.attachables.each do |attachable|
       next if attachable.is_a?(ActiveStorage::Blob) || attachable.is_a?(ActiveStorage::Attachment)
 
-      declared_type = if attachable.is_a?(Hash)
-                        attachable[:content_type] || attachable['content_type']
-                      elsif attachable.respond_to?(:content_type)
-                        attachable.content_type
-                      end
+      declared_type = attachable.content_type if attachable.respond_to?(:content_type)
+      declared_type ||= attachable[:content_type] || attachable['content_type'] if attachable.is_a?(Hash)
       actual_type = image_content_type_from_bytes(attachable, nil)
       unless actual_type && actual_type == declared_type && allowed_types.include?(actual_type)
         errors.add(:photos, 'должны соответствовать заявленному формату файла')
