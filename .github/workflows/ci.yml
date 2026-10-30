@@ -45,7 +45,7 @@ jobs:
           bundle install --jobs 4 --retry 3
 
       - name: Lint code for consistent style
-        run: bin/rubocop -f github -f simple
+        run: bin/rubocop -f github
 
   test:
     runs-on: ubuntu-latest
