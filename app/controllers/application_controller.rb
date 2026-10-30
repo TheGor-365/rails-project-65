@@ -4,7 +4,13 @@ class ApplicationController < ActionController::Base
   include Pundit::Authorization
 
   allow_browser versions: :modern
-  helper_method :current_user, :signed_in?
+  helper_method :current_user, :signed_in?, :unread_messages_count
+
+  def unread_messages_count
+    return 0 unless signed_in?
+
+    @unread_messages_count ||= Message.unread_for(current_user).count
+  end
 
   def current_user
     return @current_user if defined?(@current_user)

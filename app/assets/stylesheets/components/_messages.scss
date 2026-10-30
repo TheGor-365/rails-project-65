@@ -19,3 +19,9 @@
 .cl-message-input { resize: vertical; min-height: 7rem; }
 @media (max-width: 575.98px) { .cl-conversation-item { gap: .7rem; padding: .85rem; } .cl-conversation-item__side time { display: none; } .cl-message-bubble { max-width: 95%; } }
 @media (prefers-reduced-motion: reduce) { .cl-conversation-item { transition: none; } }
+
+// Unread state shares the existing component palette; one UI owner.
+.cl-messages-nav { display: inline-flex; align-items: center; gap: .35rem; }
+.cl-message-unread-badge { display: inline-flex; align-items: center; justify-content: center; min-width: 1.35rem; height: 1.35rem; padding: 0 .33rem; border-radius: 100vmax; background: var(--cl-accent); color: #fff; font-size: .71rem; font-weight: 750; line-height: 1; font-variant-numeric: tabular-nums; }
+.cl-conversation-item--unread { box-shadow: inset 3px 0 0 var(--cl-accent); }
+.cl-conversation-item--unread .cl-conversation-item__content > strong { color: var(--cl-accent); }

@@ -11,6 +11,9 @@ module Web
                                    .includes(:bulletin, :buyer, :seller, :last_message)
                                    .order(updated_at: :desc, id: :desc)
                                    .page(params[:page]).per(20)
+      ids = @conversations.map(&:id)
+      @unread_counts = ids.any? ? Message.unread_for(current_user).where(conversation_id: ids)
+                                  .group(:conversation_id).count : {}
     end
 
     def show
@@ -19,6 +22,7 @@ module Web
                                   .find(params[:id])
       @messages = @conversation.messages.includes(:sender).order(:created_at, :id)
                                .page(params[:page]).per(50)
+      @conversation.mark_read_for!(current_user, upto_message_id: @messages.last&.id)
       @message = Message.new
     end
 

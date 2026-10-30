@@ -23,6 +23,17 @@ class Conversation < ApplicationRecord
     buyer_id == user.id ? seller : buyer
   end
 
+  # A successful view only acknowledges messages actually present in the rendered page.
+  def mark_read_for!(user, upto_message_id:)
+    return unless participant?(user) && upto_message_id
+
+    column = buyer_id == user.id ? :buyer_last_read_message_id : :seller_last_read_message_id
+    previous = public_send(column)
+    return if previous && previous >= upto_message_id
+
+    update_columns(column => upto_message_id)
+  end
+
   private
 
   def different_participants
