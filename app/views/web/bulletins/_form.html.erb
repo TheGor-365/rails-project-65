@@ -60,7 +60,7 @@
           <div><h3 id="cl-editor-image-heading">Фотография</h3>
             <p>Качественное изображение делает объявление заметнее.</p></div>
         </div>
-        <% if bulletin.image.attached? %>
+        <% if editing && bulletin.image.attached? && bulletin.image.blob.persisted? %>
           <div class="cl-editor-current-image">
             <%= image_tag bulletin.image, alt: "Текущее изображение: #{bulletin.title}", loading: 'lazy' %>
             <span>Текущее изображение</span>
