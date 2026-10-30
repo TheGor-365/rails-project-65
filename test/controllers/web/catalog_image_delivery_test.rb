@@ -23,6 +23,26 @@ module Web
       assert_select '.cl-listing-card__media img[src*="/rails/active_storage/representations/"]', count: 0
     end
 
+    test 'catalog prioritizes one image and lazily loads later covers' do
+      newer = Bulletin.create!(
+        title: 'Второй смартфон', description: 'Тестовая карточка',
+        user: users(:one), category: categories(:one), state: 'published'
+      )
+
+      [ bulletins(:first), newer ].each do |bulletin|
+        bulletin.image.attach(io: StringIO.new(PNG), filename: 'cover.png', content_type: 'image/png')
+      end
+
+      get root_path
+
+      assert_response :success
+      assert_select '.cl-listing-card__media img', count: 2
+      assert_select '.cl-listing-card__image[loading="eager"][fetchpriority="high"]', count: 1
+      assert_select '.cl-listing-card__image[loading="lazy"]', count: 1
+      assert_select '.cl-listing-card__image[src*="/rails/active_storage/blobs/"]', count: 2
+      assert_select '.cl-listing-card__image[src*="/rails/active_storage/representations/"]', count: 0
+    end
+
     test 'catalog keeps placeholder for bulletin without an attached image' do
       get root_path
 
