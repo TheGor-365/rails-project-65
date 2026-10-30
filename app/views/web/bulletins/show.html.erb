@@ -25,7 +25,7 @@
                   aria: { label: "Фотография #{index + 1}", pressed: index.zero? },
                   data: { action: 'gallery#select', gallery_target: 'thumb',
                           gallery_src: url_for(photo), gallery_alt: "#{@bulletin.title}, фото #{index + 1}" } do %>
-              <%= image_tag photo.variant(resize_to_fill: [ 160, 120 ]), alt: '', loading: 'lazy' %>
+              <%= image_tag photo, alt: '', loading: 'lazy' %>
             <% end %>
           <% end %>
         </nav>
