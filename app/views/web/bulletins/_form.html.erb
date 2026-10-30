@@ -73,10 +73,11 @@
                 accept: 'image/jpeg,image/png,image/webp', required: !editing %>
           <span>JPEG, PNG или WebP · до 5 МБ</span>
         </div>
-        <% if editing && bulletin.photos.attached? %>
+        <% existing_photos = editing ? bulletin.photos.attachments.select { |photo| photo.persisted? && photo.blob.persisted? } : [] %>
+        <% if existing_photos.any? %>
           <div class="cl-editor-existing-photos" aria-label="Уже добавленные фотографии">
-            <% bulletin.photos.each do |photo| %>
-              <%= image_tag photo.variant(resize_to_fill: [ 160, 120 ]), alt: 'Дополнительная фотография', loading: 'lazy' %>
+            <% existing_photos.each do |photo| %>
+              <%= image_tag photo, alt: 'Дополнительная фотография', loading: 'lazy' %>
             <% end %>
           </div>
         <% end %>
