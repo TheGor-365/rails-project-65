@@ -3,7 +3,7 @@
 require 'fileutils'
 
 namespace :demo do
-  desc 'Preview or selectively replace Lorem ipsum in known local demo bulletins (APPLY=1 to update)'
+  desc 'Preview or selectively replace Lorem ipsum in local demo bulletins (APPLY=1 to update)'
   task descriptions: :environment do
     abort 'Demo descriptions may be updated only in development.' unless Rails.env.development?
 
@@ -18,13 +18,28 @@ namespace :demo do
       'Куртка зимняя' => 'Зимняя куртка для холодной погоды. Перед покупкой уточните размер, материал, состояние утеплителя и особенности посадки. При необходимости попросите дополнительные фотографии.'
     }.freeze
 
-    candidates = Bulletin.where(title: descriptions.keys).order(:id).select do |bulletin|
+    candidates = Bulletin.includes(:category).order(:id).select do |bulletin|
       bulletin.description.to_s.match?(/\A\s*lorem ipsum\b/i)
+    end
+
+    replacement = lambda do |bulletin|
+      descriptions.fetch(bulletin.title) do
+        case bulletin.category&.name
+        when 'Услуги'
+          "Предложение услуги «#{bulletin.title}». Состав работ, условия, стоимость и сроки уточняйте у автора до заказа."
+        when 'Одежда'
+          "Объявление «#{bulletin.title}». Размер, материал, состояние вещи и условия передачи уточняйте у автора."
+        when 'Электроника'
+          "Объявление «#{bulletin.title}». Характеристики, состояние устройства, комплектацию и условия проверки уточняйте у автора."
+        else
+          "Объявление «#{bulletin.title}». Подробную информацию, состояние и условия передачи уточняйте у автора."
+        end
+      end
     end
 
     puts "Найдено демонстрационных описаний для замены: #{candidates.size}"
     candidates.each do |bulletin|
-      puts "  ID #{bulletin.id}: #{bulletin.title} -> #{descriptions.fetch(bulletin.title)}"
+      puts "  ID #{bulletin.id}: #{bulletin.title} -> #{replacement.call(bulletin)}"
     end
 
     if ENV['APPLY'] != '1'
@@ -48,7 +63,7 @@ namespace :demo do
     File.write(backup_path, JSON.pretty_generate(backup))
 
     Bulletin.transaction do
-      candidates.each { |bulletin| bulletin.update!(description: descriptions.fetch(bulletin.title)) }
+      candidates.each { |bulletin| bulletin.update!(description: replacement.call(bulletin)) }
     end
 
     puts "Обновлено описаний: #{candidates.size}. Резервная копия исходных текстов: #{backup_path}"
