@@ -22,21 +22,44 @@
             options_from_collection_for_select(@categories, :id, :name, @q.category_id_eq),
             { include_blank: 'Все категории' },
             class: 'form-select', aria: { label: 'Категория' } %>
+      <%= select_tag :sort,
+            options_for_select([ [ 'Сначала новые', 'newest' ], [ 'Сначала старые', 'oldest' ],
+                                 [ 'Название А–Я', 'title_asc' ], [ 'Название Я–А', 'title_desc' ] ], @sort),
+            class: 'form-select cl-filter-sort', aria: { label: 'Сортировка объявлений' } %>
       <%= f.submit 'Искать', class: 'btn btn-primary' %>
       <%= link_to 'Сброс', root_path, class: 'btn btn-outline-secondary' %>
     </div>
   <% end %>
   <% selected_category = params.dig(:q, :category_id_eq).to_s %>
+  <% active_search = params.dig(:q, :title_cont).to_s.strip %>
   <% title_query = params.dig(:q, :title_cont).presence %>
   <nav class="cl-category-strip" aria-label="Быстрый выбор категории">
-    <%= link_to 'Все', root_path(q: { title_cont: title_query }.compact),
+    <%= link_to 'Все', root_path(q: { title_cont: title_query }.compact, sort: @sort),
           class: "cl-category-chip #{'is-active' if selected_category.blank?}" %>
     <% @categories.each do |category| %>
       <%= link_to category.name,
-            root_path(q: { category_id_eq: category.id, title_cont: title_query }.compact),
+            root_path(q: { category_id_eq: category.id, title_cont: title_query }.compact, sort: @sort),
             class: "cl-category-chip #{'is-active' if selected_category == category.id.to_s}" %>
     <% end %>
   </nav>
+  <% if active_search.present? || selected_category.present? || @sort != 'newest' %>
+    <div class="cl-active-filters" aria-label="Применённые фильтры">
+      <span>Применено:</span>
+      <% if active_search.present? %>
+        <span class="cl-active-filter"><i class="bi bi-search" aria-hidden="true"></i> <%= active_search %></span>
+      <% end %>
+      <% if selected_category.present? %>
+        <% category = @categories.find { |item| item.id.to_s == selected_category } %>
+        <% if category %>
+          <span class="cl-active-filter"><i class="bi bi-tag" aria-hidden="true"></i> <%= category.name %></span>
+        <% end %>
+      <% end %>
+      <% if @sort != 'newest' %>
+        <span class="cl-active-filter">Сортировка: <%= { 'oldest' => 'Сначала старые', 'title_asc' => 'А–Я', 'title_desc' => 'Я–А' }.fetch(@sort) %></span>
+      <% end %>
+      <%= link_to 'Очистить всё', root_path, class: 'cl-active-filters__clear' %>
+    </div>
+  <% end %>
 </section>
 
 <% if @bulletins.any? %>

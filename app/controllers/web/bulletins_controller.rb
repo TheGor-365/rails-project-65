@@ -8,7 +8,14 @@ module Web
     def index
       @q = Bulletin.published.ransack(params[:q])
       @categories = Category.order(:name)
-      @bulletins = @q.result(distinct: true).page(params[:page]).per(12)
+      @sort = %w[newest oldest title_asc title_desc].include?(params[:sort]) ? params[:sort] : 'newest'
+      ordering = {
+        'newest' => { created_at: :desc, id: :desc },
+        'oldest' => { created_at: :asc, id: :asc },
+        'title_asc' => { title: :asc, id: :desc },
+        'title_desc' => { title: :desc, id: :desc }
+      }.fetch(@sort)
+      @bulletins = @q.result(distinct: true).reorder(ordering).page(params[:page]).per(12)
     end
 
     def show
