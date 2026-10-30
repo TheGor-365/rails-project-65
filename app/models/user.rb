@@ -2,6 +2,7 @@
 
 class User < ApplicationRecord
   has_many :bulletins, dependent: :nullify
+  has_many :favorites, dependent: :destroy
   has_many :oauth_identities, dependent: :destroy
 
   def self.ransackable_attributes(_auth = nil)

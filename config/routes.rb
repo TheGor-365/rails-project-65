@@ -15,7 +15,9 @@ Rails.application.routes.draw do
         patch :to_moderate
         patch :archive
       end
+      resource :favorite, only: %i[create destroy], controller: :favorites
     end
+    get 'favorites', to: 'favorites#index', as: :favorites
 
     resource :profile, only: :show, controller: :profiles, path: 'profile'
 

@@ -4,9 +4,14 @@
     <h2>Мои объявления</h2>
     <p class="cl-management-lead">Следите за публикациями, отправляйте черновики на проверку и управляйте архивом.</p>
   </div>
+  <div class="d-flex flex-wrap gap-2">
+    <%= link_to favorites_path, class: 'btn btn-outline-secondary cl-management-create' do %>
+      <i class="bi bi-heart" aria-hidden="true"></i> Избранное
+    <% end %>
   <%= link_to new_bulletin_path, class: 'btn btn-primary cl-management-create' do %>
     <i class="bi bi-plus-lg" aria-hidden="true"></i> Создать объявление
   <% end %>
+  </div>
 </div>
 
 <div class="cl-metrics" aria-label="Сводка моих объявлений">
