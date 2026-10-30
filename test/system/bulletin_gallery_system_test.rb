@@ -13,6 +13,9 @@ class BulletinGallerySystemTest < ApplicationSystemTestCase
     bulletin = bulletins(:first)
     bulletin.image.attach(io: StringIO.new(PNG), filename: 'cover.png', content_type: 'image/png')
     bulletin.photos.attach(io: StringIO.new(PNG), filename: 'other.png', content_type: 'image/png')
+    bulletin.save!
+    bulletin.reload
+    assert_equal 1, bulletin.photos.count
 
     visit bulletin_path(bulletin)
 
