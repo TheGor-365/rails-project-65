@@ -1,11 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
   <head>
     <title><%= content_for(:title) || "Rails Project 65" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+
+    <%# Install the selected Bootstrap color mode before styles are painted. %>
+    <%= javascript_tag nonce: true do %>
+      (function () {
+        var mode;
+        try {
+          mode = window.localStorage.getItem('classifieds:theme');
+        } catch (_) {
+          mode = null;
+        }
+        if (mode !== 'light' && mode !== 'dark') {
+          mode = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.setAttribute('data-bs-theme', mode);
+      }());
+    <% end %>
 
     <%= yield :head %>
 
@@ -21,7 +37,7 @@
     <header>
       <div class="container mb-2">
         <div class="d-flex flex-wrap align-items-center py-2 border-bottom">
-          <div class="navbar navbar-expand-md navbar-light me-auto">
+          <div class="navbar navbar-expand-md me-auto">
             <%= link_to "Доска объявлений", root_path, class: "navbar-brand me-md-4" %>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,13 +47,14 @@
             <div class="collapse navbar-collapse" id="navbarToggler">
               <ul class="nav nav-pills flex-grow-1 navbar-nav me-auto">
                 <li class="nav-item me-2">
-                  <%= link_to "Главная", root_path, class: "nav-link text-dark" %>
+                  <%= link_to "Главная", root_path, class: "nav-link text-body" %>
                 </li>
               </ul>
             </div>
           </div>
 
           <ul class="nav nav-pills align-items-center">
+            <li class="nav-item me-2"><%= render 'shared/theme_toggle' %></li>
             <% if defined?(signed_in?) && signed_in? %>
               <li class="nav-item me-2">
                 <span class="navbar-text">

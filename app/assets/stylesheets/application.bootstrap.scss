@@ -1,2 +1,9 @@
+// Bootstrap remains the only framework; app-owned styles use cl- prefixes.
+$primary: #315fd4;
+
 @import 'bootstrap/scss/bootstrap';
 @import 'bootstrap-icons/font/bootstrap-icons';
+
+@import 'foundation/tokens';
+@import 'foundation/base';
+@import 'components/theme_toggle';
