@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_31_011000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_31_051000) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -59,6 +59,20 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_31_011000) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "conversations", force: :cascade do |t|
+    t.integer "bulletin_id", null: false
+    t.integer "buyer_id", null: false
+    t.integer "seller_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["bulletin_id"], name: "index_conversations_on_bulletin_id"
+    t.index ["bulletin_id", "buyer_id"], name: "index_conversations_on_bulletin_id_and_buyer_id", unique: true
+    t.index ["buyer_id"], name: "index_conversations_on_buyer_id"
+    t.index ["buyer_id", "updated_at"], name: "index_conversations_on_buyer_id_and_updated_at"
+    t.index ["seller_id"], name: "index_conversations_on_seller_id"
+    t.index ["seller_id", "updated_at"], name: "index_conversations_on_seller_id_and_updated_at"
+  end
+
   create_table "favorites", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "bulletin_id", null: false
@@ -66,6 +80,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_31_011000) do
     t.datetime "updated_at", null: false
     t.index ["bulletin_id"], name: "index_favorites_on_bulletin_id"
     t.index ["user_id", "bulletin_id"], name: "index_favorites_on_user_id_and_bulletin_id", unique: true
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.integer "conversation_id", null: false
+    t.integer "sender_id", null: false
+    t.text "body", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["conversation_id"], name: "index_messages_on_conversation_id"
+    t.index ["conversation_id", "created_at", "id"], name: "index_messages_on_conversation_id_and_created_at_and_id"
+    t.index ["sender_id"], name: "index_messages_on_sender_id"
   end
 
   create_table "oauth_identities", force: :cascade do |t|
@@ -91,7 +116,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_31_011000) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "bulletins", "categories"
   add_foreign_key "bulletins", "users"
+  add_foreign_key "conversations", "bulletins"
+  add_foreign_key "conversations", "users", column: "buyer_id"
+  add_foreign_key "conversations", "users", column: "seller_id"
   add_foreign_key "favorites", "bulletins"
   add_foreign_key "favorites", "users"
+  add_foreign_key "messages", "conversations"
+  add_foreign_key "messages", "users", column: "sender_id"
   add_foreign_key "oauth_identities", "users"
 end

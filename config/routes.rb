@@ -16,8 +16,12 @@ Rails.application.routes.draw do
         patch :archive
       end
       resource :favorite, only: %i[create destroy], controller: :favorites
+      resources :conversations, only: %i[new create]
     end
     get 'favorites', to: 'favorites#index', as: :favorites
+    resources :conversations, only: %i[index show] do
+      resources :messages, only: :create
+    end
 
     resource :profile, only: :show, controller: :profiles, path: 'profile'
 
