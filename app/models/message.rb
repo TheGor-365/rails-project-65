@@ -12,11 +12,11 @@ class Message < ApplicationRecord
     joins(:conversation)
       .where.not(sender_id: user.id)
       .where(<<~SQL.squish, id: user.id)
-        (conversations.buyer_id = :id AND
+        ((conversations.buyer_id = :id AND
           messages.id > COALESCE(conversations.buyer_last_read_message_id, 0))
         OR
         (conversations.seller_id = :id AND
-          messages.id > COALESCE(conversations.seller_last_read_message_id, 0))
+          messages.id > COALESCE(conversations.seller_last_read_message_id, 0)))
       SQL
   }
 
