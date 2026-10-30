@@ -10,6 +10,21 @@ module Web
       'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/54cAAAAASUVORK5CYII='
     )
 
+    test 'detail prioritizes cover and lazily decodes original gallery thumbnails' do
+      bulletin = bulletins(:first)
+      bulletin.image.attach(io: StringIO.new(PNG), filename: 'cover.png', content_type: 'image/png')
+      bulletin.photos.attach(io: StringIO.new(PNG), filename: 'other.png', content_type: 'image/png')
+      bulletin.save!
+
+      get bulletin_path(bulletin)
+
+      assert_response :success
+      assert_select '.cl-detail-gallery__image[loading="eager"][fetchpriority="high"]', count: 1
+      assert_select '.cl-gallery-thumb img[loading="lazy"][decoding="async"]', count: 2
+      assert_select '.cl-gallery-thumb img[src*="/rails/active_storage/blobs/"]', count: 2
+      assert_select '.cl-gallery-thumb img[src*="/rails/active_storage/representations/"]', count: 0
+    end
+
     test 'owner can add photos without replacing an existing cover' do
       bulletin = bulletins(:first)
       bulletin.image.attach(io: StringIO.new(PNG), filename: 'cover.png', content_type: 'image/png')
