@@ -24,7 +24,7 @@ ASDF_RUBY_VERSION=3.4.12 bin/rails demo:descriptions
 APPLY=1 ASDF_RUBY_VERSION=3.4.12 bin/rails demo:descriptions
 ```
 
-Перед обновлением исходные описания сохраняются в CSV внутри
+Перед обновлением исходные описания сохраняются в JSON внутри
 `tmp/db-backups/` (Git игнорирует `tmp/`).
 Повторный запуск безопасен для уже обновлённых записей: их текст больше не
 начинается с `Lorem ipsum`. В production эта задача заблокирована.
