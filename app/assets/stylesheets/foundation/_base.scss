@@ -1,0 +1,10 @@
+// Global document typography and focus behavior; page-specific rules live elsewhere.
+body {
+  background-color: var(--cl-canvas);
+  color: var(--cl-text);
+}
+
+:focus-visible {
+  outline: 2px solid var(--cl-focus);
+  outline-offset: 3px;
+}
