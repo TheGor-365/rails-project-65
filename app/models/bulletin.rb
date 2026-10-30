@@ -95,7 +95,7 @@ class Bulletin < ApplicationRecord
       next if attachable.is_a?(ActiveStorage::Blob) || attachable.is_a?(ActiveStorage::Attachment)
 
       io = attachable.respond_to?(:tempfile) ? attachable.tempfile : nil
-      actual_type = Marcel::Magic.by_magic(io)&.type if io
+      actual_type = io ? Marcel::Magic.by_magic(io)&.type : nil
       io&.rewind
       unless actual_type && actual_type == attachable.content_type && allowed_types.include?(actual_type)
         errors.add(:photos, 'должны соответствовать заявленному формату файла')
