@@ -4,11 +4,13 @@ class Bulletin < ApplicationRecord
   belongs_to :user
   belongs_to :category
   has_one_attached :image
+  has_many_attached :photos
   has_many :favorites, dependent: :destroy
 
   validates :title, :description, :user, :category, presence: true
 
   validate :validate_image_upload
+  validate :validate_photo_uploads
 
   scope :published, -> { where(state: 'published').order(created_at: :desc) }
   scope :recent,    -> { order(created_at: :desc) }
@@ -71,6 +73,34 @@ class Bulletin < ApplicationRecord
     return if actual_type == blob.content_type
 
     errors.add(:image, 'содержимое не соответствует формату файла')
+  end
+
+  def validate_photo_uploads
+    return unless photos.attached?
+
+    allowed_types = %w[image/jpeg image/png image/webp]
+    errors.add(:photos, 'может содержать не более 4 дополнительных изображений') if photos.attachments.size > 4
+
+    photos.each do |photo|
+      blob = photo.blob
+      unless allowed_types.include?(blob.content_type) && blob.byte_size.present? && blob.byte_size <= 5.megabytes
+        errors.add(:photos, 'должны быть JPEG, PNG или WebP до 5 МБ')
+      end
+    end
+
+    change = attachment_changes['photos']
+    return unless change
+
+    change.attachables.each do |attachable|
+      next if attachable.is_a?(ActiveStorage::Blob) || attachable.is_a?(ActiveStorage::Attachment)
+
+      declared_type = attachable.content_type if attachable.respond_to?(:content_type)
+      declared_type ||= attachable[:content_type] || attachable['content_type'] if attachable.is_a?(Hash)
+      actual_type = image_content_type_from_bytes(attachable, nil)
+      unless actual_type && actual_type == declared_type && allowed_types.include?(actual_type)
+        errors.add(:photos, 'должны соответствовать заявленному формату файла')
+      end
+    end
   end
 
   def image_content_type_from_bytes(attachable, blob)

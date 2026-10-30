@@ -3,6 +3,7 @@
 module Web
   module Admin
     class BulletinsController < BaseController
+      include BulletinPhotoUploads
       before_action :set_bulletin, only: %i[publish reject archive edit update show destroy]
 
       def index
@@ -16,6 +17,7 @@ module Web
       def edit; end
 
       def update
+        assign_uploaded_photos(@bulletin)
         if @bulletin.update(bulletin_params)
           redirect_to admin_bulletins_path, notice: t('flash.admin.bulletins.updated')
         else

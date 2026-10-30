@@ -6,11 +6,29 @@
 
 <div class="cl-detail-grid">
   <article class="cl-detail-primary">
-    <div class="cl-detail-gallery">
-      <% if @bulletin.image.attached? %>
-        <%= image_tag @bulletin.image, class: 'cl-detail-gallery__image', alt: @bulletin.title %>
-      <% else %>
-        <div class="cl-detail-gallery__empty"><i class="bi bi-image" aria-hidden="true"></i>Фотография не добавлена</div>
+    <% gallery_images = [] %>
+    <% gallery_images << @bulletin.image if @bulletin.image.attached? %>
+    <% gallery_images.concat(@bulletin.photos.to_a) %>
+    <div class="cl-detail-gallery-set" data-controller="gallery">
+      <div class="cl-detail-gallery">
+        <% if gallery_images.any? %>
+          <%= image_tag gallery_images.first, class: 'cl-detail-gallery__image',
+                alt: @bulletin.title, data: { gallery_target: 'main' } %>
+        <% else %>
+          <div class="cl-detail-gallery__empty"><i class="bi bi-image" aria-hidden="true"></i>Фотография не добавлена</div>
+        <% end %>
+      </div>
+      <% if gallery_images.size > 1 %>
+        <nav class="cl-detail-thumbnails" aria-label="Фотографии объявления">
+          <% gallery_images.each_with_index do |photo, index| %>
+            <%= button_tag type: 'button', class: 'cl-gallery-thumb',
+                  aria: { label: "Фотография #{index + 1}", pressed: index.zero? },
+                  data: { action: 'gallery#select', gallery_target: 'thumb',
+                          gallery_src: url_for(photo), gallery_alt: "#{@bulletin.title}, фото #{index + 1}" } do %>
+              <%= image_tag photo, alt: '', loading: 'lazy' %>
+            <% end %>
+          <% end %>
+        </nav>
       <% end %>
     </div>
     <div class="cl-detail-description">
