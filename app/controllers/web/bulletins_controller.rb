@@ -16,7 +16,8 @@ module Web
         'title_asc' => { title: :asc, id: :desc },
         'title_desc' => { title: :desc, id: :desc }
       }.fetch(@sort)
-      @bulletins = @q.result(distinct: true).reorder(ordering).page(params[:page]).per(12)
+      @bulletins = @q.result(distinct: true).reorder(ordering)
+                     .includes(:category).with_attached_image.page(params[:page]).per(12)
     end
 
     def show
