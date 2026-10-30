@@ -57,3 +57,9 @@
   .cl-filter-controls { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
   .cl-filter-search, .cl-filter-controls > .form-select { grid-column: 1 / -1; }
 }
+
+.cl-filter-sort { width: min(100%, 170px); }
+.cl-active-filters { display: flex; align-items: center; flex-wrap: wrap; gap: .5rem; padding: .7rem 0 0; color: var(--cl-muted); font-size: .82rem; }
+.cl-active-filter { display: inline-flex; align-items: center; gap: .35rem; padding: .3rem .65rem; border: 1px solid var(--cl-border); border-radius: 999px; background: var(--cl-surface-muted); color: var(--cl-text); overflow-wrap: anywhere; }
+.cl-active-filters__clear { color: var(--cl-accent); font-weight: 650; text-decoration: none; }
+@media (max-width: 991.98px) { .cl-filter-sort { width: 100%; } }
