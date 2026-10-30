@@ -39,7 +39,7 @@
           <%= image_tag b.image, class: "card-img-top", alt: b.title %>
         <% end %>
         <div class="card-body">
-          <h5 class="card-title mb-1"><%= b.title %></h5>
+          <h5 class="card-title mb-1"><%= link_to b.title, bulletin_path(b), class: 'text-decoration-none' %></h5>
           <div class="text-muted small mb-2">
             Категория: <%= b.category.name %>
           </div>
