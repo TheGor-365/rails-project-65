@@ -5,6 +5,10 @@ Rails.application.routes.draw do
   get 'service-worker' => 'rails/pwa#service_worker', as: :pwa_service_worker
   get 'manifest' => 'rails/pwa#manifest', as: :pwa_manifest
 
+  # Direct uploads are unused; keep Active Storage file-serving routes.
+  post '/rails/active_storage/direct_uploads',
+       to: 'web/direct_uploads#create'
+
   scope module: :web do
     resources :bulletins, only: %i[index show new create edit update] do
       member do
