@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2026_10_29_200124) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_31_011000) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -59,6 +59,15 @@ ActiveRecord::Schema[7.2].define(version: 2026_10_29_200124) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "favorites", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "bulletin_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["bulletin_id"], name: "index_favorites_on_bulletin_id"
+    t.index ["user_id", "bulletin_id"], name: "index_favorites_on_user_id_and_bulletin_id", unique: true
+  end
+
   create_table "oauth_identities", force: :cascade do |t|
     t.integer "user_id", null: false
     t.string "provider", null: false
@@ -82,5 +91,7 @@ ActiveRecord::Schema[7.2].define(version: 2026_10_29_200124) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "bulletins", "categories"
   add_foreign_key "bulletins", "users"
+  add_foreign_key "favorites", "bulletins"
+  add_foreign_key "favorites", "users"
   add_foreign_key "oauth_identities", "users"
 end
