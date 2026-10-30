@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Web
   class FavoritesController < ApplicationController
     before_action :require_sign_in
