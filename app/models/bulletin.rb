@@ -4,6 +4,7 @@ class Bulletin < ApplicationRecord
   belongs_to :user
   belongs_to :category
   has_one_attached :image
+  has_many :favorites, dependent: :destroy
 
   validates :title, :description, :user, :category, presence: true
 
