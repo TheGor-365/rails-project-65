@@ -34,7 +34,13 @@
         <div class="cl-account-actions ms-lg-auto">
           <% if signed_in? %>
             <span class="cl-account-label"><%= current_user.name.presence || current_user.email %></span>
-            <%= link_to 'Сообщения', conversations_path, class: 'btn btn-outline-secondary btn-sm' %>
+            <%= link_to conversations_path, class: 'btn btn-outline-secondary btn-sm cl-messages-nav' do %>
+              <i class="bi bi-chat-dots" aria-hidden="true"></i>
+              Сообщения
+              <% if unread_messages_count.positive? %>
+                <span class="cl-message-unread-badge" aria-label="Непрочитанных сообщений: <%= unread_messages_count %>"><%= unread_messages_count %></span>
+              <% end %>
+            <% end %>
             <%= link_to 'Профиль', profile_path, class: 'btn btn-outline-secondary btn-sm' %>
             <%= button_to 'Выйти', signout_path, method: :delete, class: 'btn btn-outline-secondary btn-sm' %>
           <% else %>

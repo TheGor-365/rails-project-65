@@ -11,7 +11,9 @@
   <section class="cl-conversation-list" aria-label="Список переписок">
     <% @conversations.each do |conversation| %>
       <% participant = conversation.other_participant(current_user) %>
-      <%= link_to conversation_path(conversation), class: 'cl-conversation-item' do %>
+      <% unread = @unread_counts.fetch(conversation.id, 0) %>
+      <%= link_to conversation_path(conversation),
+            class: class_names('cl-conversation-item', 'cl-conversation-item--unread': unread.positive?) do %>
         <span class="cl-conversation-item__icon"><i class="bi bi-chat-dots" aria-hidden="true"></i></span>
         <span class="cl-conversation-item__content">
           <strong><%= conversation.bulletin.title %></strong>
@@ -25,6 +27,9 @@
         </span>
         <span class="cl-conversation-item__side">
           <time datetime="<%= conversation.updated_at.iso8601 %>"><%= conversation.updated_at.strftime('%d.%m.%Y %H:%M') %></time>
+          <% if unread.positive? %>
+            <span class="cl-message-unread-badge" aria-label="Непрочитанных сообщений: <%= unread %>"><%= unread %></span>
+          <% end %>
           <i class="bi bi-chevron-right" aria-hidden="true"></i>
         </span>
       <% end %>
