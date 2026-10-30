@@ -1,13 +1,46 @@
-<h2 class="mb-3"><%= @bulletin.title %></h2>
+<nav class="cl-detail-breadcrumb" aria-label="Навигация">
+  <%= link_to root_path do %><i class="bi bi-arrow-left" aria-hidden="true"></i> Все объявления<% end %>
+  <span aria-hidden="true">/</span>
+  <span><%= @bulletin.category.name %></span>
+</nav>
 
-<p class="text-muted mb-2">
-  Категория: <%= @bulletin.category.name %> · Автор: <%= @bulletin.user.name %>
-</p>
+<div class="cl-detail-grid">
+  <article class="cl-detail-primary">
+    <div class="cl-detail-gallery">
+      <% if @bulletin.image.attached? %>
+        <%= image_tag @bulletin.image, class: 'cl-detail-gallery__image', alt: @bulletin.title %>
+      <% else %>
+        <div class="cl-detail-gallery__empty"><i class="bi bi-image" aria-hidden="true"></i>Фотография не добавлена</div>
+      <% end %>
+    </div>
+    <div class="cl-detail-description">
+      <p class="cl-eyebrow">Объявление</p>
+      <h2><%= @bulletin.title %></h2>
+      <div class="cl-detail-description__text"><%= simple_format(@bulletin.description) %></div>
+    </div>
+  </article>
 
-<% if @bulletin.image.attached? %>
-  <div class="mb-3">
-    <%= image_tag @bulletin.image, class: "img-fluid rounded" %>
-  </div>
-<% end %>
-
-<p><%= simple_format(@bulletin.description) %></p>
+  <aside class="cl-detail-sidebar" aria-label="Информация об объявлении">
+    <div class="cl-detail-panel">
+      <span class="cl-detail-panel__label">Категория</span>
+      <strong><i class="bi bi-tag" aria-hidden="true"></i> <%= @bulletin.category.name %></strong>
+      <hr>
+      <div class="cl-detail-panel__item">
+        <i class="bi bi-person-circle" aria-hidden="true"></i>
+        <div><span class="cl-detail-panel__label">Автор</span>
+          <strong><%= @bulletin.user.name.presence || @bulletin.user.email %></strong>
+        </div>
+      </div>
+      <div class="cl-detail-panel__item">
+        <i class="bi bi-calendar3" aria-hidden="true"></i>
+        <div><span class="cl-detail-panel__label">Дата добавления</span>
+          <strong><%= @bulletin.created_at.strftime('%d.%m.%Y') %></strong>
+        </div>
+      </div>
+      <%= link_to root_path(q: { category_id_eq: @bulletin.category_id }),
+            class: 'btn btn-outline-primary cl-detail-panel__action' do %>
+        Другие в этой категории <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
+      <% end %>
+    </div>
+  </aside>
+</div>
