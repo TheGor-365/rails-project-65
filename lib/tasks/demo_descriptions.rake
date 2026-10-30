@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'csv'
 require 'fileutils'
 
 namespace :demo do
@@ -40,12 +39,13 @@ namespace :demo do
     end
 
     backup_path = Rails.root.join(
-      'tmp', 'db-backups', "demo_descriptions_#{Time.current.utc.strftime('%Y%m%d_%H%M%S_%6N')}.csv"
+      'tmp', 'db-backups', "demo_descriptions_#{Time.current.utc.strftime('%Y%m%d_%H%M%S_%6N')}.json"
     )
     FileUtils.mkdir_p(backup_path.dirname)
-    CSV.open(backup_path, 'wb', write_headers: true, headers: %w[id title old_description]) do |csv|
-      candidates.each { |bulletin| csv << [bulletin.id, bulletin.title, bulletin.description] }
+    backup = candidates.map do |bulletin|
+      { id: bulletin.id, title: bulletin.title, old_description: bulletin.description }
     end
+    File.write(backup_path, JSON.pretty_generate(backup))
 
     Bulletin.transaction do
       candidates.each { |bulletin| bulletin.update!(description: descriptions.fetch(bulletin.title)) }
