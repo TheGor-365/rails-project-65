@@ -94,10 +94,13 @@ class Bulletin < ApplicationRecord
     change.attachables.each do |attachable|
       next if attachable.is_a?(ActiveStorage::Blob) || attachable.is_a?(ActiveStorage::Attachment)
 
-      io = attachable.respond_to?(:tempfile) ? attachable.tempfile : nil
-      actual_type = io ? Marcel::Magic.by_magic(io)&.type : nil
-      io&.rewind
-      unless actual_type && actual_type == attachable.content_type && allowed_types.include?(actual_type)
+      declared_type = if attachable.is_a?(Hash)
+                        attachable[:content_type] || attachable['content_type']
+                      elsif attachable.respond_to?(:content_type)
+                        attachable.content_type
+                      end
+      actual_type = image_content_type_from_bytes(attachable, nil)
+      unless actual_type && actual_type == declared_type && allowed_types.include?(actual_type)
         errors.add(:photos, 'должны соответствовать заявленному формату файла')
       end
     end
