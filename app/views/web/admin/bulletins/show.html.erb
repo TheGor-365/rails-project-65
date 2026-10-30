@@ -1,38 +1,26 @@
-<div class="d-flex justify-content-between align-items-center mb-3">
-  <h2 class="mb-0"><%= @bulletin.title %></h2>
+<div class="cl-management-heading">
+  <div>
+    <p class="cl-eyebrow">Модерация / Объявление</p>
+    <h2><%= @bulletin.title %></h2>
+    <p class="cl-management-lead">Просмотр содержания и текущего статуса объявления.</p>
+  </div>
   <div class="d-flex flex-wrap gap-2">
-    <%= link_to "Редактировать",
-        edit_admin_bulletin_path(@bulletin),
-        class: "btn btn-primary" %>
-    <%= link_to "К объявлениям",
-        admin_bulletins_path,
-        class: "btn btn-outline-secondary" %>
+    <%= link_to 'Редактировать', edit_admin_bulletin_path(@bulletin), class: 'btn btn-primary' %>
+    <%= link_to 'К списку', admin_bulletins_path, class: 'btn btn-outline-secondary' %>
   </div>
 </div>
 
-<div class="card">
-  <div class="card-body">
-    <p>
-      <strong>Категория:</strong> <%= @bulletin.category.name %>
-    </p>
-    <p>
-      <strong>Автор:</strong> <%= @bulletin.user&.name || "Не указан" %>
-    </p>
-    <p>
-      <strong>Статус:</strong>
-      <span class="badge text-bg-secondary"><%= @bulletin.state %></span>
-    </p>
-
-    <% if @bulletin.image.attached? %>
-      <div class="mb-3">
-        <%= image_tag @bulletin.image,
-            class: "img-fluid rounded",
-            alt: @bulletin.title,
-            style: "max-height: 28rem; object-fit: contain;" %>
-      </div>
-    <% end %>
-
-    <h5>Описание</h5>
-    <%= simple_format(@bulletin.description) %>
+<div class="cl-management-panel">
+  <div class="d-flex flex-wrap align-items-center gap-3 mb-3">
+    <%= render 'shared/bulletin_status', bulletin: @bulletin %>
+    <span class="cl-management-panel__hint">Категория: <%= @bulletin.category.name %></span>
+    <span class="cl-management-panel__hint">Автор: <%= @bulletin.user&.name || @bulletin.user&.email || 'Не указан' %></span>
   </div>
+
+  <% if @bulletin.image.attached? %>
+    <%= image_tag @bulletin.image, alt: @bulletin.title, class: 'cl-admin-preview-image mb-4' %>
+  <% end %>
+
+  <h3 class="h5">Описание объявления</h3>
+  <div class="cl-detail-description__text"><%= simple_format(@bulletin.description) %></div>
 </div>

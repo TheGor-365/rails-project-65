@@ -1,8 +1,10 @@
-<%= form_with model: category, url: [:admin, category], local: true do |f| %>
+<%= form_with model: category, url: [:admin, category], local: true, class: 'cl-management-form' do |f| %>
+  <% if category.errors.any? %>
+    <div class="alert alert-danger" role="alert"><%= category.errors.full_messages.to_sentence %></div>
+  <% end %>
   <div class="mb-3">
-    <%= f.label :name, "Название", class: "form-label" %>
-    <%= f.text_field :name, class: "form-control" %>
+    <%= f.label :name, 'Название', class: 'form-label' %>
+    <%= f.text_field :name, class: 'form-control', required: true, placeholder: 'Например, Электроника' %>
   </div>
-
-  <%= f.submit class: "btn btn-primary" %>
+  <%= f.submit local_assigns.fetch(:submit_label, 'Сохранить'), class: 'btn btn-primary' %>
 <% end %>

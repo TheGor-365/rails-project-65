@@ -35,7 +35,7 @@ class AuthenticatedWorkflowsTest < ApplicationSystemTestCase
 
     # Wait for the Turbo navigation and refreshed moderation row.
     within('tr', text: bulletin.title) do
-      assert_text 'published'
+      assert_text 'Опубликовано'
     end
 
     assert_equal 'published', bulletin.reload.state
