@@ -11,7 +11,7 @@ module Web
       if @message.save
         redirect_to conversation_path(@conversation), notice: 'Сообщение отправлено.'
       else
-        @messages = @conversation.messages.persisted.includes(:sender)
+        @messages = @conversation.messages.where.not(id: nil).includes(:sender)
                                  .order(:created_at, :id).page(params[:page]).per(50)
         render 'web/conversations/show', status: :unprocessable_entity
       end
