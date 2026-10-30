@@ -1,0 +1,18 @@
+<article class="cl-listing-card">
+  <%= link_to bulletin_path(bulletin), class: 'cl-listing-card__media', aria: { label: "Открыть объявление: #{bulletin.title}" } do %>
+    <% if bulletin.image.attached? %>
+      <%= image_tag bulletin.image, class: 'cl-listing-card__image', alt: bulletin.title, loading: 'lazy', decoding: 'async' %>
+    <% else %>
+      <span class="cl-listing-card__placeholder"><i class="bi bi-image" aria-hidden="true"></i>Без фотографии</span>
+    <% end %>
+  <% end %>
+  <div class="cl-listing-card__body">
+    <span class="cl-listing-card__category"><i class="bi bi-tag" aria-hidden="true"></i> <%= bulletin.category.name %></span>
+    <h3 class="cl-listing-card__title"><%= link_to bulletin.title, bulletin_path(bulletin) %></h3>
+    <p class="cl-listing-card__description"><%= truncate(bulletin.description, length: 150) %></p>
+    <div class="cl-listing-card__meta">
+      <i class="bi bi-calendar3" aria-hidden="true"></i>
+      Добавлено <%= bulletin.created_at.strftime('%d.%m.%Y') %>
+    </div>
+  </div>
+</article>
