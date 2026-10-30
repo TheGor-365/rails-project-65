@@ -5,6 +5,9 @@
     <p class="cl-management-lead">Следите за публикациями, отправляйте черновики на проверку и управляйте архивом.</p>
   </div>
   <div class="d-flex flex-wrap gap-2">
+    <%= link_to conversations_path, class: 'btn btn-outline-secondary cl-management-create' do %>
+      <i class='bi bi-chat-dots' aria-hidden='true'></i> Сообщения
+    <% end %>
     <%= link_to favorites_path, class: 'btn btn-outline-secondary cl-management-create' do %>
       <i class="bi bi-heart" aria-hidden="true"></i> Избранное
     <% end %>

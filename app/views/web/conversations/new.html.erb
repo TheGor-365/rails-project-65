@@ -1,0 +1,21 @@
+<nav class="cl-detail-breadcrumb" aria-label="Навигация">
+  <%= link_to root_path do %><i class="bi bi-arrow-left" aria-hidden="true"></i> Каталог<% end %>
+  <span aria-hidden="true">/</span>
+  <%= link_to @bulletin.title, bulletin_path(@bulletin) %>
+</nav>
+<div class="cl-management-heading">
+  <div>
+    <p class="cl-eyebrow">Связаться с автором</p>
+    <h2>Новое сообщение</h2>
+    <p class="cl-management-lead">По объявлению «<%= @bulletin.title %>». Переписка будет доступна только вам и автору.</p>
+  </div>
+</div>
+<section class="cl-message-compose cl-management-panel" aria-label="Первое сообщение автору">
+  <%= form_with model: @message, url: bulletin_conversations_path(@bulletin), local: true do |f| %>
+    <%= render 'web/conversations/message_fields', form: f, message: @message %>
+    <div class="d-flex flex-wrap gap-2 mt-3">
+      <%= f.submit 'Отправить сообщение', class: 'btn btn-primary' %>
+      <%= link_to 'Отмена', bulletin_path(@bulletin), class: 'btn btn-outline-secondary' %>
+    </div>
+  <% end %>
+</section>

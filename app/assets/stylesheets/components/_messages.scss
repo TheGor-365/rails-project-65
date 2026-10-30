@@ -1,0 +1,21 @@
+// One owner for conversation UI; semantic colors match both application themes.
+.cl-conversation-list { overflow: hidden; border: 1px solid var(--cl-border); border-radius: 1rem; background: var(--cl-surface); box-shadow: var(--cl-shadow); }
+.cl-conversation-item { display: flex; align-items: center; gap: 1rem; padding: 1.1rem; border-bottom: 1px solid var(--cl-border); color: var(--cl-text); text-decoration: none; transition: background 140ms ease; }
+.cl-conversation-item:last-child { border-bottom: 0; }
+.cl-conversation-item:hover, .cl-conversation-item:focus-visible { background: var(--cl-hover); color: var(--cl-text); }
+.cl-conversation-item__icon { display: grid; place-items: center; flex: 0 0 2.6rem; height: 2.6rem; border-radius: .75rem; color: var(--cl-accent); background: var(--cl-surface-muted); font-size: 1.15rem; }
+.cl-conversation-item__content { display: flex; flex: 1; min-width: 0; flex-direction: column; gap: .3rem; }
+.cl-conversation-item__content > strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cl-conversation-item__meta, .cl-conversation-item__preview { color: var(--cl-muted); font-size: .85rem; overflow-wrap: anywhere; }
+.cl-conversation-item__preview { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; }
+.cl-conversation-item__side { display: flex; align-items: center; flex-direction: column; align-self: stretch; justify-content: space-between; gap: 1rem; color: var(--cl-muted); font-size: .75rem; white-space: nowrap; }
+.cl-message-thread { display: flex; flex-direction: column; gap: 1rem; min-height: 12rem; padding: clamp(1rem, 3vw, 1.6rem); border: 1px solid var(--cl-border); border-radius: 1rem; background: var(--cl-surface); box-shadow: var(--cl-shadow); }
+.cl-message-bubble { width: fit-content; max-width: min(82%, 44rem); padding: .9rem 1.1rem; border: 1px solid var(--cl-border); border-radius: 1rem 1rem 1rem .3rem; background: var(--cl-surface-muted); }
+.cl-message-bubble--mine { align-self: flex-end; border-radius: 1rem 1rem .3rem 1rem; background: var(--cl-hover); }
+.cl-message-bubble__meta { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem; margin-bottom: .45rem; font-size: .8rem; }
+.cl-message-bubble__meta time { color: var(--cl-muted); }
+.cl-message-bubble__body { white-space: pre-wrap; overflow-wrap: anywhere; font-size: .93rem; line-height: 1.65; }
+.cl-message-compose { max-width: 55rem; }
+.cl-message-input { resize: vertical; min-height: 7rem; }
+@media (max-width: 575.98px) { .cl-conversation-item { gap: .7rem; padding: .85rem; } .cl-conversation-item__side time { display: none; } .cl-message-bubble { max-width: 95%; } }
+@media (prefers-reduced-motion: reduce) { .cl-conversation-item { transition: none; } }
