@@ -14,6 +14,6 @@ module BulletinsHelper
   end
 
   def bulletin_state_options
-    Bulletin.aasm.states.map { |state| [bulletin_state_label(state.name), state.name.to_s] }
+    Bulletin.aasm.states.map { |state| [ bulletin_state_label(state.name), state.name.to_s ] }
   end
 end
