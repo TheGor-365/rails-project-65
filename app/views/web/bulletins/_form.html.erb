@@ -1,23 +1,97 @@
-<%= form_with model: bulletin, local: true do |f| %>
-  <div class="mb-3">
-    <%= f.label :title, "Заголовок", class: "form-label" %>
-    <%= f.text_field :title, class: "form-control" %>
+<% admin_mode = local_assigns.fetch(:admin_mode, false) %>
+<% editing = bulletin.persisted? %>
+<% action_url = if admin_mode
+                  admin_bulletin_path(bulletin)
+                elsif editing
+                  bulletin_path(bulletin)
+                else
+                  bulletins_path
+                end %>
+<%= form_with model: bulletin, url: action_url,
+              method: (editing ? :patch : :post),
+              local: true, class: 'cl-editor-form' do |f| %>
+  <% if bulletin.errors.any? %>
+    <div class="alert alert-danger" role="alert">
+      <strong>Не удалось сохранить объявление.</strong>
+      <ul class="mb-0 mt-2">
+        <% bulletin.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="cl-editor-grid">
+    <section class="cl-editor-panel" aria-labelledby="cl-editor-content-heading">
+      <div class="cl-editor-section-heading">
+        <span class="cl-editor-step" aria-hidden="true">01</span>
+        <div><h3 id="cl-editor-content-heading">Основная информация</h3>
+          <p>Название и описание помогут посетителям понять предложение.</p></div>
+      </div>
+
+      <div class="mb-4">
+        <%= f.label :title, 'Название объявления', class: 'form-label' %>
+        <%= f.text_field :title, class: 'form-control form-control-lg',
+              maxlength: 50, required: true, placeholder: 'Например, Смартфон LG в хорошем состоянии' %>
+        <div class="form-text">До 50 символов. Кратко и без рекламных лозунгов.</div>
+      </div>
+
+      <div class="mb-4">
+        <%= f.label :description, 'Подробное описание', class: 'form-label' %>
+        <%= f.text_area :description, class: 'form-control', rows: 8,
+              maxlength: 1000, required: true,
+              placeholder: 'Укажите состояние, характеристики, комплектность или условия услуги.' %>
+        <div class="form-text">До 1000 символов. Пишите только проверяемую информацию.</div>
+      </div>
+
+      <div>
+        <%= f.label :category_id, 'Раздел каталога', class: 'form-label' %>
+        <%= f.collection_select :category_id, Category.order(:name), :id, :name,
+              { prompt: 'Выберите категорию' },
+              class: 'form-select', required: true %>
+        <div class="form-text">Выберите наиболее подходящую категорию.</div>
+      </div>
+    </section>
+
+    <div class="cl-editor-aside">
+      <section class="cl-editor-panel" aria-labelledby="cl-editor-image-heading">
+        <div class="cl-editor-section-heading">
+          <span class="cl-editor-step" aria-hidden="true">02</span>
+          <div><h3 id="cl-editor-image-heading">Фотография</h3>
+            <p>Качественное изображение делает объявление заметнее.</p></div>
+        </div>
+        <% if bulletin.image.attached? %>
+          <div class="cl-editor-current-image">
+            <%= image_tag bulletin.image, alt: "Текущее изображение: #{bulletin.title}", loading: 'lazy' %>
+            <span>Текущее изображение</span>
+          </div>
+        <% end %>
+        <div class="cl-editor-upload">
+          <i class="bi bi-cloud-arrow-up" aria-hidden="true"></i>
+          <%= f.label :image, (editing ? 'Заменить изображение' : 'Добавить изображение'), class: 'form-label' %>
+          <%= f.file_field :image, class: 'form-control',
+                accept: 'image/jpeg,image/png,image/webp', required: !editing %>
+          <span>JPEG, PNG или WebP · до 5 МБ</span>
+        </div>
+      </section>
+
+      <section class="cl-editor-tips" aria-labelledby="cl-editor-tips-heading">
+        <h3 id="cl-editor-tips-heading"><i class="bi bi-lightbulb" aria-hidden="true"></i> Перед сохранением</h3>
+        <ul>
+          <li>Проверьте название и категорию.</li>
+          <li>Опишите только реальные характеристики или условия.</li>
+          <li>Убедитесь, что у вас есть право использовать фотографию.</li>
+        </ul>
+        <% unless admin_mode %>
+          <p>Новое объявление сохраняется как черновик. Отправить его на модерацию можно из профиля.</p>
+        <% end %>
+      </section>
+    </div>
   </div>
 
-  <div class="mb-3">
-    <%= f.label :description, "Описание", class: "form-label" %>
-    <%= f.text_area :description, rows: 5, class: "form-control" %>
+  <div class="cl-editor-actions">
+    <%= f.submit (editing ? 'Сохранить изменения' : 'Создать черновик'), class: 'btn btn-primary btn-lg' %>
+    <%= link_to 'Отмена', (admin_mode ? admin_bulletins_path : profile_path),
+          class: 'btn btn-outline-secondary btn-lg' %>
   </div>
-
-  <div class="mb-3">
-    <%= f.label :category_id, "Категория", class: "form-label" %>
-    <%= f.number_field :category_id, class: "form-control" %>
-  </div>
-
-  <div class="mb-3">
-    <%= f.label :image, "Изображение", class: "form-label" %>
-    <%= f.file_field :image, class: "form-control" %>
-  </div>
-
-  <%= f.submit class: "btn btn-primary" %>
 <% end %>
