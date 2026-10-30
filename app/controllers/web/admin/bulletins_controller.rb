@@ -6,8 +6,10 @@ module Web
       before_action :set_bulletin, only: %i[publish reject archive edit update show destroy]
 
       def index
+        @state_counts = Bulletin.group(:state).count
+        @categories = Category.order(:name)
         @q = Bulletin.ransack(params[:q])
-        @bulletins = @q.result.order(created_at: :desc).page(params[:page]).per(20)
+        @bulletins = @q.result.includes(:category, :user).order(created_at: :desc).page(params[:page]).per(20)
       end
 
       def show; end
