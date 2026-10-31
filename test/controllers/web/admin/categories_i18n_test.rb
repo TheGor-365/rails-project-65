@@ -17,7 +17,7 @@ module Web
           assert_response :success
           assert_select "html[lang='#{locale}']"
           assert_select 'h2', text: words.first
-          assert_select 'form input[type="submit"]', value: words.second
+          assert_select "form input[type='submit'][value=?]", words.second
           assert_select "a[data-turbo-confirm='#{words.last}']", minimum: 1
           assert_select '.cl-management-list-item', text: /#{Regexp.escape(categories(:one).name)}/
         end
