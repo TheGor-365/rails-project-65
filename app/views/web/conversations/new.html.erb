@@ -1,21 +1,22 @@
-<nav class="cl-detail-breadcrumb" aria-label="Навигация">
-  <%= link_to root_path do %><i class="bi bi-arrow-left" aria-hidden="true"></i> Каталог<% end %>
+<% content_for :title, t('pages.conversations.new.page_title') %>
+<nav class="cl-detail-breadcrumb" aria-label="<%= t('pages.conversations.new.breadcrumb_label') %>">
+  <%= link_to root_path do %><i class="bi bi-arrow-left" aria-hidden="true"></i> <%= t('pages.conversations.new.catalog') %><% end %>
   <span aria-hidden="true">/</span>
   <%= link_to @bulletin.title, bulletin_path(@bulletin) %>
 </nav>
 <div class="cl-management-heading">
   <div>
-    <p class="cl-eyebrow">Связаться с автором</p>
-    <h2>Новое сообщение</h2>
-    <p class="cl-management-lead">По объявлению «<%= @bulletin.title %>». Переписка будет доступна только вам и автору.</p>
+    <p class="cl-eyebrow"><%= t('pages.conversations.new.eyebrow') %></p>
+    <h2><%= t('pages.conversations.new.heading') %></h2>
+    <p class="cl-management-lead"><%= t('pages.conversations.new.intro', title: @bulletin.title) %></p>
   </div>
 </div>
-<section class="cl-message-compose cl-management-panel" aria-label="Первое сообщение автору">
+<section class="cl-message-compose cl-management-panel" aria-label="<%= t('pages.conversations.new.form_label') %>">
   <%= form_with model: @message, url: bulletin_conversations_path(@bulletin), local: true do |f| %>
     <%= render 'web/conversations/message_fields', form: f, message: @message %>
     <div class="d-flex flex-wrap gap-2 mt-3">
-      <%= f.submit 'Отправить сообщение', class: 'btn btn-primary' %>
-      <%= link_to 'Отмена', bulletin_path(@bulletin), class: 'btn btn-outline-secondary' %>
+      <%= f.submit t('pages.conversations.new.send'), class: 'btn btn-primary' %>
+      <%= link_to t('pages.conversations.new.cancel'), bulletin_path(@bulletin), class: 'btn btn-outline-secondary' %>
     </div>
   <% end %>
 </section>
