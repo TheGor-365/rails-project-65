@@ -1,0 +1,14 @@
+en:
+  pages:
+    conversations:
+      index:
+        page_title: "Conversations · Classifieds"
+        eyebrow: "My account / Messages"
+        heading: "Conversations"
+        intro: "Only conversations you participate in appear here."
+        back_to_profile: "Back to profile"
+        list_label: "Conversations list"
+        unread_count: "Unread messages: %{count}"
+        empty_heading: "No conversations yet"
+        empty_help: "Open another user's published listing and select “Message author”."
+        browse_catalog: "Browse listings"
