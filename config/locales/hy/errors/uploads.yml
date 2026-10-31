@@ -1,0 +1,4 @@
+hy:
+  errors:
+    uploads:
+      invalid_additional_files: "Լրացուցիչ լուսանկարների վերբեռնման սխալ ձևաչափ"
