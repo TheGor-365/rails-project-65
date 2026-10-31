@@ -40,7 +40,7 @@ class SharedLocaleUiTest < ActionDispatch::IntegrationTest
       assert_response :success
       assert_select 'a.cl-nav-link', text: values[0]
       assert_select 'title', text: /#{Regexp.escape(values[1])}/
-      assert_select '#classifiedsLocaleToggle', attributes: { 'aria-label' => values[2] }
+      assert_select "button#classifiedsLocaleToggle[aria-label='#{values[2]}']"
     end
   end
 
