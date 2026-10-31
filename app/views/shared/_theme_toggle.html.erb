@@ -3,8 +3,10 @@
         data-controller="theme"
         data-action="click->theme#toggle"
         data-theme-target="button"
-        aria-label="Включить тёмную тему"
+        data-theme-enable-dark-label-value="<%= t('shared.theme.enable_dark') %>"
+        data-theme-enable-light-label-value="<%= t('shared.theme.enable_light') %>"
+        aria-label="<%= t('shared.theme.enable_dark') %>"
         aria-pressed="false"
-        title="Включить тёмную тему">
+        title="<%= t('shared.theme.enable_dark') %>">
   <i class="bi bi-moon-fill" data-theme-target="icon" aria-hidden="true"></i>
 </button>

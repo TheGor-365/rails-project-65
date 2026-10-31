@@ -1,0 +1,73 @@
+// Bootstrap dropdown for the current locale. Scoped to the site header.
+.cl-locale-dropdown { flex: 0 0 auto; }
+
+.cl-locale-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  block-size: 2.5rem;
+  padding-inline: 0.5rem;
+  border: 1px solid var(--cl-border);
+  border-radius: 0.65rem;
+  color: var(--cl-text);
+  background: transparent;
+  font-size: 0.8125rem;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.cl-locale-toggle:hover,
+.cl-locale-toggle:focus-visible,
+.cl-locale-toggle[aria-expanded="true"] {
+  color: var(--cl-text);
+  background-color: var(--cl-hover);
+  border-color: var(--cl-focus);
+}
+
+.cl-locale-flag {
+  display: inline-block;
+  font-family: system-ui, sans-serif;
+  font-size: 1.125rem;
+  line-height: 1;
+}
+
+.cl-locale-code {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.cl-locale-menu {
+  min-inline-size: 10.5rem;
+  padding: 0.35rem;
+  border: 1px solid var(--cl-border);
+  background: var(--cl-surface);
+}
+
+.cl-locale-option {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  border-radius: 0.35rem;
+  padding: 0.5rem 0.65rem;
+  color: var(--cl-text);
+}
+
+.cl-locale-option:hover,
+.cl-locale-option:focus,
+.cl-locale-option.active,
+.cl-locale-option.active:hover {
+  color: var(--cl-text);
+  background-color: var(--cl-hover);
+}
+
+.cl-locale-option:focus-visible {
+  outline: 2px solid var(--cl-focus);
+  outline-offset: -2px;
+}
+
+@media (max-width: 390px) {
+  .cl-header-tools { gap: 0.25rem; }
+  .cl-locale-toggle { padding-inline: 0.35rem; }
+}

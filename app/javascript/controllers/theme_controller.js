@@ -4,6 +4,7 @@ const STORAGE_KEY = "classifieds:theme"
 
 export default class extends Controller {
   static targets = ["icon"]
+  static values = { enableDarkLabel: String, enableLightLabel: String }
 
   connect() {
     this.mediaQuery = window.matchMedia("(prefers-color-scheme: dark)")
@@ -41,7 +42,7 @@ export default class extends Controller {
   apply(value) {
     const mode = value === "dark" ? "dark" : "light"
     const toDark = mode === "light"
-    const label = toDark ? "Включить тёмную тему" : "Включить светлую тему"
+    const label = toDark ? this.enableDarkLabelValue : this.enableLightLabelValue
 
     document.documentElement.setAttribute("data-bs-theme", mode)
     this.iconTarget.classList.toggle("bi-moon-fill", toDark)

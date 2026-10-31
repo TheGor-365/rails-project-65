@@ -1,0 +1,30 @@
+hy:
+  shared:
+    header:
+      main_navigation: "Հիմնական նավարկում"
+      open_menu: "Բացել ընտրացանկը"
+      home: "Գլխավոր"
+      admin: "Կառավարում"
+      messages: "Հաղորդագրություններ"
+      profile: "Անձնական էջ"
+      sign_out: "Դուրս գալ"
+      sign_in_github: "Մուտք գործել GitHub-ով"
+      select_language: "Ընտրել լեզուն"
+      current_language: "Ինտերֆեյսի լեզուն՝ %{language}"
+      unread_messages: "Չկարդացված հաղորդագրություններ՝ %{count}"
+    theme:
+      enable_dark: "Միացնել մուգ թեման"
+      enable_light: "Միացնել բաց թեման"
+    footer:
+      credit: "Hexlet ուսումնական նախագիծ · Ruby on Rails"
+    meta:
+      default_title: "Classifieds · Հայտարարություններ"
+    pagination:
+      navigation_label: "Էջեր"
+  views:
+    pagination:
+      first: "&laquo;"
+      last: "&raquo;"
+      previous: "&lsaquo;"
+      next: "&rsaquo;"
+      truncate: "…"
