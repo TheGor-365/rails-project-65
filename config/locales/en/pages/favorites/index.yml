@@ -1,0 +1,13 @@
+en:
+  pages:
+    favorites:
+      index:
+        page_title: "Saved listings · Classifieds"
+        eyebrow: "My account"
+        heading: "Saved listings"
+        explanation: "Saved listings appear here while they remain published in the catalog."
+        back_to_profile: "Back to profile"
+        saved_count: "Saved: %{count}"
+        empty_heading: "No saved listings yet"
+        empty_help: "Open a listing you like and select “Save listing”."
+        browse_catalog: "Browse listings"
