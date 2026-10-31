@@ -35,7 +35,7 @@
     <div class="cl-detail-description">
       <p class="cl-eyebrow">Объявление</p>
       <h2><%= @bulletin.title %></h2>
-      <div class="cl-detail-description__text"><%= simple_format(@bulletin.description) %></div>
+      <div class="cl-detail-description__text"><%= simple_format(public_bulletin_description(@bulletin.description)) %></div>
     </div>
   </article>
 

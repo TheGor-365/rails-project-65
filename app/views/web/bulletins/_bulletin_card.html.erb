@@ -12,7 +12,7 @@
   <div class="cl-listing-card__body">
     <span class="cl-listing-card__category"><i class="bi bi-tag" aria-hidden="true"></i> <%= bulletin.category.name %></span>
     <h3 class="cl-listing-card__title"><%= link_to bulletin.title, bulletin_path(bulletin) %></h3>
-    <p class="cl-listing-card__description"><%= truncate(bulletin.description, length: 150) %></p>
+    <p class="cl-listing-card__description"><%= truncate(public_bulletin_description(bulletin.description), length: 150) %></p>
     <div class="cl-listing-card__meta">
       <i class="bi bi-calendar3" aria-hidden="true"></i>
       Добавлено <%= bulletin.created_at.strftime('%d.%m.%Y') %>
