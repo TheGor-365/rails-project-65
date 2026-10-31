@@ -1,0 +1,20 @@
+en:
+  pages:
+    bulletins:
+      show:
+        page_title: "%{title} · Classifieds"
+        breadcrumb_navigation: "Breadcrumb navigation"
+        all_listings: "All listings"
+        no_photo: "No photo available"
+        gallery_navigation: "Listing photos"
+        gallery_photo: "Photo %{number}"
+        gallery_image_alt: "%{title}, photo %{number}"
+        eyebrow: "Listing"
+        listing_information: "Listing information"
+        category: "Category"
+        author: "Author"
+        created_at: "Date added"
+        in_favorites: "Saved"
+        add_favorite: "Save listing"
+        message_author: "Message author"
+        more_in_category: "More in this category"
