@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Bulletin < ApplicationRecord
+  LANGUAGES = %w[ru en hy].freeze
+
   belongs_to :user
   belongs_to :category
   has_one_attached :image
@@ -9,6 +11,7 @@ class Bulletin < ApplicationRecord
   has_many :conversations, dependent: :destroy
 
   validates :title, :description, :user, :category, presence: true
+  validates :language, inclusion: { in: LANGUAGES }
 
   validate :validate_image_upload
   validate :validate_photo_uploads
