@@ -1,0 +1,23 @@
+ru:
+  shared:
+    header:
+      main_navigation: "Основная навигация"
+      open_menu: "Открыть меню"
+      home: "Главная"
+      admin: "Админка"
+      messages: "Сообщения"
+      profile: "Профиль"
+      sign_out: "Выйти"
+      sign_in_github: "Войти через GitHub"
+      select_language: "Выбрать язык"
+      current_language: "Язык интерфейса: %{language}"
+      unread_messages: "Непрочитанных сообщений: %{count}"
+    theme:
+      enable_dark: "Включить тёмную тему"
+      enable_light: "Включить светлую тему"
+    footer:
+      credit: "Учебный проект Hexlet · Ruby on Rails"
+    meta:
+      default_title: "Classifieds · Объявления"
+    pagination:
+      navigation_label: "Страницы"
