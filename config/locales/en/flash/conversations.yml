@@ -1,0 +1,6 @@
+en:
+  flash:
+    conversations:
+      message_sent: "Message sent."
+      create_failed: "Could not start the conversation."
+      self_conversation: "You cannot message yourself."
