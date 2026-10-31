@@ -8,7 +8,6 @@ ru:
       login_success: "Вы вошли через GitHub"
       login_failed: "Не удалось войти через GitHub"
       logout_success: "Вы вышли"
-      github_no_email: "GitHub не вернул email. Разрешите доступ к email на GitHub и попробуйте снова."
       github_failed: "Не удалось войти через GitHub"
       signed_in: "Вы вошли через GitHub"
       signed_out: "Вы вышли"
@@ -20,6 +19,7 @@ ru:
       deleted: "Категория удалена"
     bulletins:
       updated: "Объявление обновлено"
+      update_failed: "Не удалось обновить объявление"
       deleted: "Объявление удалено"
       published: "Опубликовано"
       publish_failed: "Не удалось опубликовать"
