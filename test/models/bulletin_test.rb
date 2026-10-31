@@ -169,4 +169,24 @@ class BulletinTest < ActiveSupport::TestCase
 
     assert_equal 'hy', bulletin.reload.language
   end
+
+  test 'image and language validation messages follow current locale' do
+    expected = {
+      ru: [ 'Язык объявления', 'недопустимое значение' ],
+      en: [ 'Listing language', 'is not a supported value' ],
+      hy: [ 'Հայտարարության լեզու', 'թույլատրելի արժեք չէ' ]
+    }
+
+    expected.each do |locale, (attribute, message)|
+      I18n.with_locale(locale) do
+        bulletin = build_bulletin
+        bulletin.language = 'zz'
+
+        assert_not bulletin.valid?
+        assert_includes bulletin.errors.full_messages.join, attribute
+        assert_includes bulletin.errors.full_messages.join, message
+      end
+    end
+  end
+
 end
