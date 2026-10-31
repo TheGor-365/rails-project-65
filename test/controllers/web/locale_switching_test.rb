@@ -55,7 +55,7 @@ class LocaleSwitchingTest < ActionDispatch::IntegrationTest
     ]
 
     %i[ru en hy].each do |locale|
-      keys.each { |key| assert I18n.exists?(key, locale), "Missing #{'#{'}locale#{'}'} translation #{'#{'}key#{'}'}" }
+      keys.each { |key| assert I18n.exists?(key, locale), "Missing translation " + locale.to_s + ": " + key }
     end
   end
 end
