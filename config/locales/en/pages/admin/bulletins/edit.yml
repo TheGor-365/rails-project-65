@@ -1,0 +1,9 @@
+en:
+  pages:
+    admin:
+      bulletins:
+        edit:
+          page_title: "Edit listing · Moderation"
+          eyebrow: "Administration / Moderation"
+          heading: "Edit listing"
+          lead: "Review the description and category. Editing does not automatically change its moderation status."
