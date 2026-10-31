@@ -1,0 +1,8 @@
+en:
+  shared:
+    bulletin_states:
+      draft: "Draft"
+      under_moderation: "Under review"
+      published: "Published"
+      rejected: "Rejected"
+      archived: "Archived"
