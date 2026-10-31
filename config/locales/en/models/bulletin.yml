@@ -1,0 +1,32 @@
+en:
+  activerecord:
+    attributes:
+      bulletin:
+        title: "Title"
+        description: "Description"
+        category: "Category"
+        category_id: "Category"
+        image: "Image"
+        photos: "Additional photos"
+        language: "Listing language"
+    errors:
+      messages:
+        record_invalid: "Validation failed: %{errors}"
+      models:
+        bulletin:
+          attributes:
+            image:
+              unsupported_type: "must be JPEG, PNG or WebP"
+              too_large: "must not exceed 5 MB"
+              mismatched_content: "does not match the declared file format"
+            photos:
+              too_many: "cannot contain more than four additional images"
+              unsupported_or_large: "must be JPEG, PNG or WebP up to 5 MB"
+              mismatched_content: "must match the declared file format"
+            language:
+              inclusion: "is not a supported value"
+  errors:
+    format: "%{attribute} %{message}"
+    messages:
+      blank: "can't be blank"
+      inclusion: "is not a supported value"
