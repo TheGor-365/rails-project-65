@@ -1,0 +1,6 @@
+ru:
+  flash:
+    conversations:
+      message_sent: "Сообщение отправлено."
+      create_failed: "Не удалось создать переписку."
+      self_conversation: "Нельзя писать самому себе."
