@@ -37,7 +37,7 @@ module Web
         assert_redirected_to(locale == :ru ? root_path : root_path(locale: locale))
 
         post prepare_github_link_path(locale: locale)
-        assert_redirected_to root_path(locale: locale)
+        assert_redirected_to(locale == :ru ? root_path : root_path(locale: locale))
         assert_nil session[:oauth_link_user_id]
       end
     end
