@@ -1,7 +1,8 @@
-<nav class="cl-detail-breadcrumb" aria-label="Навигация">
-  <%= link_to root_path do %><i class="bi bi-arrow-left" aria-hidden="true"></i> Все объявления<% end %>
+<% content_for :title, t('pages.bulletins.show.page_title', title: @bulletin.title) %>
+<nav class="cl-detail-breadcrumb" aria-label="<%= t('pages.bulletins.show.breadcrumb_navigation') %>">
+  <%= link_to root_path do %><i class="bi bi-arrow-left" aria-hidden="true"></i> <%= t('pages.bulletins.show.all_listings') %><% end %>
   <span aria-hidden="true">/</span>
-  <span><%= @bulletin.category.name %></span>
+  <span><%= localized_category_name(@bulletin.category) %></span>
 </nav>
 
 <div class="cl-detail-grid">
@@ -16,16 +17,16 @@
                 alt: @bulletin.title, loading: 'eager', fetchpriority: 'high',
                 decoding: 'async', data: { gallery_target: 'main' } %>
         <% else %>
-          <div class="cl-detail-gallery__empty"><i class="bi bi-image" aria-hidden="true"></i>Фотография не добавлена</div>
+          <div class="cl-detail-gallery__empty"><i class="bi bi-image" aria-hidden="true"></i><%= t('pages.bulletins.show.no_photo') %></div>
         <% end %>
       </div>
       <% if gallery_images.size > 1 %>
-        <nav class="cl-detail-thumbnails" aria-label="Фотографии объявления">
+        <nav class="cl-detail-thumbnails" aria-label="<%= t('pages.bulletins.show.gallery_navigation') %>">
           <% gallery_images.each_with_index do |photo, index| %>
             <%= button_tag type: 'button', class: 'cl-gallery-thumb',
-                  aria: { label: "Фотография #{index + 1}", pressed: index.zero? },
+                  aria: { label: t('pages.bulletins.show.gallery_photo', number: index + 1), pressed: index.zero? },
                   data: { action: 'gallery#select', gallery_target: 'thumb',
-                          gallery_src: url_for(photo), gallery_alt: "#{@bulletin.title}, фото #{index + 1}" } do %>
+                          gallery_src: url_for(photo), gallery_alt: t('pages.bulletins.show.gallery_image_alt', title: @bulletin.title, number: index + 1) } do %>
               <%= image_tag photo, alt: '', loading: 'lazy', decoding: 'async', width: 76, height: 61 %>
             <% end %>
           <% end %>
@@ -33,50 +34,50 @@
       <% end %>
     </div>
     <div class="cl-detail-description">
-      <p class="cl-eyebrow">Объявление</p>
+      <p class="cl-eyebrow"><%= t('pages.bulletins.show.eyebrow') %></p>
       <h2><%= @bulletin.title %></h2>
       <div class="cl-detail-description__text"><%= simple_format(public_bulletin_description(@bulletin.description)) %></div>
     </div>
   </article>
 
-  <aside class="cl-detail-sidebar" aria-label="Информация об объявлении">
+  <aside class="cl-detail-sidebar" aria-label="<%= t('pages.bulletins.show.listing_information') %>">
     <div class="cl-detail-panel">
-      <span class="cl-detail-panel__label">Категория</span>
-      <strong><i class="bi bi-tag" aria-hidden="true"></i> <%= @bulletin.category.name %></strong>
+      <span class="cl-detail-panel__label"><%= t('pages.bulletins.show.category') %></span>
+      <strong><i class="bi bi-tag" aria-hidden="true"></i> <%= localized_category_name(@bulletin.category) %></strong>
       <hr>
       <div class="cl-detail-panel__item">
         <i class="bi bi-person-circle" aria-hidden="true"></i>
-        <div><span class="cl-detail-panel__label">Автор</span>
+        <div><span class="cl-detail-panel__label"><%= t('pages.bulletins.show.author') %></span>
           <strong><%= @bulletin.user.name.presence || @bulletin.user.email %></strong>
         </div>
       </div>
       <div class="cl-detail-panel__item">
         <i class="bi bi-calendar3" aria-hidden="true"></i>
-        <div><span class="cl-detail-panel__label">Дата добавления</span>
-          <strong><%= @bulletin.created_at.strftime('%d.%m.%Y') %></strong>
+        <div><span class="cl-detail-panel__label"><%= t('pages.bulletins.show.created_at') %></span>
+          <strong><%= l(@bulletin.created_at.to_date, format: :short) %></strong>
         </div>
       </div>
       <% if signed_in? %>
         <% if current_user.favorites.exists?(bulletin: @bulletin) %>
           <%= button_to bulletin_favorite_path(@bulletin), method: :delete,
                 class: 'btn btn-outline-primary cl-favorite-action' do %>
-            <i class="bi bi-heart-fill" aria-hidden="true"></i> В избранном
+            <i class="bi bi-heart-fill" aria-hidden="true"></i> <%= t('pages.bulletins.show.in_favorites') %>
           <% end %>
         <% else %>
           <%= button_to bulletin_favorite_path(@bulletin), method: :post,
                 class: 'btn btn-primary cl-favorite-action' do %>
-            <i class="bi bi-heart" aria-hidden="true"></i> В избранное
+            <i class="bi bi-heart" aria-hidden="true"></i> <%= t('pages.bulletins.show.add_favorite') %>
           <% end %>
         <% end %>
       <% end %>
       <% if signed_in? && @bulletin.user_id != current_user.id && @bulletin.published? %>
         <%= link_to new_bulletin_conversation_path(@bulletin), class: 'btn btn-primary cl-detail-panel__action' do %>
-          <i class='bi bi-chat-dots' aria-hidden='true'></i> Написать автору
+          <i class='bi bi-chat-dots' aria-hidden='true'></i> <%= t('pages.bulletins.show.message_author') %>
         <% end %>
       <% end %>
       <%= link_to root_path(q: { category_id_eq: @bulletin.category_id }),
             class: 'btn btn-outline-primary cl-detail-panel__action' do %>
-        Другие в этой категории <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
+        <%= t('pages.bulletins.show.more_in_category') %> <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
       <% end %>
     </div>
   </aside>
