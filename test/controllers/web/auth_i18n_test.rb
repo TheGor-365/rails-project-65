@@ -17,7 +17,7 @@ module Web
         assert_response :success
         assert_select "html[lang='#{locale}']"
         assert_select 'h1', text: values[0]
-        assert_select 'form[action=?]', prepare_github_link_path(locale: locale)
+        assert_select 'form[action=?]', (locale == :ru ? prepare_github_link_path : prepare_github_link_path(locale: locale))
         assert_select 'button', text: values[1]
         assert_select 'title', text: /GitHub/
 
@@ -34,7 +34,7 @@ module Web
     test 'unverified session is blocked from GitHub account linking in all languages' do
       %i[ru en hy].each do |locale|
         get github_link_form_path(locale: locale)
-        assert_redirected_to root_path(locale: locale)
+        assert_redirected_to(locale == :ru ? root_path : root_path(locale: locale))
 
         post prepare_github_link_path(locale: locale)
         assert_redirected_to root_path(locale: locale)
