@@ -1,0 +1,6 @@
+hy:
+  models:
+    categories:
+      clothing: "Հագուստ"
+      services: "Ծառայություններ"
+      electronics: "Էլեկտրոնիկա"
