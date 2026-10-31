@@ -1,0 +1,30 @@
+<div class="dropdown cl-locale-dropdown">
+  <button type="button"
+          class="btn cl-locale-toggle dropdown-toggle"
+          id="classifiedsLocaleToggle"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+          aria-label="<%= t('shared.header.select_language') %>"
+          title="<%= t('shared.header.current_language', language: locale_name(I18n.locale)) %>">
+    <span class="cl-locale-flag" aria-hidden="true"><%= locale_flag(I18n.locale) %></span>
+    <span class="cl-locale-code" aria-hidden="true"><%= I18n.locale.to_s.upcase %></span>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end cl-locale-menu" aria-labelledby="classifiedsLocaleToggle">
+    <% I18n.available_locales.each do |locale| %>
+      <li>
+        <%= link_to locale_switch_path(locale),
+                    class: "dropdown-item cl-locale-option#{' active' if I18n.locale == locale}",
+                    lang: locale.to_s,
+                    hreflang: locale.to_s,
+                    aria: { current: (I18n.locale == locale ? 'page' : nil) },
+                    data: { turbo: false } do %>
+          <span class="cl-locale-flag" aria-hidden="true"><%= locale_flag(locale) %></span>
+          <span><%= locale_name(locale) %></span>
+          <% if I18n.locale == locale %>
+            <i class="bi bi-check2 ms-auto" aria-hidden="true"></i>
+          <% end %>
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+</div>
