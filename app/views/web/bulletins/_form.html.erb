@@ -61,7 +61,7 @@
           <%= f.label :language, t('pages.bulletins.form.language_label'), class: 'form-label' %>
           <%= f.select :language, options_for_select(
                 Bulletin::LANGUAGES.map { |code| [ locale_name(code), code ] }, bulletin.language
-              ), { include_blank: false }, class: 'form-select', required: true %>
+              ), {}, class: 'form-select', required: true %>
         <% end %>
         <div class="form-text"><%= t('pages.bulletins.form.language_hint') %></div>
       </div>
