@@ -1,0 +1,72 @@
+hy:
+  app:
+    errors:
+      not_authorized: "Մուտքն արգելված է"
+      login_required: "Մուտք գործեք ձեր հաշիվ"
+    auth:
+      github_no_email: "GitHub-ը չի տրամադրել էլեկտրոնային փոստի հասցեն։ Ստուգեք GitHub-ի հասանելիության կարգավորումները։"
+      login_success: "Մուտք եք գործել GitHub-ի միջոցով"
+      login_failed: "Չհաջողվեց մուտք գործել GitHub-ի միջոցով"
+      logout_success: "Դուք դուրս եք եկել հաշվից"
+      github_failed: "Չհաջողվեց մուտք գործել GitHub-ի միջոցով"
+      signed_in: "Մուտք եք գործել GitHub-ի միջոցով"
+      signed_out: "Դուք դուրս եք եկել հաշվից"
+      sign_in_first: "Մուտք գործեք ձեր հաշիվ"
+  admin:
+    bulletins:
+      updated: "Հայտարարությունը թարմացվել է"
+      update_failed: "Չհաջողվեց թարմացնել հայտարարությունը"
+      deleted: "Հայտարարությունը ջնջվել է"
+      published: "Հրապարակված է"
+      publish_failed: "Չհաջողվեց հրապարակել հայտարարությունը"
+      rejected: "Մերժված է"
+      reject_failed: "Չհաջողվեց մերժել հայտարարությունը"
+      archived: "Արխիվացվել է"
+      archive_failed: "Չհաջողվեց արխիվացնել հայտարարությունը"
+    categories:
+      created: "Կատեգորիան ստեղծվել է"
+      updated: "Կատեգորիան թարմացվել է"
+      deleted: "Կատեգորիան ջնջվել է"
+  bulletins:
+    created_draft: "Հայտարարությունը պահպանվել է որպես սևագիր"
+    sent_to_moderation: "Ուղարկվել է ստուգման"
+    moderation_failed: "Չհաջողվեց ուղարկել հայտարարությունը ստուգման"
+    sent_to_archive: "Հայտարարությունն արխիվացվել է"
+    archive_failed: "Չհաջողվեց արխիվացնել հայտարարությունը"
+  profiles:
+    login_required: "Մուտք գործեք ձեր հաշիվ"
+    bulletins:
+      created_draft: "Հայտարարությունը պահպանվել է որպես սևագիր"
+      sent_to_moderation: "Ուղարկվել է ստուգման"
+      send_to_moderation_failed: "Չհաջողվեց ուղարկել հայտարարությունը ստուգման"
+      sent_to_archive: "Հայտարարությունն արխիվացվել է"
+      send_to_archive_failed: "Չհաջողվեց արխիվացնել հայտարարությունը"
+  flash:
+    auth:
+      sign_in: "Մուտք գործեք ձեր հաշիվ"
+      no_rights: "Դուք չունեք այս գործողությունը կատարելու թույլտվություն"
+      github_login_success: "Մուտք եք գործել GitHub-ի միջոցով"
+      github_login_fail: "Չհաջողվեց մուտք գործել GitHub-ի միջոցով"
+      logged_out: "Դուք դուրս եք եկել հաշվից"
+      github_email_missing: "GitHub-ը չի տրամադրել էլեկտրոնային փոստի հասցեն։"
+    admin:
+      bulletins:
+        updated: "Հայտարարությունը թարմացվել է"
+        update_failed: "Չհաջողվեց թարմացնել հայտարարությունը"
+        deleted: "Հայտարարությունը ջնջվել է"
+        published: "Հրապարակված է"
+        publish_failed: "Չհաջողվեց հրապարակել հայտարարությունը"
+        rejected: "Մերժված է"
+        reject_failed: "Չհաջողվեց մերժել հայտարարությունը"
+        archived: "Արխիվացվել է"
+        archive_failed: "Չհաջողվեց արխիվացնել հայտարարությունը"
+      categories:
+        created: "Կատեգորիան ստեղծվել է"
+        updated: "Կատեգորիան թարմացվել է"
+        deleted: "Կատեգորիան ջնջվել է"
+    bulletins:
+      created_draft: "Հայտարարությունը պահպանվել է որպես սևագիր"
+      sent_to_moderation: "Ուղարկվել է ստուգման"
+      send_failed: "Չհաջողվեց ուղարկել հայտարարությունը ստուգման"
+      archived: "Հայտարարությունն արխիվացվել է"
+      archive_failed: "Չհաջողվեց արխիվացնել հայտարարությունը"
