@@ -1,0 +1,8 @@
+hy:
+  shared:
+    bulletin_states:
+      draft: "Սևագիր"
+      under_moderation: "Ստուգման փուլում"
+      published: "Հրապարակված"
+      rejected: "Մերժված"
+      archived: "Արխիվացված"
