@@ -139,4 +139,34 @@ class BulletinTest < ActiveSupport::TestCase
   ensure
     bulletin&.image&.purge if bulletin&.persisted?
   end
+  test 'language defaults to Russian for existing fixtures and new records' do
+    assert_equal 'ru', bulletins(:first).language
+    assert_equal 'ru', build_bulletin.language
+    assert_equal 'ru', Bulletin.column_defaults.fetch('language')
+    assert_not Bulletin.columns_hash.fetch('language').null
+  end
+
+  test 'supports only ru en hy language codes' do
+    %w[ru en hy].each do |language|
+      bulletin = build_bulletin
+      bulletin.language = language
+      assert bulletin.valid?, "#{language}: #{bulletin.errors.full_messages.inspect}"
+    end
+
+    [ nil, '', 'fr', 'EN', '<script>' ].each do |language|
+      bulletin = build_bulletin
+      bulletin.language = language
+      assert_not bulletin.valid?, "#{language.inspect} must not be accepted"
+      assert_includes bulletin.errors.attribute_names, :language
+    end
+  end
+
+  test 'editing title does not change a previously saved listing language' do
+    bulletin = bulletins(:first)
+    bulletin.update!(language: 'hy')
+    bulletin.update!(title: 'Updated listing title')
+
+    assert_equal 'hy', bulletin.reload.language
+  end
+
 end
