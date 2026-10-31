@@ -1,0 +1,7 @@
+en:
+  pages:
+    conversations:
+      shared:
+        author: "Author"
+        buyer: "Buyer"
+        user: "User"
