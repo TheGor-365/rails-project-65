@@ -1,0 +1,4 @@
+en:
+  date:
+    formats:
+      short: "%m/%d/%Y"
