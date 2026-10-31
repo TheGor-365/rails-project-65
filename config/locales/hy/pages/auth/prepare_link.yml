@@ -1,0 +1,8 @@
+hy:
+  pages:
+    auth:
+      prepare_link:
+        page_title: "GitHub-ի հաստատում · Classifieds"
+        heading: "GitHub-ի հաշվի հաստատում"
+        intro: "Հաստատեք, որ GitHub-ի հաշիվը պատկանում է ձեզ։"
+        confirm: "Հաստատել GitHub-ի միջոցով"
