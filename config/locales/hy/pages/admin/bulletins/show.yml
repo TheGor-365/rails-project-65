@@ -1,0 +1,14 @@
+hy:
+  pages:
+    admin:
+      bulletins:
+        show:
+          page_title: "Հայտարարության դիտում · Ստուգում"
+          eyebrow: "Ստուգում / Հայտարարություն"
+          lead: "Դիտեք հայտարարության բովանդակությունն ու ընթացիկ կարգավիճակը։"
+          edit_action: "Խմբագրել"
+          back_action: "Վերադառնալ ցանկին"
+          category: "Կատեգորիա՝ %{name}"
+          author: "Հեղինակ՝ %{name}"
+          not_specified: "Նշված չէ"
+          description_heading: "Հայտարարության նկարագրություն"

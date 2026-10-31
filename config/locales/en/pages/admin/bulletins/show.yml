@@ -1,0 +1,14 @@
+en:
+  pages:
+    admin:
+      bulletins:
+        show:
+          page_title: "Listing details · Moderation"
+          eyebrow: "Moderation / Listing"
+          lead: "Review the listing's content and current status."
+          edit_action: "Edit"
+          back_action: "Back to list"
+          category: "Category: %{name}"
+          author: "Author: %{name}"
+          not_specified: "Not specified"
+          description_heading: "Listing description"
