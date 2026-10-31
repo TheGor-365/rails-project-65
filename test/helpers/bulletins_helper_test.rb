@@ -22,7 +22,7 @@ class BulletinsHelperTest < ActionView::TestCase
       en: 'Electronics',
       hy: 'Էլեկտրոնիկա'
     }
-    category = categories(:one)
+    category = Category.new(name: 'Электроника')
     custom = Category.new(name: 'Custom workshop')
 
     expected.each do |locale, label|
