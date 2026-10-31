@@ -1,0 +1,4 @@
+ru:
+  errors:
+    uploads:
+      invalid_additional_files: "Неверный формат загружаемых фотографий"
