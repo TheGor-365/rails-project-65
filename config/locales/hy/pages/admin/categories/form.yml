@@ -1,0 +1,8 @@
+hy:
+  pages:
+    admin:
+      categories:
+        form:
+          name_label: "Անվանում"
+          name_placeholder: "Օրինակ՝ Էլեկտրոնիկա"
+          save: "Պահպանել"
