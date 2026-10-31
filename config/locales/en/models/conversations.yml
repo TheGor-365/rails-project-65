@@ -1,0 +1,32 @@
+en:
+  activerecord:
+    models:
+      message: "Message"
+      conversation: "Conversation"
+    attributes:
+      message:
+        body: "Message text"
+        sender: "Sender"
+      conversation:
+        buyer: "Buyer"
+        seller: "Seller"
+        bulletin: "Listing"
+    errors:
+      models:
+        message:
+          attributes:
+            sender:
+              not_participant: "is not a conversation participant"
+        conversation:
+          attributes:
+            buyer:
+              cannot_be_author: "cannot be the listing author"
+            seller:
+              must_own_listing: "must own the listing"
+            bulletin:
+              must_be_published: "must be published"
+  errors:
+    format: "%{attribute} %{message}"
+    messages:
+      too_long: "is too long (maximum %{count} characters)"
+      blank: "can't be blank"
