@@ -1,11 +1,12 @@
+<% content_for :title, t('pages.admin.categories.new.page_title') %>
 <div class="cl-management-heading">
   <div>
-    <p class="cl-eyebrow">Панель управления / Категории</p>
-    <h2>Новая категория</h2>
-    <p class="cl-management-lead">Создайте раздел для объявлений.</p>
+    <p class="cl-eyebrow"><%= t('pages.admin.categories.new.eyebrow') %></p>
+    <h2><%= t('pages.admin.categories.new.heading') %></h2>
+    <p class="cl-management-lead"><%= t('pages.admin.categories.new.lead') %></p>
   </div>
-  <%= link_to 'К категориям', admin_categories_path, class: 'btn btn-outline-secondary' %>
+  <%= link_to t('pages.admin.categories.new.back'), admin_categories_path, class: 'btn btn-outline-secondary' %>
 </div>
 <section class="cl-management-panel cl-management-form">
-  <%= render 'form', category: @category, submit_label: 'Создать категорию' %>
+  <%= render 'form', category: @category, submit_label: t('pages.admin.categories.new.submit') %>
 </section>
