@@ -1,0 +1,8 @@
+en:
+  pages:
+    admin:
+      categories:
+        form:
+          name_label: "Name"
+          name_placeholder: "For example, Electronics"
+          save: "Save"

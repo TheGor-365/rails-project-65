@@ -1,0 +1,11 @@
+en:
+  pages:
+    admin:
+      categories:
+        new:
+          page_title: "New category · Admin"
+          eyebrow: "Administration / Categories"
+          heading: "New category"
+          lead: "Create a section for listings."
+          back: "Back to categories"
+          submit: "Create category"

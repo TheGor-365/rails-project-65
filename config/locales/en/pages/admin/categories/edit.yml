@@ -1,0 +1,11 @@
+en:
+  pages:
+    admin:
+      categories:
+        edit:
+          page_title: "Edit category · Admin"
+          eyebrow: "Administration / Categories"
+          heading: "Edit category"
+          lead: "Changing the name updates the catalog and associated listings."
+          back: "Back to categories"
+          submit: "Save changes"

@@ -1,11 +1,12 @@
+<% content_for :title, t('pages.admin.categories.edit.page_title') %>
 <div class="cl-management-heading">
   <div>
-    <p class="cl-eyebrow">Панель управления / Категории</p>
-    <h2>Редактировать категорию</h2>
-    <p class="cl-management-lead">Изменение названия отражается в каталоге и связанных объявлениях.</p>
+    <p class="cl-eyebrow"><%= t('pages.admin.categories.edit.eyebrow') %></p>
+    <h2><%= t('pages.admin.categories.edit.heading') %></h2>
+    <p class="cl-management-lead"><%= t('pages.admin.categories.edit.lead') %></p>
   </div>
-  <%= link_to 'К категориям', admin_categories_path, class: 'btn btn-outline-secondary' %>
+  <%= link_to t('pages.admin.categories.edit.back'), admin_categories_path, class: 'btn btn-outline-secondary' %>
 </div>
 <section class="cl-management-panel cl-management-form">
-  <%= render 'form', category: @category, submit_label: 'Сохранить изменения' %>
+  <%= render 'form', category: @category, submit_label: t('pages.admin.categories.edit.submit') %>
 </section>

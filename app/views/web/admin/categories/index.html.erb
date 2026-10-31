@@ -1,26 +1,27 @@
+<% content_for :title, t('pages.admin.categories.index.page_title') %>
 <div class="cl-management-heading">
   <div>
-    <p class="cl-eyebrow">Панель управления</p>
-    <h2>Категории</h2>
-    <p class="cl-management-lead">Управляйте разделами каталога и их названиями.</p>
+    <p class="cl-eyebrow"><%= t('pages.admin.categories.index.eyebrow') %></p>
+    <h2><%= t('pages.admin.categories.index.heading') %></h2>
+    <p class="cl-management-lead"><%= t('pages.admin.categories.index.lead') %></p>
   </div>
-  <%= link_to 'К модерации', admin_bulletins_path, class: 'btn btn-outline-secondary' %>
+  <%= link_to t('pages.admin.categories.index.to_moderation'), admin_bulletins_path, class: 'btn btn-outline-secondary' %>
 </div>
 
 <div class="row g-3">
   <div class="col-12 col-lg-5">
-    <section class="cl-management-panel h-100" aria-label="Создание категории">
-      <h3 class="h5 mb-3">Новая категория</h3>
-      <p class="cl-management-panel__hint mb-3">Название будет доступно при поиске и создании объявлений.</p>
-      <%= render 'form', category: @category, submit_label: 'Создать категорию' %>
+    <section class="cl-management-panel h-100" aria-label="<%= t('pages.admin.categories.index.create_section') %>">
+      <h3 class="h5 mb-3"><%= t('pages.admin.categories.index.new_heading') %></h3>
+      <p class="cl-management-panel__hint mb-3"><%= t('pages.admin.categories.index.create_hint') %></p>
+      <%= render 'form', category: @category, submit_label: t('pages.admin.categories.index.create_action') %>
     </section>
   </div>
 
   <div class="col-12 col-lg-7">
-    <section class="cl-management-panel h-100" aria-label="Список категорий">
+    <section class="cl-management-panel h-100" aria-label="<%= t('pages.admin.categories.index.list_section') %>">
       <div class="cl-management-panel__heading px-0 pt-0">
-        <h3>Разделы каталога</h3>
-        <span class="cl-management-panel__hint"><%= @categories.size %> всего</span>
+        <h3><%= t('pages.admin.categories.index.list_heading') %></h3>
+        <span class="cl-management-panel__hint"><%= t('pages.admin.categories.index.total_count', count: @categories.size) %></span>
       </div>
       <% if @categories.any? %>
         <ul class="list-group cl-management-list mt-3">
@@ -28,10 +29,10 @@
             <li class="list-group-item cl-management-list-item">
               <span class="cl-management-link"><i class="bi bi-tag me-2" aria-hidden="true"></i><%= category.name %></span>
               <span class="d-flex flex-wrap gap-2">
-                <%= link_to 'Редактировать', edit_admin_category_path(category),
+                <%= link_to t('pages.admin.categories.index.edit_action'), edit_admin_category_path(category),
                       class: 'btn btn-sm btn-outline-secondary' %>
-                <%= link_to 'Удалить', admin_category_path(category),
-                      data: { turbo_method: :delete, turbo_confirm: 'Удалить категорию?' },
+                <%= link_to t('pages.admin.categories.index.delete_action'), admin_category_path(category),
+                      data: { turbo_method: :delete, turbo_confirm: t('pages.admin.categories.index.confirm_delete') },
                       class: 'btn btn-sm btn-outline-danger' %>
               </span>
             </li>
@@ -40,8 +41,8 @@
       <% else %>
         <div class="cl-management-empty">
           <i class="bi bi-tags" aria-hidden="true"></i>
-          <h4>Категории пока не созданы</h4>
-          <p>Добавьте первую категорию в форме слева.</p>
+          <h4><%= t('pages.admin.categories.index.empty_heading') %></h4>
+          <p><%= t('pages.admin.categories.index.empty_help') %></p>
         </div>
       <% end %>
     </section>

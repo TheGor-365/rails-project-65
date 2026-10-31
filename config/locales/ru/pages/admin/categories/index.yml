@@ -1,0 +1,22 @@
+ru:
+  pages:
+    admin:
+      categories:
+        index:
+          page_title: "Категории · Администрирование"
+          eyebrow: "Панель управления"
+          heading: "Категории"
+          lead: "Управляйте разделами каталога и их названиями."
+          to_moderation: "К модерации"
+          create_section: "Создание категории"
+          new_heading: "Новая категория"
+          create_hint: "Название будет доступно при поиске и создании объявлений."
+          create_action: "Создать категорию"
+          list_section: "Список категорий"
+          list_heading: "Разделы каталога"
+          total_count: "Всего: %{count}"
+          edit_action: "Редактировать"
+          delete_action: "Удалить"
+          confirm_delete: "Удалить категорию?"
+          empty_heading: "Категории пока не созданы"
+          empty_help: "Добавьте первую категорию в форме слева."

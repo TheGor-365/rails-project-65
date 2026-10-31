@@ -1,0 +1,22 @@
+en:
+  pages:
+    admin:
+      categories:
+        index:
+          page_title: "Categories · Admin"
+          eyebrow: "Administration"
+          heading: "Categories"
+          lead: "Manage catalog sections and their names."
+          to_moderation: "Go to moderation"
+          create_section: "Create a category"
+          new_heading: "New category"
+          create_hint: "The name will appear in search and listing creation."
+          create_action: "Create category"
+          list_section: "Categories list"
+          list_heading: "Catalog categories"
+          total_count: "Total: %{count}"
+          edit_action: "Edit"
+          delete_action: "Delete"
+          confirm_delete: "Delete this category?"
+          empty_heading: "No categories yet"
+          empty_help: "Create the first category using the form on the left."
