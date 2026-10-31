@@ -1,6 +1,6 @@
 <% if message.errors.any? %>
   <div class="alert alert-danger" role="alert">
-    <strong>Сообщение не отправлено.</strong>
+    <strong><%= t('pages.conversations.message_fields.not_sent') %></strong>
     <ul class="mb-0 mt-2">
       <% message.errors.full_messages.each do |error| %>
         <li><%= error %></li>
@@ -8,7 +8,7 @@
     </ul>
   </div>
 <% end %>
-<%= form.label :body, 'Текст сообщения', class: 'form-label fw-semibold' %>
+<%= form.label :body, t('pages.conversations.message_fields.body_label'), class: 'form-label fw-semibold' %>
 <%= form.text_area :body, class: 'form-control cl-message-input', rows: 5, maxlength: 2000,
-      required: true, placeholder: 'Задайте вопрос по объявлению. Не отправляйте пароли и платёжные данные.' %>
-<p class="form-text">До 2000 символов. Сообщение увидит только второй участник диалога.</p>
+      required: true, placeholder: t('pages.conversations.message_fields.body_placeholder') %>
+<p class="form-text"><%= t('pages.conversations.message_fields.body_hint') %></p>
