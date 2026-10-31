@@ -1,14 +1,15 @@
+<% content_for :title, t('pages.conversations.index.page_title') %>
 <div class="cl-management-heading">
   <div>
-    <p class="cl-eyebrow">Личный кабинет / Сообщения</p>
-    <h2>Переписки</h2>
-    <p class="cl-management-lead">Здесь доступны только диалоги, в которых вы участвуете.</p>
+    <p class="cl-eyebrow"><%= t('pages.conversations.index.eyebrow') %></p>
+    <h2><%= t('pages.conversations.index.heading') %></h2>
+    <p class="cl-management-lead"><%= t('pages.conversations.index.intro') %></p>
   </div>
-  <%= link_to 'К профилю', profile_path, class: 'btn btn-outline-secondary' %>
+  <%= link_to t('pages.conversations.index.back_to_profile'), profile_path, class: 'btn btn-outline-secondary' %>
 </div>
 
 <% if @conversations.any? %>
-  <section class="cl-conversation-list" aria-label="Список переписок">
+  <section class="cl-conversation-list" aria-label="<%= t('pages.conversations.index.list_label') %>">
     <% @conversations.each do |conversation| %>
       <% participant = conversation.other_participant(current_user) %>
       <% unread = @unread_counts.fetch(conversation.id, 0) %>
@@ -18,17 +19,17 @@
         <span class="cl-conversation-item__content">
           <strong><%= conversation.bulletin.title %></strong>
           <span class="cl-conversation-item__meta">
-            <%= conversation.buyer_id == current_user.id ? 'Автор' : 'Покупатель' %>:
-            <%= participant.name.presence || 'Пользователь' %>
+            <%= conversation.buyer_id == current_user.id ? t('pages.conversations.shared.author') : t('pages.conversations.shared.buyer') %>:
+            <%= participant.name.presence || t('pages.conversations.shared.user') %>
           </span>
           <% if conversation.last_message %>
             <span class="cl-conversation-item__preview"><%= truncate(conversation.last_message.body, length: 120) %></span>
           <% end %>
         </span>
         <span class="cl-conversation-item__side">
-          <time datetime="<%= conversation.updated_at.iso8601 %>"><%= conversation.updated_at.strftime('%d.%m.%Y %H:%M') %></time>
+          <time datetime="<%= conversation.updated_at.iso8601 %>"><%= l(conversation.updated_at, format: :conversation) %></time>
           <% if unread.positive? %>
-            <span class="cl-message-unread-badge" aria-label="Непрочитанных сообщений: <%= unread %>"><%= unread %></span>
+            <span class="cl-message-unread-badge" aria-label="<%= t('pages.conversations.index.unread_count', count: unread) %>"><%= unread %></span>
           <% end %>
           <i class="bi bi-chevron-right" aria-hidden="true"></i>
         </span>
@@ -39,8 +40,8 @@
 <% else %>
   <div class="cl-empty-state">
     <i class="bi bi-chat-dots" aria-hidden="true"></i>
-    <h3>Пока нет переписок</h3>
-    <p>Откройте опубликованное объявление другого пользователя и нажмите «Написать автору».</p>
-    <%= link_to 'В каталог', root_path, class: 'btn btn-primary' %>
+    <h3><%= t('pages.conversations.index.empty_heading') %></h3>
+    <p><%= t('pages.conversations.index.empty_help') %></p>
+    <%= link_to t('pages.conversations.index.browse_catalog'), root_path, class: 'btn btn-primary' %>
   </div>
 <% end %>
