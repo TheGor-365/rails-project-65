@@ -1,200 +1,145 @@
-# Rails Project 65 — Доска объявлений
+# Classifieds — Ruby on Rails Bulletin Board
 
-### Hexlet tests and linter status:
-[![Actions Status](https://github.com/TheGor-365/rails-project-65/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/TheGor-365/rails-project-65/actions)
-[![CI](https://github.com/TheGor-365/rails-project-65/actions/workflows/ci.yml/badge.svg)](https://github.com/TheGor-365/rails-project-65/actions/workflows/ci.yml)
+**Live:** https://classifieds-web-production-9132.up.railway.app  
+**Repository:** https://github.com/TheGor-365/rails-project-65  
+**Deployed branch:** [feature/classifieds-p0-security](https://github.com/TheGor-365/rails-project-65/tree/feature/classifieds-p0-security). The default main branch is older and is not yet the production source.
 
-## Ссылка на сайт (Render)
-https://rails-project-65-5ykr.onrender.com
+**Origin:** educational Hexlet application, extended as a portfolio engineering case. This is not a commercial marketplace. Imported demonstration listings are not real offers.
 
----
-
-## Описание
-
-Демо-приложение «Доска объявлений» на Ruby on Rails:
-- Объявления (Bulletins) с изображением, категорией и владельцем.
-- Состояния объявлений через конечный автомат (AASM): `draft → under_moderation → published`, а также `rejected`, `archived`.
-- Публичная главная страница показывает **только опубликованные** объявления.
-- Личный кабинет `/profile` для управления своими объявлениями (отправка на модерацию, архив).
-- Админ-панель `/admin` (категории, объявления; публикация/отклонение/архивирование).
-- Вход через GitHub (OmniAuth).
-- Авторизация через Pundit.
+[Русский](#русский) · [English](#english)
 
 ---
 
-## Технологии
+## Русский
 
-- Ruby 3.2.2
-- Rails 7.2.2.2
-- PostgreSQL
-- Active Storage (локальное хранение в деве)
-- OmniAuth GitHub (`user:email`)
-- Pundit
-- AASM
-- Bootstrap 5, esbuild, Sass
+### Назначение
 
----
+Classifieds — доска объявлений с публикацией через модерацию, изображениями, авторизацией GitHub и приватными пользовательскими функциями. Реализованы серверные ограничения доступа, автоматизированные проверки и отдельный production-деплой.
 
-## Быстрый старт (локально)
+### Реализовано
 
-```bash
-# 1) Клонирование
+| Раздел | Возможности |
+| --- | --- |
+| Каталог | Только опубликованные объявления, поиск, категории, сортировка, пагинация |
+| Объявления | Черновики, редактирование, отправка на модерацию, публикация/отклонение, архив |
+| Изображения | 1 обложка + до 4 дополнительных фотографий, интерактивная галерея, миниатюры; JPEG/PNG/WebP до 5 МиБ на файл |
+| Вход | GitHub OAuth, связанная identity, защищённая сессия, выход |
+| Доступ | Pundit, контроль владельца, административные маршруты только для admin |
+| Модерация | AASM: draft, under_moderation, published, rejected, archived |
+| Избранное | Сохранение опубликованных объявлений конкретным пользователем |
+| Сообщения | Приватные buyer–seller переписки по опубликованному объявлению, текстовые сообщения, пагинация |
+| Непрочитанные | Индивидуальные read-маркеры и счётчики для участников |
+| UI | Адаптивная верстка Bootstrap 5, светлая/тёмная тема |
+| Качество | Rails integration/system tests, RuboCop, Brakeman, GitHub Actions |
+
+**Границы реализации:** переписки не являются real-time/WebSocket-чатом; нет email/SMS/push-уведомлений, оплаты, доставки, escrow или входа через Google. Подключён именно GitHub OAuth. Учебные объявления не отражают реальные коммерческие предложения.
+
+### Технологический стек
+
+Ruby **3.4.12**, Rails **8.1.4**, SQLite (development/test), PostgreSQL **18** (production), Active Storage (локальный Disk и отдельный Railway S3 bucket), OmniAuth GitHub, Pundit, AASM, Ransack, Kaminari, ERB, Turbo/Stimulus, Bootstrap 5, Sass, esbuild, Docker и Railway.
+
+### Локальный запуск
+
+~~~bash
 git clone https://github.com/TheGor-365/rails-project-65.git
 cd rails-project-65
-
-# 2) Ruby & зависимости
+git switch feature/classifieds-p0-security
+# Установите Ruby 3.4.12 через ваш менеджер версий.
 bundle install
-
-# 3) Node/Yarn зависимости
 yarn install
+bin/rails db:prepare
+PORT=3001 bin/dev
+~~~
 
-# 4) Переменные окружения (создай .env по образцу ниже)
-cp .env.example .env
-# отредактируй .env и впиши свои ключи GitHub OAuth и email админа
+Открыть http://localhost:3001. Для GitHub OAuth создайте собственное приложение в GitHub Developer Settings с callback **http://localhost:3001/auth/github/callback** и установите переменные **GITHUB_CLIENT_ID** и **GITHUB_CLIENT_SECRET** в локальном неотслеживаемом окружении, например .env. Файл .env.example в проекте не гарантируется.
 
-# 5) База данных
-bin/rails db:prepare  # создаст БД и прогонит миграции
+Команда db:prepare предназначена для настройки локальной базы. **Не выполняйте db:reset и db:fixtures:load на базе с нужными данными.** Не публикуйте OAuth-секреты, ключи, клиентские файлы или дампы БД в Git.
 
-# 6) (по желанию) залить фикстуры для демо-данных
-bin/rails db:fixtures:load
+### Проверка и тесты
 
-# 7) Запуск в режиме разработки (Procfile.dev: web + js + css)
-bin/dev
-
-
-# GitHub OAuth App (см. Settings → Developer settings → OAuth Apps)
-GITHUB_CLIENT_ID=your_client_id
-GITHUB_CLIENT_SECRET=your_client_secret
-
-# Этот email будет повышен до admin через миграцию
-ADMIN_EMAIL=you@example.com
-```
-
-
-## Аутентификация
-
-Кнопка «Войти через GitHub» — в шапке.
-
-После входа отображается приветствие с именем/почтой и кнопка «Выйти».
-
-Роли и доступ
-
-Пользователь — может создавать объявления (черновики), отправлять их на модерацию и убирать в архив (в /profile).
-
-Администратор — видит админ-раздел /admin, может публиковать/отклонять и архивировать объявления, управлять категориями.
-
-
-
-## Как сделать себя админом
-
-В проекте есть миграция, которая помечает пользователя из ADMIN_EMAIL как админа:
-
-```bash
-ADMIN_EMAIL="you@example.com" bin/rails db:migrate
-```
-Проверка в консоли:
-
-```bash
-User.where(email: 'you@example.com').pluck(:email, :admin)
-# => [["you@example.com", true]]
-```
-
-
-
-## Состояния объявлений (AASM)
-
-
-Колонка: state (string), значение по умолчанию — draft.
-
-# Состояния:
-
-draft             — начальное состояние.
-
-under_moderation  — отправлено на модерацию.
-
-published         — опубликовано (возможно только из under_moderation).
-
-rejected          — отклонено (нужна доработка).
-
-archived          — архив.
-
-# События:
-
-to_moderate: draft                                  → under_moderation
-
-publish: under_moderation                           → published
-
-reject: under_moderation                            → rejected
-
-archive: [under_moderation | published | rejected]  → archived
-
-Главная страница (/) выводит только published.
-
-
-
-## Основные маршруты
-
-# Публичная часть:
-
-GET /                             — список опубликованных объявлений.
-
-GET /bulletins/new,
-
-POST /bulletins                   — создание объявления (нужна авторизация).
-
-PATCH /bulletins/:id/to_moderate  — отправить своё объявление на модерацию.
-
-PATCH /bulletins/:id/archive      — отправить своё объявление в архив.
-
-GET /profile                      — список своих объявлений и действия над ними.
-
-
-# Админ-панель:
-
-GET /admin/categories               — CRUD категорий.
-
-GET /admin/bulletins                — список объявлений.
-
-PATCH /admin/bulletins/:id/publish  — публикация.
-
-PATCH /admin/bulletins/:id/reject   — отклонение.
-
-PATCH /admin/bulletins/:id/archive  — архив.
-
-
-# Аутентификация:
-
-POST /auth/:provider          — запрос на вход через GitHub.
-
-GET /auth/:provider/callback  — коллбэк.
-
-DELETE /signout               — выход.
-
-
-
-## Запуск тестов и качество кода
-
-```bash
-# Юнит-тесты
+~~~bash
 bin/rails test
+bin/rails test:system
+bin/rubocop -f simple
+bin/brakeman --no-pager
+docker build -t classifieds:local .
+~~~
 
-# (если подключены линтеры) RuboCop / Slim-Lint и т.п.
-bundle exec rubocop
-bundle exec slim-lint app/views
-```
+По локальной проверке 31.10.2026: **71 Rails test / 440 assertions** и **16 system tests / 70 assertions**, 0 failures/errors/skips; RuboCop — **73 files, 0 offenses**, Brakeman — **0 warnings**. Отдельный production healthcheck fix прошёл GitHub CI в [PR #29](https://github.com/TheGor-365/rails-project-65/pull/29).
 
+### Production / доступ / медиа
 
+- **Публичный сайт:** https://classifieds-web-production-9132.up.railway.app
+- Production: отдельные PostgreSQL и S3 bucket в Railway. Каталог и Active Storage не зависят от эфемерного диска Rails-контейнера.
+- Конфигурация задаётся в Railway: DATABASE_URL, SECRET_KEY_BASE, GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, CLASSIFIEDS_S3_*.
+- Railway healthcheck GET /up получает 200 OK, публичные страницы перенаправляются на HTTPS.
+- После нового GitHub OAuth-входа пользователь **не становится администратором автоматически**. Историческая ADMIN_EMAIL migration действует только при однократном выполнении миграции. Права администратора назначаются владельцем отдельно после проверки GitHub identity.
+- В production загружен ограниченный набор **учебных** объявлений. Не импортируйте публично реальные личные данные, OAuth-связки и переписки. Проверяйте права использования изображений до включения их в маркетинговые материалы.
 
-## Деплой
+**Состояние:** проверены локальный CI-контур, Docker-сборка, публичный каталог, перенос фото в S3 и GitHub OAuth. Отдельными шагами остаются проверка сохранности медиа после redeploy, ручная двухаккаунтная проверка приватных сообщений, админ-модерация и мобильный QA.
 
+---
 
-Проект развёрнут на Render: https://rails-project-65-5ykr.onrender.com
+## English
 
+### Overview
 
-# Ключевые моменты деплоя:
+Classifieds is an **educational Hexlet Rails application**, extended as an engineering portfolio case. It demonstrates moderated listings, GitHub OAuth, image attachments, authorization, personal favorites, private conversations, automated tests and isolated production deployment. It is **not** a commercial marketplace; imported listings are demonstration data.
 
-Прогон миграций на проде обязателен (включая миграцию промоушена админа):
+**Live demo:** https://classifieds-web-production-9132.up.railway.app  
+**Current deployed source:** [feature/classifieds-p0-security](https://github.com/TheGor-365/rails-project-65/tree/feature/classifieds-p0-security) (the default main branch is older).
 
-```bash
-ADMIN_EMAIL="you@example.com" rails db:migrate
-```
+### Delivered functionality
+
+| Area | Implemented |
+| --- | --- |
+| Public catalog | Published listings only, search, category filters, sorting, pagination |
+| Listing lifecycle | Draft/edit, moderation request, publish/reject, archive via AASM |
+| Images | Cover + up to 4 gallery photos; interactive thumbnails; JPEG/PNG/WebP, up to 5 MiB each |
+| Authentication | GitHub OAuth identity and verified sessions, login/logout |
+| Access control | Pundit owner checks; admin-only moderation routes |
+| Personal features | Per-user published-listing favorites |
+| Messaging | Private buyer/seller text threads, pagination, individual unread markers and counts |
+| UI | Responsive Bootstrap 5 layout and light/dark appearance |
+| Engineering | Rails integration/system tests, RuboCop, Brakeman, multi-stage Docker, GitHub Actions CI |
+
+Messaging is **not** live WebSocket chat; email/SMS/push notifications, payments, shipping, escrow and Google sign-in are **not implemented**.
+
+### Stack
+
+Ruby **3.4.12**, Rails **8.1.4**; SQLite in development/test and PostgreSQL **18** in production; Active Storage with local disk/S3; OmniAuth GitHub, Pundit, AASM, Ransack, Kaminari, ERB, Turbo/Stimulus, Bootstrap 5, Sass, esbuild, Docker, Railway.
+
+### Local setup
+
+~~~bash
+git clone https://github.com/TheGor-365/rails-project-65.git
+cd rails-project-65
+git switch feature/classifieds-p0-security
+# Install Ruby 3.4.12 via your Ruby version manager.
+bundle install
+yarn install
+bin/rails db:prepare
+PORT=3001 bin/dev
+~~~
+
+Open http://localhost:3001. Create your own GitHub OAuth App with callback **http://localhost:3001/auth/github/callback**; supply GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET through an untracked local environment file. Never commit secrets. Do not reset databases containing important data.
+
+### Quality gates
+
+~~~bash
+bin/rails test
+bin/rails test:system
+bin/rubocop -f simple
+bin/brakeman --no-pager
+docker build -t classifieds:local .
+~~~
+
+Verified on October 31, 2026: **71 Rails tests (440 assertions)** and **16 system tests (70 assertions)**, no failures/errors/skips; RuboCop inspected 73 files with no offenses; Brakeman: zero warnings. [PR #29](https://github.com/TheGor-365/rails-project-65/pull/29) passed CI for the Railway healthcheck change.
+
+### Deployment and safeguards
+
+Railway production runs isolated PostgreSQL and a dedicated S3-compatible bucket. Configure DATABASE_URL, SECRET_KEY_BASE, GitHub OAuth and CLASSIFIEDS_S3_* through protected service variables. GET /up returns HTTP 200 for internal platform checks while regular user traffic is HTTPS-only.
+
+New OAuth users are **not** automatically admins; the legacy ADMIN_EMAIL migration acts only when first executed. An authorized owner must explicitly verify identity before assigning admin rights.
+
+**Pending manual acceptance:** full two-account messaging/unread validation, admin/moderation flow, responsive screen review, image-license review and verified portfolio screenshots. These checks are not represented as complete.
