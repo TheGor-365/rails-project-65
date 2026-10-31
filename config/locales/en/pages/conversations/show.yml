@@ -1,0 +1,15 @@
+en:
+  pages:
+    conversations:
+      show:
+        page_title: "Conversation · Classifieds"
+        breadcrumb_label: "Navigation"
+        all_conversations: "All conversations"
+        eyebrow: "My account / Conversation"
+        listing: "Listing"
+        thread_label: "Conversation messages"
+        you: "You"
+        other_participant: "Participant"
+        reply_form_label: "Reply in conversation"
+        reply_heading: "Reply"
+        reply_submit: "Send reply"

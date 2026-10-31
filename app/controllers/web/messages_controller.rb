@@ -9,7 +9,7 @@ module Web
       @message = @conversation.messages.build(sender: current_user, body: message_params[:body])
 
       if @message.save
-        redirect_to conversation_path(@conversation), notice: 'Сообщение отправлено.'
+        redirect_to conversation_path(@conversation), notice: t('flash.conversations.message_sent')
       else
         @messages = @conversation.messages.where.not(id: nil).includes(:sender)
                                  .order(:created_at, :id).page(params[:page]).per(50)

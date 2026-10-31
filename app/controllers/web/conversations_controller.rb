@@ -38,10 +38,10 @@ module Web
         @message = @conversation.messages.create!(sender: current_user, body: message_params[:body])
       end
 
-      redirect_to conversation_path(@conversation), notice: 'Сообщение отправлено.'
+      redirect_to conversation_path(@conversation), notice: t('flash.conversations.message_sent')
     rescue ActiveRecord::RecordInvalid => error
       @message = error.record.is_a?(Message) ? error.record : Message.new(body: message_params[:body])
-      @message.errors.add(:base, 'Не удалось создать переписку.') unless error.record.is_a?(Message)
+      @message.errors.add(:base, t('flash.conversations.create_failed')) unless error.record.is_a?(Message)
       render :new, status: :unprocessable_entity
     end
 
@@ -58,7 +58,7 @@ module Web
     def reject_self_conversation
       return unless @bulletin.user_id == current_user.id
 
-      redirect_to bulletin_path(@bulletin), alert: 'Нельзя писать самому себе.'
+      redirect_to bulletin_path(@bulletin), alert: t('flash.conversations.self_conversation')
     end
 
     def message_params

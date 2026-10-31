@@ -1,0 +1,15 @@
+ru:
+  pages:
+    conversations:
+      show:
+        page_title: "Переписка · Classifieds"
+        breadcrumb_label: "Навигация"
+        all_conversations: "Все переписки"
+        eyebrow: "Личный кабинет / Переписка"
+        listing: "Объявление"
+        thread_label: "Сообщения в диалоге"
+        you: "Вы"
+        other_participant: "Собеседник"
+        reply_form_label: "Ответить в диалоге"
+        reply_heading: "Ответить"
+        reply_submit: "Отправить ответ"

@@ -1,0 +1,32 @@
+ru:
+  activerecord:
+    models:
+      message: "Сообщение"
+      conversation: "Переписка"
+    attributes:
+      message:
+        body: "Текст сообщения"
+        sender: "Отправитель"
+      conversation:
+        buyer: "Покупатель"
+        seller: "Продавец"
+        bulletin: "Объявление"
+    errors:
+      models:
+        message:
+          attributes:
+            sender:
+              not_participant: "не участвует в переписке"
+        conversation:
+          attributes:
+            buyer:
+              cannot_be_author: "не может быть автором"
+            seller:
+              must_own_listing: "должен владеть объявлением"
+            bulletin:
+              must_be_published: "должно быть опубликовано"
+  errors:
+    format: "%{attribute} %{message}"
+    messages:
+      too_long: "слишком длинный (максимум %{count} символов)"
+      blank: "не может быть пустым"

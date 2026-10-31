@@ -37,14 +37,14 @@ class Conversation < ApplicationRecord
   private
 
   def different_participants
-    errors.add(:buyer, 'не может быть автором') if buyer_id.present? && buyer_id == seller_id
+    errors.add(:buyer, :cannot_be_author) if buyer_id.present? && buyer_id == seller_id
   end
 
   def correct_author
-    errors.add(:seller, 'должен владеть объявлением') if bulletin && seller_id && bulletin.user_id != seller_id
+    errors.add(:seller, :must_own_listing) if bulletin && seller_id && bulletin.user_id != seller_id
   end
 
   def published_bulletin
-    errors.add(:bulletin, 'должно быть опубликовано') if bulletin && !bulletin.published?
+    errors.add(:bulletin, :must_be_published) if bulletin && !bulletin.published?
   end
 end

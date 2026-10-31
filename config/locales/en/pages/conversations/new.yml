@@ -1,0 +1,13 @@
+en:
+  pages:
+    conversations:
+      new:
+        page_title: "New message · Classifieds"
+        breadcrumb_label: "Navigation"
+        catalog: "Catalog"
+        eyebrow: "Contact the author"
+        heading: "New message"
+        intro: "About “%{title}”. Only you and the author can see this conversation."
+        form_label: "First message to the author"
+        send: "Send message"
+        cancel: "Cancel"

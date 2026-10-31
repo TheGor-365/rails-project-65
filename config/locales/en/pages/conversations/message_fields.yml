@@ -1,0 +1,8 @@
+en:
+  pages:
+    conversations:
+      message_fields:
+        not_sent: "Message not sent."
+        body_label: "Message text"
+        body_placeholder: "Ask a question about the listing. Never share passwords or payment details."
+        body_hint: "Up to 2,000 characters. Only the other participant can see your message."

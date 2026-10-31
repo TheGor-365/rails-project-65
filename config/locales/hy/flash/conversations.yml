@@ -1,0 +1,6 @@
+hy:
+  flash:
+    conversations:
+      message_sent: "Հաղորդագրությունն ուղարկված է։"
+      create_failed: "Չհաջողվեց սկսել զրույցը։"
+      self_conversation: "Դուք չեք կարող գրել ինքներդ ձեզ։"
