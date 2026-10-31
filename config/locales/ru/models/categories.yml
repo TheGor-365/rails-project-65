@@ -1,0 +1,6 @@
+ru:
+  models:
+    categories:
+      clothing: "Одежда"
+      services: "Услуги"
+      electronics: "Электроника"

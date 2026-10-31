@@ -1,0 +1,7 @@
+en:
+  pages:
+    bulletins:
+      card:
+        open_listing: "Open listing: %{title}"
+        no_photo: "No photo"
+        added: "Added %{date}"

@@ -1,0 +1,4 @@
+hy:
+  date:
+    formats:
+      short: "%d.%m.%Y"

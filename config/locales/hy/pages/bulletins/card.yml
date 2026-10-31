@@ -1,0 +1,7 @@
+hy:
+  pages:
+    bulletins:
+      card:
+        open_listing: "Բացել հայտարարությունը՝ %{title}"
+        no_photo: "Լուսանկար չկա"
+        added: "Ավելացվել է՝ %{date}"

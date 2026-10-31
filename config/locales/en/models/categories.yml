@@ -1,0 +1,6 @@
+en:
+  models:
+    categories:
+      clothing: "Clothing"
+      services: "Services"
+      electronics: "Electronics"
