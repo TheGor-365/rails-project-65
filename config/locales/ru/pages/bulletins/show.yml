@@ -1,0 +1,20 @@
+ru:
+  pages:
+    bulletins:
+      show:
+        page_title: "%{title} · Classifieds"
+        breadcrumb_navigation: "Навигация"
+        all_listings: "Все объявления"
+        no_photo: "Фотография не добавлена"
+        gallery_navigation: "Фотографии объявления"
+        gallery_photo: "Фотография %{number}"
+        gallery_image_alt: "%{title}, фото %{number}"
+        eyebrow: "Объявление"
+        listing_information: "Информация об объявлении"
+        category: "Категория"
+        author: "Автор"
+        created_at: "Дата добавления"
+        in_favorites: "В избранном"
+        add_favorite: "В избранное"
+        message_author: "Написать автору"
+        more_in_category: "Другие в этой категории"
