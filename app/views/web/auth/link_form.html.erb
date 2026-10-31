@@ -1,7 +1,8 @@
-<h1>Привязка GitHub</h1>
-<p>Привяжите GitHub к своему текущему аккаунту.</p>
+<% content_for :title, t('pages.auth.link_form.page_title') %>
+<h1><%= t('pages.auth.link_form.heading') %></h1>
+<p><%= t('pages.auth.link_form.intro') %></p>
 
-<%= button_to "Продолжить",
+<%= button_to t('pages.auth.link_form.continue'),
     prepare_github_link_path,
     method: :post,
     class: "btn btn-primary" %>

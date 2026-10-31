@@ -1,0 +1,8 @@
+hy:
+  pages:
+    auth:
+      link_form:
+        page_title: "GitHub-ի կապակցում · Classifieds"
+        heading: "Կապակցել GitHub-ը"
+        intro: "Կապակցեք GitHub-ը ձեր ընթացիկ հաշվին։"
+        continue: "Շարունակել"

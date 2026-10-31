@@ -1,0 +1,8 @@
+ru:
+  pages:
+    auth:
+      prepare_link:
+        page_title: "Подтверждение GitHub · Classifieds"
+        heading: "Подтверждение GitHub"
+        intro: "Подтвердите владение GitHub-аккаунтом."
+        confirm: "Подтвердить через GitHub"

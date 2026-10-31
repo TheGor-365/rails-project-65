@@ -1,0 +1,8 @@
+en:
+  pages:
+    auth:
+      prepare_link:
+        page_title: "Verify GitHub · Classifieds"
+        heading: "Verify GitHub account"
+        intro: "Confirm ownership of your GitHub account."
+        confirm: "Verify with GitHub"
