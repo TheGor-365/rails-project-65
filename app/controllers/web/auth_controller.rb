@@ -44,7 +44,9 @@ module Web
 
     # DELETE /signout
     def destroy
+      locale_preference = session[:locale]
       reset_session
+      keep_locale_preference(locale_preference)
       redirect_to root_path, notice: t('flash.auth.logged_out')
     end
     private
@@ -95,10 +97,20 @@ module Web
     end
 
     def complete_login(user)
+      locale_preference = session[:locale]
       reset_session
+      keep_locale_preference(locale_preference)
       session[:user_id] = user.id
       session[:oauth_verified_user_id] = user.id
       redirect_to root_path, notice: t('flash.auth.github_login_success')
+    end
+
+    # A new session is mandatory at login/logout. Carry over *only* a
+    # whitelisted UI preference, never previous user or OAuth state.
+    def keep_locale_preference(value)
+      return unless I18n.available_locales.map(&:to_s).include?(value)
+
+      session[:locale] = value
     end
 
     def oauth_failure
