@@ -1,0 +1,15 @@
+hy:
+  pages:
+    conversations:
+      show:
+        page_title: "Զրույց · Classifieds"
+        breadcrumb_label: "Նավարկում"
+        all_conversations: "Բոլոր զրույցները"
+        eyebrow: "Անձնական էջ / Զրույց"
+        listing: "Հայտարարություն"
+        thread_label: "Զրույցի հաղորդագրությունները"
+        you: "Դուք"
+        other_participant: "Զրուցակից"
+        reply_form_label: "Պատասխանել զրույցում"
+        reply_heading: "Պատասխանել"
+        reply_submit: "Ուղարկել պատասխանը"
