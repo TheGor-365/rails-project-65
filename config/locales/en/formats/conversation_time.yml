@@ -1,0 +1,4 @@
+en:
+  time:
+    formats:
+      conversation: "%m/%d/%Y %H:%M"
