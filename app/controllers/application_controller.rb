@@ -4,6 +4,27 @@ class ApplicationController < ActionController::Base
   include Pundit::Authorization
 
   allow_browser versions: :modern
+  around_action :switch_locale
+
+  # Existing default-Russian URLs remain unchanged; nondefault locales
+  # propagate through Rails route helpers (including post-redirect-get).
+  def default_url_options
+    I18n.locale == I18n.default_locale ? {} : { locale: I18n.locale }
+  end
+
+  private
+
+  def switch_locale(&action)
+    allowed = I18n.available_locales.map(&:to_s)
+    requested = params[:locale]
+    session[:locale] = requested if requested.is_a?(String) && allowed.include?(requested)
+
+    preference = session[:locale]
+    locale = allowed.include?(preference) ? preference : I18n.default_locale
+    I18n.with_locale(locale, &action)
+  end
+
+  public
   helper_method :current_user, :signed_in?, :unread_messages_count
 
   def unread_messages_count
