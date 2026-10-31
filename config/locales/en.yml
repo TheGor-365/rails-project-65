@@ -1,29 +1,72 @@
 en:
+  app:
+    errors:
+      not_authorized: "Access denied"
+      login_required: "Please sign in"
+    auth:
+      github_no_email: "GitHub did not return an email address. Grant email access on GitHub and try again."
+      login_success: "Signed in with GitHub"
+      login_failed: "Could not sign in with GitHub"
+      logout_success: "You have signed out"
+      github_failed: "Could not sign in with GitHub"
+      signed_in: "Signed in with GitHub"
+      signed_out: "You have signed out"
+      sign_in_first: "Please sign in"
+  admin:
+    bulletins:
+      updated: "Listing updated"
+      update_failed: "Could not update the listing"
+      deleted: "Listing deleted"
+      published: "Published"
+      publish_failed: "Could not publish the listing"
+      rejected: "Rejected"
+      reject_failed: "Could not reject the listing"
+      archived: "Archived"
+      archive_failed: "Could not archive the listing"
+    categories:
+      created: "Category created"
+      updated: "Category updated"
+      deleted: "Category deleted"
+  bulletins:
+    created_draft: "Listing saved as a draft"
+    sent_to_moderation: "Sent for review"
+    moderation_failed: "Could not send the listing for review"
+    sent_to_archive: "Listing archived"
+    archive_failed: "Could not archive the listing"
+  profiles:
+    login_required: "Please sign in"
+    bulletins:
+      created_draft: "Listing saved as a draft"
+      sent_to_moderation: "Sent for review"
+      send_to_moderation_failed: "Could not send the listing for review"
+      sent_to_archive: "Listing archived"
+      send_to_archive_failed: "Could not archive the listing"
   flash:
     auth:
-      sign_in: 'Войдите в аккаунт'
-      no_rights: 'Недостаточно прав'
-      github_login_success: 'Вы вошли через GitHub'
-      github_login_fail: 'Не удалось войти через GitHub'
-      logged_out: 'Вы вышли'
-      github_email_missing: 'GitHub не вернул email. Разрешите доступ к email на GitHub и попробуйте снова.'
+      sign_in: "Sign in to your account"
+      no_rights: "You do not have permission to do that"
+      github_login_success: "Signed in with GitHub"
+      github_login_fail: "Could not sign in with GitHub"
+      logged_out: "You have signed out"
+      github_email_missing: "GitHub did not provide an email address."
     admin:
       bulletins:
-        updated: 'Объявление обновлено'
-        deleted: 'Объявление удалено'
-        published: 'Опубликовано'
-        publish_failed: 'Не удалось опубликовать'
-        rejected: 'Отклонено'
-        reject_failed: 'Не удалось отклонить'
-        archived: 'В архиве'
-        archive_failed: 'Не удалось отправить в архив'
+        updated: "Listing updated"
+        update_failed: "Could not update the listing"
+        deleted: "Listing deleted"
+        published: "Published"
+        publish_failed: "Could not publish the listing"
+        rejected: "Rejected"
+        reject_failed: "Could not reject the listing"
+        archived: "Archived"
+        archive_failed: "Could not archive the listing"
       categories:
-        created: 'Категория создана'
-        updated: 'Категория обновлена'
-        deleted: 'Категория удалена'
+        created: "Category created"
+        updated: "Category updated"
+        deleted: "Category deleted"
     bulletins:
-      created_draft: 'Объявление создано как черновик'
-      sent_to_moderation: 'Отправлено на модерацию'
-      send_failed: 'Не удалось отправить на модерацию'
-      archived: 'Отправлено в архив'
-      archive_failed: 'Не удалось отправить в архив'
+      created_draft: "Listing saved as a draft"
+      sent_to_moderation: "Sent for review"
+      send_failed: "Could not send the listing for review"
+      archived: "Listing archived"
+      archive_failed: "Could not archive the listing"
