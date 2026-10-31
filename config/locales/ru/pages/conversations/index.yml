@@ -1,0 +1,14 @@
+ru:
+  pages:
+    conversations:
+      index:
+        page_title: "Переписки · Classifieds"
+        eyebrow: "Личный кабинет / Сообщения"
+        heading: "Переписки"
+        intro: "Здесь доступны только диалоги, в которых вы участвуете."
+        back_to_profile: "К профилю"
+        list_label: "Список переписок"
+        unread_count: "Непрочитанных сообщений: %{count}"
+        empty_heading: "Пока нет переписок"
+        empty_help: "Откройте опубликованное объявление другого пользователя и нажмите «Написать автору»."
+        browse_catalog: "В каталог"
