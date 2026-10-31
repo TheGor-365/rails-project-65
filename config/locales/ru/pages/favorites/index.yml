@@ -1,0 +1,13 @@
+ru:
+  pages:
+    favorites:
+      index:
+        page_title: "Избранные объявления · Classifieds"
+        eyebrow: "Личный кабинет"
+        heading: "Избранные объявления"
+        explanation: "Сохранённые публикации доступны здесь, пока они опубликованы в каталоге."
+        back_to_profile: "Вернуться в профиль"
+        saved_count: "Сохранено: %{count}"
+        empty_heading: "Здесь пока нет объявлений"
+        empty_help: "Откройте интересное объявление и нажмите «В избранное»."
+        browse_catalog: "Перейти в каталог"
