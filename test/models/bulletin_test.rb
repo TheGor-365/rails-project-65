@@ -139,6 +139,7 @@ class BulletinTest < ActiveSupport::TestCase
   ensure
     bulletin&.image&.purge if bulletin&.persisted?
   end
+
   test 'language defaults to Russian for existing fixtures and new records' do
     assert_equal 'ru', bulletins(:first).language
     assert_equal 'ru', build_bulletin.language
@@ -168,5 +169,4 @@ class BulletinTest < ActiveSupport::TestCase
 
     assert_equal 'hy', bulletin.reload.language
   end
-
 end
