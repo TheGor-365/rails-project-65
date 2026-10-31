@@ -1,80 +1,81 @@
+<% content_for :title, t('pages.profiles.show.page_title') %>
 <div class="cl-management-heading">
   <div>
-    <p class="cl-eyebrow">Личный кабинет</p>
-    <h2>Мои объявления</h2>
-    <p class="cl-management-lead">Следите за публикациями, отправляйте черновики на проверку и управляйте архивом.</p>
+    <p class="cl-eyebrow"><%= t('pages.profiles.show.eyebrow') %></p>
+    <h2><%= t('pages.profiles.show.heading') %></h2>
+    <p class="cl-management-lead"><%= t('pages.profiles.show.lead') %></p>
   </div>
   <div class="d-flex flex-wrap gap-2">
     <%= link_to conversations_path, class: 'btn btn-outline-secondary cl-management-create' do %>
-      <i class='bi bi-chat-dots' aria-hidden='true'></i> Сообщения
+      <i class='bi bi-chat-dots' aria-hidden='true'></i> <%= t('pages.profiles.show.messages') %>
     <% end %>
     <%= link_to favorites_path, class: 'btn btn-outline-secondary cl-management-create' do %>
-      <i class="bi bi-heart" aria-hidden="true"></i> Избранное
+      <i class="bi bi-heart" aria-hidden="true"></i> <%= t('pages.profiles.show.favorites') %>
     <% end %>
   <%= link_to new_bulletin_path, class: 'btn btn-primary cl-management-create' do %>
-    <i class="bi bi-plus-lg" aria-hidden="true"></i> Создать объявление
+    <i class="bi bi-plus-lg" aria-hidden="true"></i> <%= t('pages.profiles.show.create_listing') %>
   <% end %>
   </div>
 </div>
 
-<div class="cl-metrics" aria-label="Сводка моих объявлений">
-  <div class="cl-metric"><span>Всего объявлений</span><strong><%= @state_counts.values.sum %></strong></div>
-  <div class="cl-metric"><span>Опубликовано</span><strong><%= @state_counts.fetch('published', 0) %></strong></div>
-  <div class="cl-metric"><span>На модерации</span><strong><%= @state_counts.fetch('under_moderation', 0) %></strong></div>
+<div class="cl-metrics" aria-label="<%= t('pages.profiles.show.metrics_label') %>">
+  <div class="cl-metric"><span><%= t('pages.profiles.show.total_listings') %></span><strong><%= @state_counts.values.sum %></strong></div>
+  <div class="cl-metric"><span><%= bulletin_state_label('published') %></span><strong><%= @state_counts.fetch('published', 0) %></strong></div>
+  <div class="cl-metric"><span><%= bulletin_state_label('under_moderation') %></span><strong><%= @state_counts.fetch('under_moderation', 0) %></strong></div>
 </div>
 
-<section class="cl-management-panel" aria-label="Фильтры моих объявлений">
+<section class="cl-management-panel" aria-label="<%= t('pages.profiles.show.filters_label') %>">
   <%= search_form_for @q, url: profile_path, method: :get do |f| %>
     <div class="cl-management-filters">
-      <%= f.search_field :title_cont, class: 'form-control', placeholder: 'Поиск по названию',
-            aria: { label: 'Название объявления' } %>
+      <%= f.search_field :title_cont, class: 'form-control', placeholder: t('pages.profiles.show.search_placeholder'),
+            aria: { label: t('pages.profiles.show.search_label') } %>
       <%= f.select :category_id_eq,
-            options_from_collection_for_select(@categories, :id, :name, @q.category_id_eq),
-            { include_blank: 'Все категории' }, class: 'form-select', aria: { label: 'Категория' } %>
+            options_for_select(@categories.map { |category| [ localized_category_name(category), category.id.to_s ] }, @q.category_id_eq.to_s),
+            { include_blank: t('pages.profiles.show.all_categories') }, class: 'form-select', aria: { label: t('pages.profiles.show.category_label') } %>
       <%= f.select :state_eq, bulletin_state_options,
-            { include_blank: 'Все статусы' }, class: 'form-select', aria: { label: 'Статус' } %>
-      <%= f.submit 'Найти', class: 'btn btn-primary' %>
-      <%= link_to 'Сброс', profile_path, class: 'btn btn-outline-secondary' %>
+            { include_blank: t('pages.profiles.show.all_statuses') }, class: 'form-select', aria: { label: t('pages.profiles.show.status_label') } %>
+      <%= f.submit t('pages.profiles.show.search_action'), class: 'btn btn-primary' %>
+      <%= link_to t('pages.profiles.show.reset_action'), profile_path, class: 'btn btn-outline-secondary' %>
     </div>
   <% end %>
 </section>
 
-<section class="cl-management-panel cl-management-panel--table" aria-label="Список моих объявлений">
+<section class="cl-management-panel cl-management-panel--table" aria-label="<%= t('pages.profiles.show.list_label') %>">
   <div class="cl-management-panel__heading">
-    <h3>Мои публикации</h3>
-    <span class="cl-management-panel__hint"><%= @bulletins.total_count %> в текущей выборке</span>
+    <h3><%= t('pages.profiles.show.list_heading') %></h3>
+    <span class="cl-management-panel__hint"><%= t('pages.profiles.show.filtered_count', count: @bulletins.total_count) %></span>
   </div>
   <% if @bulletins.any? %>
     <div class="table-responsive">
       <table class="table cl-management-table align-middle">
         <thead><tr>
-          <th scope="col">Объявление</th>
-          <th scope="col">Категория</th>
-          <th scope="col">Статус</th>
-          <th scope="col" class="text-end">Действия</th>
+          <th scope="col"><%= t('pages.profiles.show.table_listing') %></th>
+          <th scope="col"><%= t('pages.profiles.show.category_label') %></th>
+          <th scope="col"><%= t('pages.profiles.show.status_label') %></th>
+          <th scope="col" class="text-end"><%= t('pages.profiles.show.table_actions') %></th>
         </tr></thead>
         <tbody>
           <% @bulletins.each do |b| %>
             <tr>
               <td>
                 <%= link_to b.title, bulletin_path(b), class: 'cl-management-link' %>
-                <div class="cl-management-row-meta">Добавлено <%= b.created_at.strftime('%d.%m.%Y') %></div>
+                <div class="cl-management-row-meta"><%= t('pages.profiles.show.added', date: l(b.created_at.to_date, format: :short)) %></div>
               </td>
-              <td><%= b.category.name %></td>
+              <td><%= localized_category_name(b.category) %></td>
               <td><%= render 'shared/bulletin_status', bulletin: b %></td>
               <td>
                 <div class="cl-row-actions">
-                  <%= link_to 'Редактировать', edit_bulletin_path(b),
+                  <%= link_to t('pages.profiles.show.edit_action'), edit_bulletin_path(b),
                         class: 'btn btn-sm btn-outline-secondary' %>
                   <% if b.may_to_moderate? %>
-                    <%= button_to 'На модерацию', to_moderate_bulletin_path(b),
+                    <%= button_to t('pages.profiles.show.submit_moderation'), to_moderate_bulletin_path(b),
                           method: :patch, class: 'btn btn-sm btn-outline-primary',
-                          data: { turbo_confirm: 'Отправить объявление на модерацию?' } %>
+                          data: { turbo_confirm: t('pages.profiles.show.confirm_moderation') } %>
                   <% end %>
                   <% if b.may_archive? %>
-                    <%= button_to 'В архив', archive_bulletin_path(b),
+                    <%= button_to t('pages.profiles.show.archive_action'), archive_bulletin_path(b),
                           method: :patch, class: 'btn btn-sm btn-outline-secondary',
-                          data: { turbo_confirm: 'Отправить в архив?' } %>
+                          data: { turbo_confirm: t('pages.profiles.show.confirm_archive') } %>
                   <% end %>
                 </div>
               </td>
@@ -86,9 +87,9 @@
   <% else %>
     <div class="cl-management-empty">
       <i class="bi bi-inbox" aria-hidden="true"></i>
-      <h4>Объявлений по этим условиям нет</h4>
-      <p>Измените фильтры или создайте новое объявление.</p>
-      <%= link_to 'Сбросить фильтры', profile_path, class: 'btn btn-outline-primary' %>
+      <h4><%= t('pages.profiles.show.empty_heading') %></h4>
+      <p><%= t('pages.profiles.show.empty_help') %></p>
+      <%= link_to t('pages.profiles.show.clear_filters'), profile_path, class: 'btn btn-outline-primary' %>
     </div>
   <% end %>
 </section>
