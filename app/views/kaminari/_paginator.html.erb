@@ -1,5 +1,5 @@
 <%= paginator.render do %>
-  <nav aria-label="Pagination" class="d-flex justify-content-center">
+  <nav aria-label="<%= t('shared.pagination.navigation_label') %>" class="d-flex justify-content-center">
     <ul class="pagination">
       <%= first_page_tag unless current_page.first? %>
       <%= prev_page_tag  unless current_page.first? %>
