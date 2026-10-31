@@ -18,6 +18,13 @@ module RailsProject65
     # Common ones are `templates`, `generators`, or `middleware`, for example.
     config.autoload_lib(ignore: %w[assets tasks])
 
+    # Current UI uses Russian. Keep existing routes intact and opt in to
+    # locale-aware links only after explicitly selecting another language.
+    config.i18n.available_locales = %i[ru en hy]
+    config.i18n.default_locale = :ru
+    config.i18n.enforce_available_locales = true
+    config.i18n.load_path += Dir[Rails.root.join('config/locales/**/*.yml').to_s].sort
+
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files
