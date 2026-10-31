@@ -41,3 +41,32 @@ ru:
       send_to_moderation_failed: "Не удалось отправить на модерацию"
       sent_to_archive: "Отправлено в архив"
       send_to_archive_failed: "Не удалось отправить в архив"
+  flash:
+    auth:
+      sign_in: "Войдите в аккаунт"
+      no_rights: "Недостаточно прав"
+      github_login_success: "Вы вошли через GitHub"
+      github_login_fail: "Не удалось войти через GitHub"
+      logged_out: "Вы вышли"
+      github_email_missing: "GitHub не вернул адрес электронной почты."
+    admin:
+      bulletins:
+        updated: "Объявление обновлено"
+        update_failed: "Не удалось обновить объявление"
+        deleted: "Объявление удалено"
+        published: "Опубликовано"
+        publish_failed: "Не удалось опубликовать"
+        rejected: "Отклонено"
+        reject_failed: "Не удалось отклонить"
+        archived: "В архиве"
+        archive_failed: "Не удалось отправить в архив"
+      categories:
+        created: "Категория создана"
+        updated: "Категория обновлена"
+        deleted: "Категория удалена"
+    bulletins:
+      created_draft: "Объявление создано как черновик"
+      sent_to_moderation: "Отправлено на модерацию"
+      send_failed: "Не удалось отправить на модерацию"
+      archived: "Отправлено в архив"
+      archive_failed: "Не удалось отправить в архив"
