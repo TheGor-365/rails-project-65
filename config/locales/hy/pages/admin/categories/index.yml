@@ -1,0 +1,22 @@
+hy:
+  pages:
+    admin:
+      categories:
+        index:
+          page_title: "Կատեգորիաներ · Կառավարում"
+          eyebrow: "Կառավարման վահանակ"
+          heading: "Կատեգորիաներ"
+          lead: "Կառավարեք կատալոգի բաժիններն ու դրանց անունները։"
+          to_moderation: "Անցնել ստուգման էջ"
+          create_section: "Կատեգորիայի ստեղծում"
+          new_heading: "Նոր կատեգորիա"
+          create_hint: "Անունը կցուցադրվի որոնման և հայտարարություն ստեղծելու ընթացքում։"
+          create_action: "Ստեղծել կատեգորիա"
+          list_section: "Կատեգորիաների ցանկ"
+          list_heading: "Կատալոգի բաժիններ"
+          total_count: "Ընդամենը՝ %{count}"
+          edit_action: "Խմբագրել"
+          delete_action: "Ջնջել"
+          confirm_delete: "Ջնջե՞լ այս կատեգորիան։"
+          empty_heading: "Կատեգորիաներ դեռ չկան"
+          empty_help: "Ստեղծեք առաջին կատեգորիան ձախ կողմի ձևով։"
