@@ -1,0 +1,7 @@
+hy:
+  activerecord:
+    models:
+      category: "Կատեգորիա"
+    attributes:
+      category:
+        name: "Անվանում"
