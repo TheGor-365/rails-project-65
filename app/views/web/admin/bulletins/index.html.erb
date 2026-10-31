@@ -1,76 +1,79 @@
+<% content_for :title, t('pages.admin.bulletins.index.page_title') %>
 <div class="cl-management-heading">
   <div>
-    <p class="cl-eyebrow">Панель управления</p>
-    <h2>Модерация объявлений</h2>
-    <p class="cl-management-lead">Проверяйте заявки и управляйте публикациями, не покидая рабочий список.</p>
+    <p class="cl-eyebrow"><%= t('pages.admin.bulletins.index.eyebrow') %></p>
+    <h2><%= t('pages.admin.bulletins.index.heading') %></h2>
+    <p class="cl-management-lead"><%= t('pages.admin.bulletins.index.lead') %></p>
   </div>
   <%= link_to admin_categories_path, class: 'btn btn-outline-secondary' do %>
-    <i class="bi bi-tags" aria-hidden="true"></i> Категории
+    <i class="bi bi-tags" aria-hidden="true"></i> <%= t('pages.admin.bulletins.index.categories') %>
   <% end %>
 </div>
 
-<div class="cl-metrics" aria-label="Сводка модерации">
-  <div class="cl-metric"><span>Всего объявлений</span><strong><%= @state_counts.values.sum %></strong></div>
-  <div class="cl-metric"><span>Ожидают проверки</span><strong><%= @state_counts.fetch('under_moderation', 0) %></strong></div>
-  <div class="cl-metric"><span>Опубликовано</span><strong><%= @state_counts.fetch('published', 0) %></strong></div>
+<div class="cl-metrics" aria-label="<%= t('pages.admin.bulletins.index.metrics_label') %>">
+  <div class="cl-metric"><span><%= t('pages.admin.bulletins.index.total_listings') %></span><strong><%= @state_counts.values.sum %></strong></div>
+  <div class="cl-metric"><span><%= t('pages.admin.bulletins.index.waiting_review') %></span><strong><%= @state_counts.fetch('under_moderation', 0) %></strong></div>
+  <div class="cl-metric"><span><%= bulletin_state_label('published') %></span><strong><%= @state_counts.fetch('published', 0) %></strong></div>
 </div>
 
-<section class="cl-management-panel" aria-label="Фильтры модерации">
+<section class="cl-management-panel" aria-label="<%= t('pages.admin.bulletins.index.filters_label') %>">
   <%= search_form_for @q, url: admin_bulletins_path, method: :get do |f| %>
     <div class="cl-management-filters cl-management-filters--admin">
-      <%= f.search_field :title_cont, class: 'form-control', placeholder: 'Название объявления',
-            aria: { label: 'Название объявления' } %>
+      <%= f.search_field :title_cont, class: 'form-control', placeholder: t('pages.admin.bulletins.index.search_placeholder'),
+            aria: { label: t('pages.admin.bulletins.index.search_label') } %>
       <%= f.select :category_id_eq,
-            options_from_collection_for_select(@categories, :id, :name, @q.category_id_eq),
-            { include_blank: 'Все категории' }, class: 'form-select', aria: { label: 'Категория' } %>
+            options_for_select(@categories.map { |category| [ localized_category_name(category), category.id.to_s ] }, @q.category_id_eq.to_s),
+            { include_blank: t('pages.admin.bulletins.index.all_categories') }, class: 'form-select', aria: { label: t('pages.admin.bulletins.index.category_label') } %>
       <%= f.select :state_eq, bulletin_state_options,
-            { include_blank: 'Все статусы' }, class: 'form-select', aria: { label: 'Статус' } %>
+            { include_blank: t('pages.admin.bulletins.index.all_statuses') }, class: 'form-select', aria: { label: t('pages.admin.bulletins.index.status_label') } %>
       <%= f.search_field :user_email_cont, class: 'form-control',
-            placeholder: 'Email автора', aria: { label: 'Email автора' } %>
-      <%= f.submit 'Найти', class: 'btn btn-primary' %>
-      <%= link_to 'Сброс', admin_bulletins_path, class: 'btn btn-outline-secondary' %>
+            placeholder: t('pages.admin.bulletins.index.author_email'), aria: { label: t('pages.admin.bulletins.index.author_email') } %>
+      <%= f.submit t('pages.admin.bulletins.index.search_action'), class: 'btn btn-primary' %>
+      <%= link_to t('pages.admin.bulletins.index.reset_action'), admin_bulletins_path, class: 'btn btn-outline-secondary' %>
     </div>
   <% end %>
 </section>
 
-<section class="cl-management-panel cl-management-panel--table" aria-label="Результаты модерации">
+<section class="cl-management-panel cl-management-panel--table" aria-label="<%= t('pages.admin.bulletins.index.results_label') %>">
   <div class="cl-management-panel__heading">
-    <h3>Очередь объявлений</h3>
-    <span class="cl-management-panel__hint"><%= @bulletins.total_count %> в текущей выборке</span>
+    <h3><%= t('pages.admin.bulletins.index.queue_heading') %></h3>
+    <span class="cl-management-panel__hint"><%= t('pages.admin.bulletins.index.filtered_count', count: @bulletins.total_count) %></span>
   </div>
   <% if @bulletins.any? %>
     <div class="table-responsive">
       <table class="table cl-management-table align-middle">
         <thead><tr>
-          <th scope="col">Объявление</th>
-          <th scope="col">Категория</th>
-          <th scope="col">Автор</th>
-          <th scope="col">Статус</th>
-          <th scope="col" class="text-end">Действия</th>
+          <th scope="col"><%= t('pages.admin.bulletins.index.column_listing') %></th>
+          <th scope="col"><%= t('pages.admin.bulletins.index.category_label') %></th>
+          <th scope="col"><%= t('pages.admin.bulletins.index.column_author') %></th>
+          <th scope="col"><%= t('pages.admin.bulletins.index.status_label') %></th>
+          <th scope="col" class="text-end"><%= t('pages.admin.bulletins.index.column_actions') %></th>
         </tr></thead>
         <tbody>
           <% @bulletins.each do |b| %>
             <tr>
               <td>
                 <%= link_to b.title, admin_bulletin_path(b), class: 'cl-management-link' %>
-                <div class="cl-management-row-meta">Добавлено <%= b.created_at.strftime('%d.%m.%Y') %></div>
+                <div class="cl-management-row-meta"><%= t('pages.admin.bulletins.index.added', date: l(b.created_at.to_date, format: :short)) %></div>
               </td>
-              <td><%= b.category.name %></td>
+              <td><%= localized_category_name(b.category) %></td>
               <td><%= b.user&.email || b.user&.name %></td>
               <td><%= render 'shared/bulletin_status', bulletin: b %></td>
               <td>
                 <div class="cl-row-actions">
                   <% if b.may_publish? %>
-                    <%= button_to 'Опубликовать', publish_admin_bulletin_path(b),
+                    <%= button_to t('pages.admin.bulletins.index.publish_action'), publish_admin_bulletin_path(b),
                           method: :patch, class: 'btn btn-sm btn-success' %>
                   <% end %>
                   <% if b.may_reject? %>
-                    <%= button_to 'Отклонить', reject_admin_bulletin_path(b),
-                          method: :patch, class: 'btn btn-sm btn-outline-warning' %>
+                    <%= button_to t('pages.admin.bulletins.index.reject_action'), reject_admin_bulletin_path(b),
+                          method: :patch, class: 'btn btn-sm btn-outline-warning',
+                          data: { turbo_confirm: t('pages.admin.bulletins.index.confirm_reject') } %>
                   <% end %>
                   <% if b.may_archive? %>
-                    <%= button_to 'В архив', archive_admin_bulletin_path(b),
-                          method: :patch, class: 'btn btn-sm btn-outline-secondary' %>
+                    <%= button_to t('pages.admin.bulletins.index.archive_action'), archive_admin_bulletin_path(b),
+                          method: :patch, class: 'btn btn-sm btn-outline-secondary',
+                          data: { turbo_confirm: t('pages.admin.bulletins.index.confirm_archive') } %>
                   <% end %>
                 </div>
               </td>
@@ -82,9 +85,9 @@
   <% else %>
     <div class="cl-management-empty">
       <i class="bi bi-check2-circle" aria-hidden="true"></i>
-      <h4>По заданным фильтрам объявлений нет</h4>
-      <p>Попробуйте другую категорию или статус.</p>
-      <%= link_to 'Очистить фильтры', admin_bulletins_path, class: 'btn btn-outline-primary' %>
+      <h4><%= t('pages.admin.bulletins.index.empty_heading') %></h4>
+      <p><%= t('pages.admin.bulletins.index.empty_help') %></p>
+      <%= link_to t('pages.admin.bulletins.index.clear_filters'), admin_bulletins_path, class: 'btn btn-outline-primary' %>
     </div>
   <% end %>
 </section>
