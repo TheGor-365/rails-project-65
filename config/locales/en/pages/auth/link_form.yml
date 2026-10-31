@@ -1,0 +1,8 @@
+en:
+  pages:
+    auth:
+      link_form:
+        page_title: "Connect GitHub · Classifieds"
+        heading: "Connect GitHub"
+        intro: "Connect GitHub to your existing account."
+        continue: "Continue"
