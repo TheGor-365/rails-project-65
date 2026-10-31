@@ -1,0 +1,4 @@
+en:
+  errors:
+    uploads:
+      invalid_additional_files: "Invalid additional photo upload format"
