@@ -1,6 +1,21 @@
 # frozen_string_literal: true
 
 module BulletinsHelper
+  # Only the canonical seed categories have known translations.
+  # Admin-entered category names remain unchanged until multilingual storage
+  # is implemented in a separate, data-safe migration.
+  CANONICAL_CATEGORY_KEYS = {
+    'Одежда' => 'clothing',
+    'Услуги' => 'services',
+    'Электроника' => 'electronics'
+  }.freeze
+
+  def localized_category_name(category)
+    name = category.name.to_s
+    key = CANONICAL_CATEGORY_KEYS[name]
+    key ? I18n.t("models.categories.#{key}", default: name) : name
+  end
+
   STATE_LABELS = {
     'draft' => 'Черновик',
     'under_moderation' => 'На модерации',
