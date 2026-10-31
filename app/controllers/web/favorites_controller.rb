@@ -14,14 +14,14 @@ module Web
     def create
       bulletin = Bulletin.published.find(params[:bulletin_id])
       current_user.favorites.find_or_create_by!(bulletin: bulletin)
-      redirect_to bulletin_path(bulletin), notice: 'Объявление добавлено в избранное.'
+      redirect_to bulletin_path(bulletin), notice: t('flash.favorites.added')
     end
 
     def destroy
       bulletin = Bulletin.find(params[:bulletin_id])
       current_user.favorites.where(bulletin: bulletin).destroy_all
       redirect_to bulletin.published? ? bulletin_path(bulletin) : favorites_path,
-                  notice: 'Объявление убрано из избранного.'
+                  notice: t('flash.favorites.removed')
     end
 
     private
