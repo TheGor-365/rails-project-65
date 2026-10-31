@@ -1,0 +1,14 @@
+ru:
+  pages:
+    admin:
+      bulletins:
+        show:
+          page_title: "Просмотр объявления · Модерация"
+          eyebrow: "Модерация / Объявление"
+          lead: "Просмотр содержания и текущего статуса объявления."
+          edit_action: "Редактировать"
+          back_action: "К списку"
+          category: "Категория: %{name}"
+          author: "Автор: %{name}"
+          not_specified: "Не указан"
+          description_heading: "Описание объявления"
