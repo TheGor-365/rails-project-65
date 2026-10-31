@@ -1,0 +1,7 @@
+ru:
+  pages:
+    bulletins:
+      card:
+        open_listing: "Открыть объявление: %{title}"
+        no_photo: "Без фотографии"
+        added: "Добавлено %{date}"
