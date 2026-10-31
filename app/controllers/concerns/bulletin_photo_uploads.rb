@@ -8,7 +8,7 @@ module BulletinPhotoUploads
     return if uploads.blank?
 
     unless uploads.is_a?(Array) && uploads.all? { |file| file.blank? || file.respond_to?(:tempfile) }
-      raise ActionController::BadRequest, 'Неверный формат загружаемых фотографий'
+      raise ActionController::BadRequest, I18n.t('errors.uploads.invalid_additional_files')
     end
 
     files = uploads.reject(&:blank?)
