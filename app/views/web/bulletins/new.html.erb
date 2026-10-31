@@ -1,6 +1,6 @@
 <div class="cl-editor-heading">
-  <p class="cl-eyebrow">Личный кабинет / Объявления</p>
-  <h2>Новое объявление</h2>
-  <p>Добавьте описание и фотографию. Объявление сначала сохранится как черновик.</p>
+  <p class="cl-eyebrow"><%= t('pages.bulletins.new.breadcrumb') %></p>
+  <h2><%= t('pages.bulletins.new.heading') %></h2>
+  <p><%= t('pages.bulletins.new.instructions') %></p>
 </div>
 <%= render 'form', bulletin: @bulletin %>
