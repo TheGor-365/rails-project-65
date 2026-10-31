@@ -1,0 +1,13 @@
+ru:
+  pages:
+    conversations:
+      new:
+        page_title: "Новое сообщение · Classifieds"
+        breadcrumb_label: "Навигация"
+        catalog: "Каталог"
+        eyebrow: "Связаться с автором"
+        heading: "Новое сообщение"
+        intro: "По объявлению «%{title}». Переписка будет доступна только вам и автору."
+        form_label: "Первое сообщение автору"
+        send: "Отправить сообщение"
+        cancel: "Отмена"
