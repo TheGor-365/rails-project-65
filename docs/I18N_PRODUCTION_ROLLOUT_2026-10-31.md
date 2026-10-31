@@ -1,8 +1,8 @@
 # Classifieds — RU/EN/HY production release gate (6B)
 
-**Prepared:** 2026-10-31. **Status: BLOCKED until verified PostgreSQL backup and owner approval.**  
+**Prepared:** 2026-10-31. **Status: backup verified via isolated logical restore; deployment still requires explicit owner approval.**  
 **Repo:** https://github.com/TheGor-365/rails-project-65  
-**Candidate main after i18n QA:** `8ede94488311bf7f5fe356bb1d3473d2bef51685` (reverify main HEAD just before release).  
+**Candidate application main after i18n QA:** `69ea5dcc9f872421d982caea2b10f7e6ec8c6822` (reverify main HEAD and CI just before release; later commits may change the exact SHA).  
 **Deployed baseline:** `e6c009861caae2206da2e3052b02d71b8100e4d1`.  
 **Production:** https://classifieds-web-production-9132.up.railway.app/
 
@@ -19,8 +19,8 @@
 | Region | app/database: `europe-west4-drams3a`; bucket: `ams` |
 | Staged patch | **None** (`staged=null`); no pending destructive changes |
 | Deploy health | Most recent web deployment was successful but may be sleeping by policy (`sleepApplication=true`). Sleeping is not a failed deployment. |
-| **Backup status** | **UNVERIFIED**. The connected Railway API cannot list volume-backup objects or their completion timestamps. A persistent volume is NOT itself a recoverable backup. |
-| **PITR** | **UNVERIFIED**. Do not assume it is enabled; inspect the Postgres service Backups tab. |
+| **Backup status** | **VERIFIED manual logical backup**: `~/Backups/classifieds/classifieds_pre_i18n_20261031.dump` (Linux Mint), SHA-256 verified, successfully restored to separate Docker PostgreSQL 18 and count-checked. Railway **native volume backups unavailable on current plan** (Backups UI: Upgrade to Pro). |
+| **PITR** | Not available under the currently shown Backups tab without upgrading to Pro; no PITR backup or restore is claimed. |
 
 No variable **values** should be copied into docs, PR descriptions, chat, CI logs or screenshots.
 
@@ -36,12 +36,16 @@ This is an **additive** migration. Existing Russian rows receive `ru` through th
 
 Never run `db:reset`, `db:drop`, `db:seed`, `db:schema:load`, `db:rollback`, or `rails db:prepare` manually against production as a preflight.
 
-## 3. Owner's backup action — required BEFORE deploy
+## 3. Completed manual logical backup — proof and limitations
 
-1. Railway dashboard -> project `classifieds-rails-project-65` -> `production` -> **Postgres** service -> **Backups** tab.
-2. Confirm whether manual backups and Daily/Weekly schedule exist. If a completed backup from before the migration exists, note its timestamp. Otherwise create one **manual backup** (only after reviewing any indicated charge). Wait for status **Completed/Success**, not just `Starting`.
-3. Share a screenshot showing the **Postgres service** and **latest completed backup timestamp**, hiding any sensitive variables or connection URLs. Record screenshot date and backup timestamp here before release.
-4. Prefer enabling a periodic schedule after checking Railway plan and storage costs; do not assume a schedule already exists.
+1. **31 October 2026, user terminal:** Railway PostgreSQL 18.6 `pg_dump -Fc --no-owner --no-acl` completed as `/tmp/classifieds_pre_i18n_20261031.dump` inside Railway Postgres. `scp` copied it to `~/Backups/classifieds/classifieds_pre_i18n_20261031.dump` on Linux Mint.
+2. **Checksum:** `a24a7f51bcbb99e3adfabc4f915083cbe56012fe190abdd544345ea2525f286a`, verified locally (`sha256sum -c` reported **ЦЕЛ**). `pg_restore --list` and `pg_restore --file=/dev/null` passed.
+3. **Full isolated restore:** Docker `postgres:18` with `--network none`, no exposed ports and dump mounted read-only; `pg_restore --exit-on-error --single-transaction --no-owner --no-acl` returned **RESTORE OK**. All checked table counts matched read-only production SQL. The temporary container was subsequently stopped/removed; the host dump remains.
+4. **SQL migration rehearsal:** inside restored copy, `ALTER TABLE bulletins ADD COLUMN language varchar DEFAULT 'ru' NOT NULL` assigned Russian to all **18/18** rows with **0 NULLs**. `ROLLBACK` succeeded and subsequent schema query confirmed **`language` absent**.
+5. **S3 HEAD audit:** Rails runner in the live Railway app checked all **21** Active Storage blobs and returned **`S3_BLOBS_CHECKED=21`, `S3_MISSING=0`**. This proves referenced object availability at check time; it **does not** produce a backup of S3 object bytes.
+6. **Railway dashboard:** Postgres Backups tab showed **No Backups / Upgrade to Pro**. Native volume backup and PITR are not available on current plan. The usable recovery copy is the user-owned logical `.dump`, not a Railway snapshot.
+
+**Recovery protection:** Keep the local `.dump` private and, before deployment, preferably make a second encrypted off-device copy. Do not share its contents, secrets or credentials. This backup is a single point-in-time copy; changes after its creation are not included. No independent S3 backup has been made.
 
 Official docs: https://docs.railway.com/volumes/backups . Manual backup size limits apply. Railway restore creates a **replacement volume as a staged change**, leaving the previous volume unattached; it does **not** instantly revert application code. Restores are only supported within the same Railway project/environment. **Do not click Restore for a rehearsal on the working production service.**
 
@@ -60,7 +64,7 @@ railway ssh --project 8b19d2db-b1f4-4004-b2e6-653322aa49e1 \
 
 The command performs only SELECT-like count/schema introspection and prints aggregate counts; **do not** share any environment variables, passwords, URLs containing credentials, personal emails, or content of messages.
 
-Expected **historical QA snapshot**, NOT a fresh DB verification: 18 bulletins (17 published, one archived QA), 3 canonical categories, 20 S3 objects according to earlier audit. A fresh snapshot may differ; record actual data instead of overwriting it. Database `ActiveStorage::Blob.count` is **not** equivalent to S3 object count; variants/unattached blobs may differ.
+**Verified 2026-10-31 snapshot:** 18 bulletins (17 published, 1 archived), 3 categories, 1 user, 0 conversations, 0 messages, 0 favorites, 21 Active Storage blobs, 21 attachments and `bulletins.language` absent. Backup and production agreed on all shared aggregate checks. S3 storage reported 21/21 referenced blobs present. Recheck counts if production changes before deployment; row counts alone are not a byte-for-byte verification.
 
 Optional S3 check (read-only HEAD, may have provider request costs; no raw keys in output):
 
@@ -76,8 +80,8 @@ Do not delete or rewrite any blob or bucket to make counts match. In case of err
 ## 5. Authorization and deployment gate
 
 Proceed only when the owner explicitly approves the actual production deployment **after**:
-- A real completed backup is verified (timestamp and service).
-- Live preflight aggregate counts and `missing_s3_keys=0` (or a documented exception) are recorded.
+- The completed manual logical dump is retained, has verified checksum, and has been successfully restored to a separate PG18 instance (done 2026-10-31).
+- Live preflight aggregate counts and `missing_s3_keys=0` are recorded (done 2026-10-31); recheck if there is new production traffic.
 - Target commit HEAD is confirmed, and CI for candidate commit is green.
 - Railway has **no staged changes**, and backup/volume/bucket are in a healthy state.
 - Owner accepts any backup/restore/volume cost and potential brief downtime.
@@ -96,10 +100,10 @@ The web service is currently pinned to `e6c0098`. Do not remove the pin or switc
 ## 7. Rollback policy
 
 - **UI/code regression, data intact:** redeploy known-good `e6c0098` application build. Existing added `language` column is backward compatible and can remain in DB. This is safer than rolling back a schema change while new data may exist.
-- **Actual DB corruption:** stop any write-heavy traffic, preserve incident evidence and newest available DB state first, then inspect Railway Backups -> Restore. **Restore can replace the running DB volume and lose writes made after the backup.** Only do it with owner approval and an explicit recovery point.
+- **Actual DB corruption:** since Railway native backups are unavailable on this plan, **do not assume Backups -> Restore can help**. Preserve the current DB first, provision a separate PostgreSQL 18 recovery database, restore the private logical dump with `pg_restore`, verify integrity, then explicitly approve connection-string cutover after understanding data written since the backup will be lost. Never restore the dump over the live database as a first action.
 - **S3 issue:** Railway Postgres backup does not include `classifieds-media`; inspect bucket/object availability separately. Do not reset bucket credentials or delete objects for an i18n release.
-- Never claim disaster recovery was *tested* until a real isolated restore exercise has been completed.
+- **Isolated `pg_restore` drill completed on 2026-10-31**. This verifies archive restore to a separate PostgreSQL 18, not full application cutover or S3 recovery.
 
 ## Status checkpoint
 
-As of 2026-10-31: read-only Railway inventory confirmed; production backup completion **unknown**, current row counts **not sampled**, S3 object count **not rechecked**, no restoration tested, no production deploy requested or performed. Next step: Postgres Backups tab screenshot, then aggregate preflight counts, then separate explicit deployment approval.
+As of 2026-10-31: manual logical backup **created / checksum-verified / restored on isolated PostgreSQL 18**; production vs backup aggregates matched; **S3 referenced objects 21/21 exist**; migration's SQL backfill and `ROLLBACK` tested on recovered copy; test Docker container removed. Remote `feature/classifieds-p0-security` is an ancestor of `main` (**0 unique remote commits; 197 commits behind main**); uncommitted local branch changes remain unverified. Current `main` at time of checkpoint: `69ea5dc`; Railway app remains pinned to `e6c0098`; no staged patch. **No production deploy requested or performed. Next gate: inspect local uncommitted changes, then seek explicit owner approval for a pinned production source update.**
