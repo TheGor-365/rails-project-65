@@ -1,63 +1,63 @@
 <div class="cl-catalog-heading">
   <div>
-    <p class="cl-eyebrow">Каталог</p>
-    <h2>Объявления</h2>
-    <p class="cl-muted"><%= @bulletins.total_count %> найдено</p>
+    <p class="cl-eyebrow"><%= t('pages.catalog.eyebrow') %></p>
+    <h2><%= t('pages.catalog.heading') %></h2>
+    <p class="cl-muted"><%= t('pages.catalog.found_count', count: @bulletins.total_count) %></p>
   </div>
   <% if signed_in? %>
     <%= link_to new_bulletin_path, class: 'btn btn-primary cl-create-action' do %>
-      <i class="bi bi-plus-lg" aria-hidden="true"></i> Создать
+      <i class="bi bi-plus-lg" aria-hidden="true"></i> <%= t('pages.catalog.create') %>
     <% end %>
   <% end %>
 </div>
 
-<section class="cl-filter-bar" aria-label="Поиск и фильтры">
+<section class="cl-filter-bar" aria-label="<%= t('pages.catalog.filter_bar') %>">
   <%= search_form_for @q, url: root_path, method: :get do |f| %>
     <div class="cl-filter-controls">
       <div class="cl-filter-search">
         <i class="bi bi-search" aria-hidden="true"></i>
-        <%= f.search_field :title_cont, class: 'form-control', placeholder: 'Поиск объявлений', aria: { label: 'Поиск по названию' } %>
+        <%= f.search_field :title_cont, class: 'form-control', placeholder: t('pages.catalog.search_placeholder'), aria: { label: t('pages.catalog.search_label') } %>
       </div>
       <%= f.select :category_id_eq,
-            options_from_collection_for_select(@categories, :id, :name, @q.category_id_eq),
-            { include_blank: 'Все категории' },
-            class: 'form-select', aria: { label: 'Категория' } %>
+            options_for_select(@categories.map { |category| [ localized_category_name(category), category.id.to_s ] }, @q.category_id_eq.to_s),
+            { include_blank: t('pages.catalog.all_categories') },
+            class: 'form-select', aria: { label: t('pages.catalog.category_label') } %>
       <%= select_tag :sort,
-            options_for_select([ [ 'Сначала новые', 'newest' ], [ 'Сначала старые', 'oldest' ],
-                                 [ 'Название А–Я', 'title_asc' ], [ 'Название Я–А', 'title_desc' ] ], @sort),
-            class: 'form-select cl-filter-sort', aria: { label: 'Сортировка объявлений' } %>
-      <%= f.submit 'Искать', class: 'btn btn-primary' %>
-      <%= link_to 'Сброс', root_path, class: 'btn btn-outline-secondary' %>
+            options_for_select([ [ t('pages.catalog.sort.newest'), 'newest' ], [ t('pages.catalog.sort.oldest'), 'oldest' ],
+                                 [ t('pages.catalog.sort.title_asc'), 'title_asc' ], [ t('pages.catalog.sort.title_desc'), 'title_desc' ] ], @sort),
+            class: 'form-select cl-filter-sort', aria: { label: t('pages.catalog.sort_label') } %>
+      <%= f.submit t('pages.catalog.submit'), class: 'btn btn-primary' %>
+      <%= link_to t('pages.catalog.reset'), root_path, class: 'btn btn-outline-secondary' %>
     </div>
   <% end %>
   <% selected_category = params.dig(:q, :category_id_eq).to_s %>
   <% active_search = params.dig(:q, :title_cont).to_s.strip %>
   <% title_query = params.dig(:q, :title_cont).presence %>
-  <nav class="cl-category-strip" aria-label="Быстрый выбор категории">
-    <%= link_to 'Все', root_path(q: { title_cont: title_query }.compact, sort: @sort),
+  <nav class="cl-category-strip" aria-label="<%= t('pages.catalog.category_quick_select') %>">
+    <%= link_to t('pages.catalog.all'), root_path(q: { title_cont: title_query }.compact, sort: @sort),
           class: "cl-category-chip #{'is-active' if selected_category.blank?}" %>
     <% @categories.each do |category| %>
-      <%= link_to category.name,
+      <%= link_to localized_category_name(category),
             root_path(q: { category_id_eq: category.id, title_cont: title_query }.compact, sort: @sort),
             class: "cl-category-chip #{'is-active' if selected_category == category.id.to_s}" %>
     <% end %>
   </nav>
   <% if active_search.present? || selected_category.present? || @sort != 'newest' %>
-    <div class="cl-active-filters" aria-label="Применённые фильтры">
-      <span>Применено:</span>
+    <div class="cl-active-filters" aria-label="<%= t('pages.catalog.active_filters') %>">
+      <span><%= t('pages.catalog.applied') %></span>
       <% if active_search.present? %>
         <span class="cl-active-filter"><i class="bi bi-search" aria-hidden="true"></i> <%= active_search %></span>
       <% end %>
       <% if selected_category.present? %>
         <% category = @categories.find { |item| item.id.to_s == selected_category } %>
         <% if category %>
-          <span class="cl-active-filter"><i class="bi bi-tag" aria-hidden="true"></i> <%= category.name %></span>
+          <span class="cl-active-filter"><i class="bi bi-tag" aria-hidden="true"></i> <%= localized_category_name(category) %></span>
         <% end %>
       <% end %>
       <% if @sort != 'newest' %>
-        <span class="cl-active-filter">Сортировка: <%= { 'oldest' => 'Сначала старые', 'title_asc' => 'А–Я', 'title_desc' => 'Я–А' }.fetch(@sort) %></span>
+        <span class="cl-active-filter"><%= t('pages.catalog.sort_applied', sort: t("pages.catalog.sort.#{@sort}")) %></span>
       <% end %>
-      <%= link_to 'Очистить всё', root_path, class: 'cl-active-filters__clear' %>
+      <%= link_to t('pages.catalog.clear_all'), root_path, class: 'cl-active-filters__clear' %>
     </div>
   <% end %>
 </section>
@@ -72,8 +72,8 @@
 <% else %>
   <div class="cl-empty-state" role="status">
     <i class="bi bi-search" aria-hidden="true"></i>
-    <h3>Объявления не найдены</h3>
-    <p>Попробуй другой запрос или очисти фильтры.</p>
-    <%= link_to 'Все объявления', root_path, class: 'btn btn-primary' %>
+    <h3><%= t('pages.catalog.empty_heading') %></h3>
+    <p><%= t('pages.catalog.empty_help') %></p>
+    <%= link_to t('pages.catalog.all_listings'), root_path, class: 'btn btn-primary' %>
   </div>
 <% end %>
