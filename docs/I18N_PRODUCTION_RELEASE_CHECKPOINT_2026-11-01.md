@@ -13,7 +13,7 @@
 - **Approval:** project owner explicitly authorized the production release and necessary automatic operations in CAREER chat.
 - **Staged Railway patch:** one change only: `classifieds-web.source.commitSha` from old SHA to new SHA; `destructive=false`. Applied using Railway `accept_deploy`. PostgreSQL, S3, volumes and runtime settings unchanged.
 - **Railway deployment state:** `SUCCESS`. The old deployment is `REMOVED` from serving, but listed as `canRollback=true`.
-- **Migration:** runtime logs show `20261031181500 AddLanguageToBulletins` executed successfully as `add_column :bulletins, :language, :string, default: "ru", null: false` (0.0035 seconds). **No post-deploy direct SQL schema-migration query performed through this chat.**
+- **Migration:** runtime logs show `20261031181500 AddLanguageToBulletins` executed successfully as `add_column :bulletins, :language, :string, default: "ru", null: false` (0.0035 seconds). **Verified after deploy by owner via Railway SSH and `bin/rails runner`: schema column present; all 18 existing rows have `language=ru`; 17 listings remain published.**
 - **Runtime:** Ruby 3.4.12, Rails 8.1.4, Puma 7.0.3. `/up` healthcheck returned `200 OK`.
 - **HTTP metrics:** a sampled 1-hour Railway window after release reported 23 requests: 23 × 2xx, 0 × 4xx, 0 × 5xx; error rate 0%. This is an observation window, not an uptime SLA.
 
@@ -32,16 +32,17 @@
   `a24a7f51bcbb99e3adfabc4f915083cbe56012fe190abdd544345ea2525f286a`, verified after SCP to Linux Mint.
 - The same backup restored successfully into isolated Docker PostgreSQL 18 with `--network none`; database counts matched read-only production baseline: 18 total bulletins (17 published, 1 archived), 3 categories, 1 user, 21 Active Storage blobs and 21 attachments. Test DDL assigned language `ru` to 18/18 rows, then `ROLLBACK` was verified. Temporary restore container was removed.
 - Before deployment, live Active Storage S3 HEAD checks: `S3_BLOBS_CHECKED=21`, `S3_MISSING=0`.
-- **Limitations:** No standalone S3 byte backup; Railway native volume backups require plan upgrade, so do not claim Railway snapshot/PITR. Database dump includes a point-in-time snapshot, not later writes. Pre-deploy S3 HEAD checks are not a post-deploy proof of all object bytes.
+- **Post-deploy (2026-11-01, owner terminal):** `{"language_column":true,"bulletins":18,"russian":18,"published":17,"storage_blobs":21,"missing_s3":0}`. These are production Rails Runner read-only counts plus 21 blob-existence requests; no content or secrets exposed.
+- **Limitations:** No standalone S3 byte backup; Railway native volume backups require plan upgrade, so do not claim Railway snapshot/PITR. Database dump includes a point-in-time snapshot, not later writes. S3 HEAD checks before and after deployment confirm referenced objects exist, but neither constitutes a full object-byte backup or an image-display visual test.
 - Safe code rollback: redeploy previous `e6c0098` image/build on `classifieds-web`. Additive `language` column can remain; do not roll back the schema or replace the production DB automatically. Database recovery would require separate PG18 instance, isolated restore, validation, and approval before cutover.
 
 ## Unverified acceptance and follow-up
 
 1. On the owner's browser, inspect RU/EN/HY language switcher, dark/light theme, gallery images, mobile layout (390 px), OAuth sign-in, authorized private pages and moderation controls. Avoid mutating non-QA listings.
-2. Read-only production SQL and S3 recheck after deployment (from the owner's Railway CLI); the automatic migration is confirmed by runtime logs but aggregate post-deploy SQL has not yet been rerun.
+2. **Completed** read-only production Rails Runner schema, bulletin counts and Active Storage S3 availability recheck after deployment: `language_column=true`, 18 RU, 17 published, 21 blobs, `missing_s3=0`.
 3. Arrange a separate encrypted/off-device PostgreSQL backup and consider a proper S3 objects backup. Do not treat Active Storage metadata as image bytes.
 4. Investigate Rails 8.2 future deprecation: `ActiveSupport::Configurable`; it did not block the release.
 
-**Source of truth:** Railway deployment/runtime logs, Railway HTTP metrics, public read-only page checks, owner Linux command output, and GH PR #47. **No secrets or private row content recorded.**
+**Source of truth:** Railway deployment/runtime logs, Railway HTTP metrics, public read-only page checks, owner Linux command output (including post-deploy Rails Runner), and GH PR #47. **No secrets or private row content recorded.**
 
 **Git note:** `feature/classifieds-p0-security` is fully behind `main` with 0 ahead commits (remote). Owner's older local checkout remains on `5566195` and contains untracked `classifieds_demo_transfer.rb`; it was not changed or uploaded in this release.
