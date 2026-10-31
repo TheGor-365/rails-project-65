@@ -2,7 +2,7 @@
 
 **Live:** https://classifieds-web-production-9132.up.railway.app  
 **Repository:** https://github.com/TheGor-365/rails-project-65  
-**Deployed branch:** [feature/classifieds-p0-security](https://github.com/TheGor-365/rails-project-65/tree/feature/classifieds-p0-security). The default main branch is older and is not yet the production source.
+**Production source:** pinned feature commit `e84aa68`; the same release was merged into the default `main` branch in [PR #32](https://github.com/TheGor-365/rails-project-65/pull/32).
 
 **Origin:** educational Hexlet application, extended as a portfolio engineering case. This is not a commercial marketplace. Imported demonstration listings are not real offers.
 
@@ -87,7 +87,7 @@ docker build -t classifieds:local .
 Classifieds is an **educational Hexlet Rails application**, extended as an engineering portfolio case. It demonstrates moderated listings, GitHub OAuth, image attachments, authorization, personal favorites, private conversations, automated tests and isolated production deployment. It is **not** a commercial marketplace; imported listings are demonstration data.
 
 **Live demo:** https://classifieds-web-production-9132.up.railway.app  
-**Current deployed source:** [feature/classifieds-p0-security](https://github.com/TheGor-365/rails-project-65/tree/feature/classifieds-p0-security) (the default main branch is older).
+**Current deployed source:** pinned feature commit `e84aa68`; the same release is now present in `main` via [PR #32](https://github.com/TheGor-365/rails-project-65/pull/32).
 
 ### Delivered functionality
 
