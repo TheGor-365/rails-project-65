@@ -25,7 +25,7 @@ module Web
     end
 
     def new
-      @bulletin = current_user.bulletins.build
+      @bulletin = current_user.bulletins.build(language: I18n.locale.to_s)
       @categories = Category.order(:name)
     end
 
@@ -35,7 +35,9 @@ module Web
     end
 
     def create
-      @bulletin = current_user.bulletins.build(bulletin_params)
+      attributes = bulletin_params
+      @bulletin = current_user.bulletins.build(attributes)
+      @bulletin.language = I18n.locale.to_s unless attributes.key?(:language)
       assign_uploaded_photos(@bulletin)
       if @bulletin.save
         redirect_to profile_path, notice: t('flash.bulletins.created_draft')
@@ -87,7 +89,7 @@ module Web
     end
 
     def bulletin_params
-      params.require(:bulletin).permit(:title, :description, :category_id, :image)
+      params.require(:bulletin).permit(:title, :description, :category_id, :language, :image)
     end
   end
 end

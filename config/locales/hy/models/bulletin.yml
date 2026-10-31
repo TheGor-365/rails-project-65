@@ -1,0 +1,32 @@
+hy:
+  activerecord:
+    attributes:
+      bulletin:
+        title: "Վերնագիր"
+        description: "Նկարագրություն"
+        category: "Կատեգորիա"
+        category_id: "Կատեգորիա"
+        image: "Լուսանկար"
+        photos: "Լրացուցիչ լուսանկարներ"
+        language: "Հայտարարության լեզու"
+    errors:
+      messages:
+        record_invalid: "Ստուգման սխալ՝ %{errors}"
+      models:
+        bulletin:
+          attributes:
+            image:
+              unsupported_type: "պետք է լինի JPEG, PNG կամ WebP ձևաչափով"
+              too_large: "չպետք է գերազանցի 5 ՄԲ-ը"
+              mismatched_content: "չի համապատասխանում հայտարարված ձևաչափին"
+            photos:
+              too_many: "չի կարող պարունակել ավելի քան 4 լրացուցիչ լուսանկար"
+              unsupported_or_large: "պետք է լինեն JPEG, PNG կամ WebP և մինչև 5 ՄԲ"
+              mismatched_content: "պետք է համապատասխանեն հայտարարված ձևաչափին"
+            language:
+              inclusion: "թույլատրելի արժեք չէ"
+  errors:
+    format: "%{attribute} %{message}"
+    messages:
+      blank: "պարտադիր է լրացնել"
+      inclusion: "թույլատրելի արժեք չէ"

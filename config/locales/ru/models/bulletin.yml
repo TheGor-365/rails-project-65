@@ -1,0 +1,32 @@
+ru:
+  activerecord:
+    attributes:
+      bulletin:
+        title: "Название"
+        description: "Описание"
+        category: "Категория"
+        category_id: "Категория"
+        image: "Изображение"
+        photos: "Дополнительные фотографии"
+        language: "Язык объявления"
+    errors:
+      messages:
+        record_invalid: "Не удалось сохранить запись: %{errors}"
+      models:
+        bulletin:
+          attributes:
+            image:
+              unsupported_type: "должно быть JPEG, PNG или WebP"
+              too_large: "не должно превышать 5 МБ"
+              mismatched_content: "содержимое не соответствует формату файла"
+            photos:
+              too_many: "может содержать не более 4 дополнительных изображений"
+              unsupported_or_large: "должны быть JPEG, PNG или WebP до 5 МБ"
+              mismatched_content: "должны соответствовать заявленному формату файла"
+            language:
+              inclusion: "недопустимое значение"
+  errors:
+    format: "%{attribute} %{message}"
+    messages:
+      blank: "не может быть пустым"
+      inclusion: "недопустимое значение"

@@ -1,0 +1,7 @@
+en:
+  pages:
+    bulletins:
+      edit:
+        breadcrumb: "My account / Listings"
+        heading: "Edit listing"
+        instructions: "Changes update the existing listing. The cover photo changes only if you select a new file."

@@ -62,11 +62,11 @@ class Bulletin < ApplicationRecord
     allowed_types = %w[image/jpeg image/png image/webp]
 
     unless allowed_types.include?(blob.content_type)
-      errors.add(:image, 'должно быть JPEG, PNG или WebP')
+      errors.add(:image, :unsupported_type)
     end
 
     if blob.byte_size.nil? || blob.byte_size > 5.megabytes
-      errors.add(:image, 'не должно превышать 5 МБ')
+      errors.add(:image, :too_large)
     end
 
     change = attachment_changes['image']
@@ -76,19 +76,19 @@ class Bulletin < ApplicationRecord
     actual_type = image_content_type_from_bytes(change.attachable, blob)
     return if actual_type == blob.content_type
 
-    errors.add(:image, 'содержимое не соответствует формату файла')
+    errors.add(:image, :mismatched_content)
   end
 
   def validate_photo_uploads
     return unless photos.attached?
 
     allowed_types = %w[image/jpeg image/png image/webp]
-    errors.add(:photos, 'может содержать не более 4 дополнительных изображений') if photos.attachments.size > 4
+    errors.add(:photos, :too_many) if photos.attachments.size > 4
 
     photos.each do |photo|
       blob = photo.blob
       unless allowed_types.include?(blob.content_type) && blob.byte_size.present? && blob.byte_size <= 5.megabytes
-        errors.add(:photos, 'должны быть JPEG, PNG или WebP до 5 МБ')
+        errors.add(:photos, :unsupported_or_large)
       end
     end
 
@@ -102,7 +102,7 @@ class Bulletin < ApplicationRecord
       declared_type ||= attachable[:content_type] || attachable['content_type'] if attachable.is_a?(Hash)
       actual_type = image_content_type_from_bytes(attachable, nil)
       unless actual_type && actual_type == declared_type && allowed_types.include?(actual_type)
-        errors.add(:photos, 'должны соответствовать заявленному формату файла')
+        errors.add(:photos, :mismatched_content)
       end
     end
   end

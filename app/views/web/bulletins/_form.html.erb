@@ -12,7 +12,7 @@
               local: true, class: 'cl-editor-form' do |f| %>
   <% if bulletin.errors.any? %>
     <div class="alert alert-danger" role="alert">
-      <strong>Не удалось сохранить объявление.</strong>
+      <strong><%= t('pages.bulletins.form.save_failed') %></strong>
       <ul class="mb-0 mt-2">
         <% bulletin.errors.full_messages.each do |message| %>
           <li><%= message %></li>
@@ -25,31 +25,45 @@
     <section class="cl-editor-panel" aria-labelledby="cl-editor-content-heading">
       <div class="cl-editor-section-heading">
         <span class="cl-editor-step" aria-hidden="true">01</span>
-        <div><h3 id="cl-editor-content-heading">Основная информация</h3>
-          <p>Название и описание помогут посетителям понять предложение.</p></div>
+        <div><h3 id="cl-editor-content-heading"><%= t('pages.bulletins.form.main_information') %></h3>
+          <p><%= t('pages.bulletins.form.intro') %></p></div>
       </div>
 
       <div class="mb-4">
-        <%= f.label :title, 'Название объявления', class: 'form-label' %>
+        <%= f.label :title, t('pages.bulletins.form.title_label'), class: 'form-label' %>
         <%= f.text_field :title, class: 'form-control form-control-lg',
-              maxlength: 50, required: true, placeholder: 'Например, Смартфон LG в хорошем состоянии' %>
-        <div class="form-text">До 50 символов. Кратко и без рекламных лозунгов.</div>
+              maxlength: 50, required: true, placeholder: t('pages.bulletins.form.title_placeholder') %>
+        <div class="form-text"><%= t('pages.bulletins.form.title_hint') %></div>
       </div>
 
       <div class="mb-4">
-        <%= f.label :description, 'Подробное описание', class: 'form-label' %>
+        <%= f.label :description, t('pages.bulletins.form.description_label'), class: 'form-label' %>
         <%= f.text_area :description, class: 'form-control', rows: 8,
               maxlength: 1000, required: true,
-              placeholder: 'Укажите состояние, характеристики, комплектность или условия услуги.' %>
-        <div class="form-text">До 1000 символов. Пишите только проверяемую информацию.</div>
+              placeholder: t('pages.bulletins.form.description_placeholder') %>
+        <div class="form-text"><%= t('pages.bulletins.form.description_hint') %></div>
       </div>
 
       <div>
-        <%= f.label :category_id, 'Раздел каталога', class: 'form-label' %>
-        <%= f.collection_select :category_id, Category.order(:name), :id, :name,
-              { prompt: 'Выберите категорию' },
+        <%= f.label :category_id, t('pages.bulletins.form.category_label'), class: 'form-label' %>
+        <%= f.select :category_id,
+              options_for_select(Category.order(:name).map { |category| [ localized_category_name(category), category.id ] }, bulletin.category_id),
+              { prompt: t('pages.bulletins.form.category_prompt') },
               class: 'form-select', required: true %>
-        <div class="form-text">Выберите наиболее подходящую категорию.</div>
+        <div class="form-text"><%= t('pages.bulletins.form.category_hint') %></div>
+      </div>
+
+      <div class="mt-4">
+        <% if admin_mode %>
+          <span class="form-label d-block"><%= t('pages.bulletins.form.language_label') %></span>
+          <span class="form-control-plaintext"><%= locale_name(bulletin.language) %></span>
+        <% else %>
+          <%= f.label :language, t('pages.bulletins.form.language_label'), class: 'form-label' %>
+          <%= f.select :language, options_for_select(
+                Bulletin::LANGUAGES.map { |code| [ locale_name(code), code ] }, bulletin.language
+              ), {}, class: 'form-select', required: true %>
+        <% end %>
+        <div class="form-text"><%= t('pages.bulletins.form.language_hint') %></div>
       </div>
     </section>
 
@@ -57,55 +71,55 @@
       <section class="cl-editor-panel" aria-labelledby="cl-editor-image-heading">
         <div class="cl-editor-section-heading">
           <span class="cl-editor-step" aria-hidden="true">02</span>
-          <div><h3 id="cl-editor-image-heading">Фотография</h3>
-            <p>Качественное изображение делает объявление заметнее.</p></div>
+          <div><h3 id="cl-editor-image-heading"><%= t('pages.bulletins.form.photo_heading') %></h3>
+            <p><%= t('pages.bulletins.form.photo_intro') %></p></div>
         </div>
         <% if editing && bulletin.image.attached? && bulletin.image.blob.persisted? %>
           <div class="cl-editor-current-image">
-            <%= image_tag bulletin.image, alt: "Текущее изображение: #{bulletin.title}", loading: 'lazy' %>
-            <span>Текущее изображение</span>
+            <%= image_tag bulletin.image, alt: t('pages.bulletins.form.current_image_alt', title: bulletin.title), loading: 'lazy' %>
+            <span><%= t('pages.bulletins.form.current_image') %></span>
           </div>
         <% end %>
         <div class="cl-editor-upload">
           <i class="bi bi-cloud-arrow-up" aria-hidden="true"></i>
-          <%= f.label :image, (editing ? 'Заменить изображение' : 'Добавить изображение'), class: 'form-label' %>
+          <%= f.label :image, (editing ? t('pages.bulletins.form.replace_image') : t('pages.bulletins.form.add_image')), class: 'form-label' %>
           <%= f.file_field :image, class: 'form-control',
                 accept: 'image/jpeg,image/png,image/webp', required: !editing %>
-          <span>JPEG, PNG или WebP · до 5 МБ</span>
+          <span><%= t('pages.bulletins.form.image_constraints') %></span>
         </div>
         <% existing_photos = editing ? bulletin.photos.attachments.select { |photo| photo.persisted? && photo.blob.persisted? } : [] %>
         <% if existing_photos.any? %>
-          <div class="cl-editor-existing-photos" aria-label="Уже добавленные фотографии">
+          <div class="cl-editor-existing-photos" aria-label="<%= t('pages.bulletins.form.existing_photos') %>">
             <% existing_photos.each do |photo| %>
-              <%= image_tag photo, alt: 'Дополнительная фотография', loading: 'lazy' %>
+              <%= image_tag photo, alt: t('pages.bulletins.form.additional_photo_alt'), loading: 'lazy' %>
             <% end %>
           </div>
         <% end %>
         <div class="mt-3">
-          <%= f.label :photos, 'Дополнительные фотографии', class: 'form-label' %>
+          <%= f.label :photos, t('pages.bulletins.form.additional_photos'), class: 'form-label' %>
           <%= f.file_field :photos, class: 'form-control', multiple: true,
                 accept: 'image/jpeg,image/png,image/webp' %>
-          <div class="form-text">До 4 дополнительных фотографий по 5 МБ. Новые файлы добавляются к существующим.</div>
+          <div class="form-text"><%= t('pages.bulletins.form.additional_photos_hint') %></div>
         </div>
       </section>
 
       <section class="cl-editor-tips" aria-labelledby="cl-editor-tips-heading">
-        <h3 id="cl-editor-tips-heading"><i class="bi bi-lightbulb" aria-hidden="true"></i> Перед сохранением</h3>
+        <h3 id="cl-editor-tips-heading"><i class="bi bi-lightbulb" aria-hidden="true"></i> <%= t('pages.bulletins.form.before_saving') %></h3>
         <ul>
-          <li>Проверьте название и категорию.</li>
-          <li>Опишите только реальные характеристики или условия.</li>
-          <li>Убедитесь, что у вас есть право использовать фотографию.</li>
+          <li><%= t('pages.bulletins.form.tip_title') %></li>
+          <li><%= t('pages.bulletins.form.tip_accuracy') %></li>
+          <li><%= t('pages.bulletins.form.tip_rights') %></li>
         </ul>
         <% unless admin_mode %>
-          <p>Новое объявление сохраняется как черновик. Отправить его на модерацию можно из профиля.</p>
+          <p><%= t('pages.bulletins.form.draft_note') %></p>
         <% end %>
       </section>
     </div>
   </div>
 
   <div class="cl-editor-actions">
-    <%= f.submit (editing ? 'Сохранить изменения' : 'Создать черновик'), class: 'btn btn-primary btn-lg' %>
-    <%= link_to 'Отмена', (admin_mode ? admin_bulletins_path : profile_path),
+    <%= f.submit (editing ? t('pages.bulletins.form.save_changes') : t('pages.bulletins.form.create_draft')), class: 'btn btn-primary btn-lg' %>
+    <%= link_to t('pages.bulletins.form.cancel'), (admin_mode ? admin_bulletins_path : profile_path),
           class: 'btn btn-outline-secondary btn-lg' %>
   </div>
 <% end %>
