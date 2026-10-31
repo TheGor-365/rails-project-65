@@ -1,0 +1,7 @@
+ru:
+  activerecord:
+    models:
+      category: "Категория"
+    attributes:
+      category:
+        name: "Название"
