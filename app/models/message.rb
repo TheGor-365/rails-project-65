@@ -32,6 +32,6 @@ class Message < ApplicationRecord
   def participant_sender
     return unless conversation && sender
 
-    errors.add(:sender, 'не участвует в переписке') unless conversation.participant?(sender)
+    errors.add(:sender, :not_participant) unless conversation.participant?(sender)
   end
 end
