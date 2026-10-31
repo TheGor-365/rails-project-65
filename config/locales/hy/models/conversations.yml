@@ -1,0 +1,32 @@
+hy:
+  activerecord:
+    models:
+      message: "Հաղորդագրություն"
+      conversation: "Զրույց"
+    attributes:
+      message:
+        body: "Հաղորդագրության տեքստ"
+        sender: "Ուղարկող"
+      conversation:
+        buyer: "Գնորդ"
+        seller: "Վաճառող"
+        bulletin: "Հայտարարություն"
+    errors:
+      models:
+        message:
+          attributes:
+            sender:
+              not_participant: "զրույցի մասնակից չէ"
+        conversation:
+          attributes:
+            buyer:
+              cannot_be_author: "չի կարող լինել հայտարարության հեղինակը"
+            seller:
+              must_own_listing: "պետք է լինի հայտարարության սեփականատերը"
+            bulletin:
+              must_be_published: "պետք է հրապարակված լինի"
+  errors:
+    format: "%{attribute} %{message}"
+    messages:
+      too_long: "չափազանց երկար է (առավելագույնը %{count} նիշ)"
+      blank: "պարտադիր է լրացնել"
