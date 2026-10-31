@@ -1,0 +1,8 @@
+ru:
+  pages:
+    auth:
+      link_form:
+        page_title: "Привязка GitHub · Classifieds"
+        heading: "Привязка GitHub"
+        intro: "Привяжите GitHub к своему текущему аккаунту."
+        continue: "Продолжить"
