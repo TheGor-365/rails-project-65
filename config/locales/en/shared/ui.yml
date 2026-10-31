@@ -1,0 +1,30 @@
+en:
+  shared:
+    header:
+      main_navigation: "Main navigation"
+      open_menu: "Open menu"
+      home: "Home"
+      admin: "Admin"
+      messages: "Messages"
+      profile: "Profile"
+      sign_out: "Sign out"
+      sign_in_github: "Sign in with GitHub"
+      select_language: "Choose language"
+      current_language: "Interface language: %{language}"
+      unread_messages: "Unread messages: %{count}"
+    theme:
+      enable_dark: "Enable dark mode"
+      enable_light: "Enable light mode"
+    footer:
+      credit: "Hexlet educational project · Ruby on Rails"
+    meta:
+      default_title: "Classifieds · Listings"
+    pagination:
+      navigation_label: "Pages"
+  views:
+    pagination:
+      first: "&laquo;"
+      last: "&raquo;"
+      previous: "&lsaquo;"
+      next: "&rsaquo;"
+      truncate: "…"
