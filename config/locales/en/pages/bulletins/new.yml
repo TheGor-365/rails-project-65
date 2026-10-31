@@ -1,0 +1,7 @@
+en:
+  pages:
+    bulletins:
+      new:
+        breadcrumb: "My account / Listings"
+        heading: "New listing"
+        instructions: "Add a description and cover photo. Your listing will first be saved as a draft."
