@@ -26,7 +26,8 @@ module Web
                params: { message: { body: body } }
         end
 
-        assert_redirected_to conversation_path(Conversation.last, locale: locale == :ru ? nil : locale)
+        expected_path = locale == :ru ? conversation_path(Conversation.last) : conversation_path(Conversation.last, locale: locale)
+        assert_redirected_to expected_path
         follow_redirect!
         assert_select '.alert', text: /#{Regexp.escape(expected[2])}/
         assert_select '.cl-message-bubble__body', text: body
@@ -50,7 +51,7 @@ module Web
 
         get conversation_path(conversation, locale: locale)
         assert_response :success
-        assert_select 'html[lang=?]', locale
+        assert_select "html[lang='#{locale}']"
         assert_select '.cl-message-bubble__body', text: 'Untranslated private message'
         assert_select 'h3', text: words[1]
         assert_select 'label[for="message_body"]', text: words[2]
