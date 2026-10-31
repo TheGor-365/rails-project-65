@@ -1,0 +1,20 @@
+hy:
+  pages:
+    bulletins:
+      show:
+        page_title: "%{title} · Classifieds"
+        breadcrumb_navigation: "Նավարկման ուղի"
+        all_listings: "Բոլոր հայտարարությունները"
+        no_photo: "Լուսանկար չի ավելացվել"
+        gallery_navigation: "Հայտարարության լուսանկարները"
+        gallery_photo: "Լուսանկար %{number}"
+        gallery_image_alt: "%{title}, լուսանկար %{number}"
+        eyebrow: "Հայտարարություն"
+        listing_information: "Տեղեկություններ հայտարարության մասին"
+        category: "Կատեգորիա"
+        author: "Հեղինակ"
+        created_at: "Ավելացման ամսաթիվ"
+        in_favorites: "Ընտրյալներում"
+        add_favorite: "Ավելացնել ընտրյալներին"
+        message_author: "Գրել հեղինակին"
+        more_in_category: "Այլ հայտարարություններ այս կատեգորիայում"
