@@ -16,9 +16,14 @@ end
 module ActionDispatch
   class IntegrationTest
     def sign_in(user, _options = {})
+      uid = "test-github-#{user.id}"
+      user.oauth_identities.find_or_create_by!(
+        provider: 'github', uid: uid
+      )
+
       auth_hash = {
         provider: 'github',
-        uid: '12345',
+        uid: uid,
         info: {
           email: user.email,
           name: user.name

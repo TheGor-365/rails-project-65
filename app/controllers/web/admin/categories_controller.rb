@@ -7,6 +7,7 @@ module Web
 
       def index
         @categories = Category.order(:name)
+        @category = Category.new
       end
 
       def new

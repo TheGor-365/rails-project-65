@@ -1,0 +1,55 @@
+<header class="cl-site-header">
+  <div class="container-xl">
+    <nav class="navbar navbar-expand-lg cl-navbar" aria-label="Основная навигация">
+      <%= link_to root_path, class: 'navbar-brand cl-brand' do %>
+        <span class="cl-brand__mark" aria-hidden="true"><i class="bi bi-grid-3x3-gap-fill"></i></span>
+        <span>Classifieds</span>
+      <% end %>
+
+      <div class="cl-header-tools ms-auto ms-lg-3 order-lg-3">
+        <%= render 'shared/theme_toggle' %>
+        <button class="navbar-toggler cl-menu-toggle"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#classifiedsNavigation"
+                aria-controls="classifiedsNavigation"
+                aria-expanded="false"
+                aria-label="Открыть меню">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </div>
+
+      <div class="collapse navbar-collapse order-lg-2 flex-lg-grow-1" id="classifiedsNavigation">
+        <ul class="navbar-nav align-items-lg-center">
+          <li class="nav-item">
+            <%= link_to 'Главная', root_path, class: 'nav-link cl-nav-link' %>
+          </li>
+          <% if signed_in? && current_user.admin? %>
+            <li class="nav-item">
+              <%= link_to 'Админка', admin_categories_path, class: 'nav-link cl-nav-link' %>
+            </li>
+          <% end %>
+        </ul>
+
+        <div class="cl-account-actions ms-lg-auto">
+          <% if signed_in? %>
+            <span class="cl-account-label"><%= current_user.name.presence || current_user.email %></span>
+            <%= link_to conversations_path, class: 'btn btn-outline-secondary btn-sm cl-messages-nav' do %>
+              <i class="bi bi-chat-dots" aria-hidden="true"></i>
+              Сообщения
+              <% if unread_messages_count.positive? %>
+                <span class="cl-message-unread-badge" aria-label="Непрочитанных сообщений: <%= unread_messages_count %>"><%= unread_messages_count %></span>
+              <% end %>
+            <% end %>
+            <%= link_to 'Профиль', profile_path, class: 'btn btn-outline-secondary btn-sm' %>
+            <%= button_to 'Выйти', signout_path, method: :delete, class: 'btn btn-outline-secondary btn-sm' %>
+          <% else %>
+            <%= button_to 'Войти через GitHub', auth_request_path('github'),
+                  method: :post, class: 'btn btn-primary btn-sm',
+                  data: { turbo: false } %>
+          <% end %>
+        </div>
+      </div>
+    </nav>
+  </div>
+</header>

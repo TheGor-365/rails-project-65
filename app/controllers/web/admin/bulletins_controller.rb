@@ -3,17 +3,21 @@
 module Web
   module Admin
     class BulletinsController < BaseController
+      include BulletinPhotoUploads
       before_action :set_bulletin, only: %i[publish reject archive edit update show destroy]
 
       def index
+        @state_counts = Bulletin.group(:state).count
+        @categories = Category.order(:name)
         @q = Bulletin.ransack(params[:q])
-        @bulletins = @q.result.order(created_at: :desc).page(params[:page]).per(20)
+        @bulletins = @q.result.includes(:category, :user).order(created_at: :desc).page(params[:page]).per(20)
       end
 
       def show; end
       def edit; end
 
       def update
+        assign_uploaded_photos(@bulletin)
         if @bulletin.update(bulletin_params)
           redirect_to admin_bulletins_path, notice: t('flash.admin.bulletins.updated')
         else

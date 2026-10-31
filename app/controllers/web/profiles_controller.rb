@@ -6,6 +6,8 @@ module Web
 
     def show
       base = current_user.bulletins.includes(:category).recent
+      @state_counts = current_user.bulletins.group(:state).count
+      @categories = Category.order(:name)
       @q = base.ransack(params[:q])
       @bulletins = @q.result(distinct: true).page(params[:page])
     end

@@ -1,0 +1,31 @@
+// Single Bootstrap Icon control, intentionally separate from account actions.
+.cl-theme-toggle {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  inline-size: 2.75rem;
+  block-size: 2.75rem;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--cl-text);
+  cursor: pointer;
+  transition: background-color 140ms ease;
+}
+
+.cl-theme-toggle:hover { background-color: var(--cl-hover); }
+
+.cl-theme-toggle:focus-visible {
+  outline: 2px solid var(--cl-focus);
+  outline-offset: 2px;
+}
+
+.cl-theme-toggle .bi {
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cl-theme-toggle { transition: none; }
+}

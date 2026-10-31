@@ -1,0 +1,25 @@
+<div class="cl-management-heading">
+  <div>
+    <p class="cl-eyebrow">Личный кабинет</p>
+    <h2>Избранные объявления</h2>
+    <p class="cl-management-lead">Сохранённые публикации доступны здесь, пока они опубликованы в каталоге.</p>
+  </div>
+  <%= link_to 'Вернуться в профиль', profile_path, class: 'btn btn-outline-secondary' %>
+</div>
+
+<% if @favorites.any? %>
+  <p class="cl-muted mb-3"><%= @favorites.total_count %> сохранено</p>
+  <div class="cl-catalog-grid">
+    <% @favorites.each do |favorite| %>
+      <%= render 'web/bulletins/bulletin_card', bulletin: favorite.bulletin %>
+    <% end %>
+  </div>
+  <div class="mt-4"><%= paginate @favorites %></div>
+<% else %>
+  <section class="cl-empty-state" role="status">
+    <i class="bi bi-heart" aria-hidden="true"></i>
+    <h3>Здесь пока нет объявлений</h3>
+    <p>Откройте интересное объявление и нажмите «В избранное».</p>
+    <%= link_to 'Перейти в каталог', root_path, class: 'btn btn-primary' %>
+  </section>
+<% end %>

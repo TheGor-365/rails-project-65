@@ -1,0 +1,51 @@
+// The single semantic color source for light and dark mode.
+:root,
+[data-bs-theme="light"] {
+  color-scheme: light;
+  --cl-canvas: #f5f7fb;
+  --cl-surface: #ffffff;
+  --cl-surface-muted: #edf1f7;
+  --cl-text: #1c2739;
+  --cl-muted: #526178;
+  --cl-border: #d7e0ec;
+  --cl-hover: #e9eef8;
+  --cl-accent: #315fd4;
+  --cl-focus: #315fd4;
+  --cl-radius: 0.75rem;
+  --cl-shadow: 0 6px 24px rgb(24 38 63 / 5%);
+
+  --bs-body-bg: var(--cl-canvas);
+  --bs-body-color: var(--cl-text);
+  --bs-heading-color: var(--cl-text);
+  --bs-secondary-bg: var(--cl-surface-muted);
+  --bs-tertiary-bg: var(--cl-surface-muted);
+  --bs-border-color: var(--cl-border);
+  --bs-secondary-color: var(--cl-muted);
+  --bs-link-color: var(--cl-accent);
+  --bs-link-hover-color: #2049b4;
+}
+
+[data-bs-theme="dark"] {
+  color-scheme: dark;
+  --cl-canvas: #101827;
+  --cl-surface: #1b2638;
+  --cl-surface-muted: #253249;
+  --cl-text: #f0f4fb;
+  --cl-muted: #bfcbdd;
+  --cl-border: #3b4b63;
+  --cl-hover: #2b3a53;
+  --cl-accent: #a5bfff;
+  --cl-focus: #b9cfff;
+  --cl-radius: 0.75rem;
+  --cl-shadow: 0 6px 24px rgb(0 0 0 / 18%);
+
+  --bs-body-bg: var(--cl-canvas);
+  --bs-body-color: var(--cl-text);
+  --bs-heading-color: var(--cl-text);
+  --bs-secondary-bg: var(--cl-surface-muted);
+  --bs-tertiary-bg: var(--cl-surface-muted);
+  --bs-border-color: var(--cl-border);
+  --bs-secondary-color: var(--cl-muted);
+  --bs-link-color: var(--cl-accent);
+  --bs-link-hover-color: #c8d8ff;
+}

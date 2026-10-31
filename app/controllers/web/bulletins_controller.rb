@@ -2,16 +2,27 @@
 
 module Web
   class BulletinsController < ApplicationController
+    include BulletinPhotoUploads
     before_action :set_bulletin, only: %i[show edit update to_moderate archive]
     before_action :authenticate!, only: %i[new create edit update to_moderate archive]
 
     def index
       @q = Bulletin.published.ransack(params[:q])
       @categories = Category.order(:name)
-      @bulletins = @q.result(distinct: true).page(params[:page]).per(12)
+      @sort = %w[newest oldest title_asc title_desc].include?(params[:sort]) ? params[:sort] : 'newest'
+      ordering = {
+        'newest' => { created_at: :desc, id: :desc },
+        'oldest' => { created_at: :asc, id: :asc },
+        'title_asc' => { title: :asc, id: :desc },
+        'title_desc' => { title: :desc, id: :desc }
+      }.fetch(@sort)
+      @bulletins = @q.result(distinct: true).reorder(ordering)
+                     .includes(:category).with_attached_image.page(params[:page]).per(12)
     end
 
-    def show; end
+    def show
+      authorize @bulletin
+    end
 
     def new
       @bulletin = current_user.bulletins.build
@@ -25,6 +36,7 @@ module Web
 
     def create
       @bulletin = current_user.bulletins.build(bulletin_params)
+      assign_uploaded_photos(@bulletin)
       if @bulletin.save
         redirect_to profile_path, notice: t('flash.bulletins.created_draft')
       else
@@ -35,6 +47,7 @@ module Web
 
     def update
       authorize @bulletin
+      assign_uploaded_photos(@bulletin)
       if @bulletin.update(bulletin_params)
         redirect_to profile_path, notice: t('flash.bulletins.sent_to_moderation')
       else

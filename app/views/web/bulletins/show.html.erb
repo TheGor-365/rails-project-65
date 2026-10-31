@@ -1,13 +1,83 @@
-<h2 class="mb-3"><%= @bulletin.title %></h2>
+<nav class="cl-detail-breadcrumb" aria-label="Навигация">
+  <%= link_to root_path do %><i class="bi bi-arrow-left" aria-hidden="true"></i> Все объявления<% end %>
+  <span aria-hidden="true">/</span>
+  <span><%= @bulletin.category.name %></span>
+</nav>
 
-<p class="text-muted mb-2">
-  Категория: <%= @bulletin.category.name %> · Автор: <%= @bulletin.user.name %>
-</p>
+<div class="cl-detail-grid">
+  <article class="cl-detail-primary">
+    <% gallery_images = [] %>
+    <% gallery_images << @bulletin.image if @bulletin.image.attached? %>
+    <% gallery_images.concat(@bulletin.photos.to_a) %>
+    <div class="cl-detail-gallery-set" data-controller="gallery">
+      <div class="cl-detail-gallery">
+        <% if gallery_images.any? %>
+          <%= image_tag gallery_images.first, class: 'cl-detail-gallery__image',
+                alt: @bulletin.title, loading: 'eager', fetchpriority: 'high',
+                decoding: 'async', data: { gallery_target: 'main' } %>
+        <% else %>
+          <div class="cl-detail-gallery__empty"><i class="bi bi-image" aria-hidden="true"></i>Фотография не добавлена</div>
+        <% end %>
+      </div>
+      <% if gallery_images.size > 1 %>
+        <nav class="cl-detail-thumbnails" aria-label="Фотографии объявления">
+          <% gallery_images.each_with_index do |photo, index| %>
+            <%= button_tag type: 'button', class: 'cl-gallery-thumb',
+                  aria: { label: "Фотография #{index + 1}", pressed: index.zero? },
+                  data: { action: 'gallery#select', gallery_target: 'thumb',
+                          gallery_src: url_for(photo), gallery_alt: "#{@bulletin.title}, фото #{index + 1}" } do %>
+              <%= image_tag photo, alt: '', loading: 'lazy', decoding: 'async', width: 76, height: 61 %>
+            <% end %>
+          <% end %>
+        </nav>
+      <% end %>
+    </div>
+    <div class="cl-detail-description">
+      <p class="cl-eyebrow">Объявление</p>
+      <h2><%= @bulletin.title %></h2>
+      <div class="cl-detail-description__text"><%= simple_format(public_bulletin_description(@bulletin.description)) %></div>
+    </div>
+  </article>
 
-<% if @bulletin.image.attached? %>
-  <div class="mb-3">
-    <%= image_tag @bulletin.image, class: "img-fluid rounded" %>
-  </div>
-<% end %>
-
-<p><%= simple_format(@bulletin.description) %></p>
+  <aside class="cl-detail-sidebar" aria-label="Информация об объявлении">
+    <div class="cl-detail-panel">
+      <span class="cl-detail-panel__label">Категория</span>
+      <strong><i class="bi bi-tag" aria-hidden="true"></i> <%= @bulletin.category.name %></strong>
+      <hr>
+      <div class="cl-detail-panel__item">
+        <i class="bi bi-person-circle" aria-hidden="true"></i>
+        <div><span class="cl-detail-panel__label">Автор</span>
+          <strong><%= @bulletin.user.name.presence || @bulletin.user.email %></strong>
+        </div>
+      </div>
+      <div class="cl-detail-panel__item">
+        <i class="bi bi-calendar3" aria-hidden="true"></i>
+        <div><span class="cl-detail-panel__label">Дата добавления</span>
+          <strong><%= @bulletin.created_at.strftime('%d.%m.%Y') %></strong>
+        </div>
+      </div>
+      <% if signed_in? %>
+        <% if current_user.favorites.exists?(bulletin: @bulletin) %>
+          <%= button_to bulletin_favorite_path(@bulletin), method: :delete,
+                class: 'btn btn-outline-primary cl-favorite-action' do %>
+            <i class="bi bi-heart-fill" aria-hidden="true"></i> В избранном
+          <% end %>
+        <% else %>
+          <%= button_to bulletin_favorite_path(@bulletin), method: :post,
+                class: 'btn btn-primary cl-favorite-action' do %>
+            <i class="bi bi-heart" aria-hidden="true"></i> В избранное
+          <% end %>
+        <% end %>
+      <% end %>
+      <% if signed_in? && @bulletin.user_id != current_user.id && @bulletin.published? %>
+        <%= link_to new_bulletin_conversation_path(@bulletin), class: 'btn btn-primary cl-detail-panel__action' do %>
+          <i class='bi bi-chat-dots' aria-hidden='true'></i> Написать автору
+        <% end %>
+      <% end %>
+      <%= link_to root_path(q: { category_id_eq: @bulletin.category_id }),
+            class: 'btn btn-outline-primary cl-detail-panel__action' do %>
+        Другие в этой категории <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
+      <% end %>
+    </div>
+  </aside>
+</div>

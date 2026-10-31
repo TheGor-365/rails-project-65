@@ -1,0 +1,64 @@
+.cl-detail-breadcrumb {
+  display: flex;
+  gap: .6rem;
+  align-items: center;
+  margin-bottom: 1rem;
+  color: var(--cl-muted);
+  font-size: .88rem;
+}
+.cl-detail-breadcrumb a { color: var(--cl-muted); text-decoration: none; }
+.cl-detail-breadcrumb a:hover { color: var(--cl-accent); }
+.cl-detail-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.85fr) minmax(255px, 1fr);
+  align-items: start;
+  gap: 1.3rem;
+}
+.cl-detail-primary, .cl-detail-panel {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--cl-border);
+  border-radius: 1rem;
+  background: var(--cl-surface);
+  box-shadow: var(--cl-shadow);
+}
+.cl-detail-gallery {
+  display: grid;
+  place-items: center;
+  min-height: 22rem;
+  max-height: 35rem;
+  overflow: hidden;
+  background: var(--cl-surface-muted);
+}
+.cl-detail-gallery__image { width: 100%; max-height: 35rem; object-fit: contain; }
+.cl-detail-gallery__empty {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: .65rem;
+  color: var(--cl-muted);
+}
+.cl-detail-gallery__empty .bi { font-size: 2.5rem; }
+.cl-detail-description { padding: 1.45rem; }
+.cl-detail-description h2 { margin: 0 0 1rem; font-weight: 750; letter-spacing: -.035em; }
+.cl-detail-description__text { line-height: 1.7; overflow-wrap: anywhere; }
+.cl-detail-description__text p:last-child { margin-bottom: 0; }
+.cl-detail-panel { padding: 1.3rem; }
+.cl-detail-panel__label { display: block; margin-bottom: .25rem; color: var(--cl-muted); font-size: .79rem; }
+.cl-detail-panel hr { margin: 1.1rem 0; border-color: var(--cl-border); }
+.cl-detail-panel__item { display: flex; align-items: flex-start; gap: .8rem; margin-bottom: 1.1rem; }
+.cl-detail-panel__item > .bi { color: var(--cl-muted); font-size: 1.2rem; }
+.cl-detail-panel__item strong { display: block; overflow-wrap: anywhere; }
+.cl-detail-panel__action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .5rem;
+  width: 100%;
+  margin-top: 1.4rem;
+}
+@media (max-width: 767.98px) {
+  .cl-detail-grid { grid-template-columns: minmax(0, 1fr); }
+  .cl-detail-gallery { min-height: 15rem; }
+  .cl-detail-description { padding: 1.1rem; }
+}

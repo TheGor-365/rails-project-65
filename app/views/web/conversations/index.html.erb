@@ -1,0 +1,46 @@
+<div class="cl-management-heading">
+  <div>
+    <p class="cl-eyebrow">Личный кабинет / Сообщения</p>
+    <h2>Переписки</h2>
+    <p class="cl-management-lead">Здесь доступны только диалоги, в которых вы участвуете.</p>
+  </div>
+  <%= link_to 'К профилю', profile_path, class: 'btn btn-outline-secondary' %>
+</div>
+
+<% if @conversations.any? %>
+  <section class="cl-conversation-list" aria-label="Список переписок">
+    <% @conversations.each do |conversation| %>
+      <% participant = conversation.other_participant(current_user) %>
+      <% unread = @unread_counts.fetch(conversation.id, 0) %>
+      <%= link_to conversation_path(conversation),
+            class: class_names('cl-conversation-item', 'cl-conversation-item--unread': unread.positive?) do %>
+        <span class="cl-conversation-item__icon"><i class="bi bi-chat-dots" aria-hidden="true"></i></span>
+        <span class="cl-conversation-item__content">
+          <strong><%= conversation.bulletin.title %></strong>
+          <span class="cl-conversation-item__meta">
+            <%= conversation.buyer_id == current_user.id ? 'Автор' : 'Покупатель' %>:
+            <%= participant.name.presence || 'Пользователь' %>
+          </span>
+          <% if conversation.last_message %>
+            <span class="cl-conversation-item__preview"><%= truncate(conversation.last_message.body, length: 120) %></span>
+          <% end %>
+        </span>
+        <span class="cl-conversation-item__side">
+          <time datetime="<%= conversation.updated_at.iso8601 %>"><%= conversation.updated_at.strftime('%d.%m.%Y %H:%M') %></time>
+          <% if unread.positive? %>
+            <span class="cl-message-unread-badge" aria-label="Непрочитанных сообщений: <%= unread %>"><%= unread %></span>
+          <% end %>
+          <i class="bi bi-chevron-right" aria-hidden="true"></i>
+        </span>
+      <% end %>
+    <% end %>
+  </section>
+  <div class="mt-3"><%= paginate @conversations %></div>
+<% else %>
+  <div class="cl-empty-state">
+    <i class="bi bi-chat-dots" aria-hidden="true"></i>
+    <h3>Пока нет переписок</h3>
+    <p>Откройте опубликованное объявление другого пользователя и нажмите «Написать автору».</p>
+    <%= link_to 'В каталог', root_path, class: 'btn btn-primary' %>
+  </div>
+<% end %>

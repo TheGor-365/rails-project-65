@@ -1,55 +1,79 @@
-<div class="d-flex justify-content-between align-items-center mb-3">
-  <h2 class="mb-0">Объявления</h2>
+<div class="cl-catalog-heading">
+  <div>
+    <p class="cl-eyebrow">Каталог</p>
+    <h2>Объявления</h2>
+    <p class="cl-muted"><%= @bulletins.total_count %> найдено</p>
+  </div>
   <% if signed_in? %>
-    <%= link_to "Создать", new_bulletin_path, class: "btn btn-primary btn-sm" %>
+    <%= link_to new_bulletin_path, class: 'btn btn-primary cl-create-action' do %>
+      <i class="bi bi-plus-lg" aria-hidden="true"></i> Создать
+    <% end %>
   <% end %>
 </div>
 
-<div class="p-3 bg-light rounded mb-3">
+<section class="cl-filter-bar" aria-label="Поиск и фильтры">
   <%= search_form_for @q, url: root_path, method: :get do |f| %>
-    <div class="row my-2">
-      <div class="col-6">
-        <div class="mb-3">
-          <%= f.search_field :title_cont, class: "form-control", placeholder: "Поиск по названию…" %>
-          <small class="form-text text-muted">Искать по названию объявления</small>
-        </div>
+    <div class="cl-filter-controls">
+      <div class="cl-filter-search">
+        <i class="bi bi-search" aria-hidden="true"></i>
+        <%= f.search_field :title_cont, class: 'form-control', placeholder: 'Поиск объявлений', aria: { label: 'Поиск по названию' } %>
       </div>
-      <div class="col-4">
-        <div class="mb-3">
-          <%= f.select :category_id_eq,
-                options_from_collection_for_select(Category.order(:name), :id, :name, @q.category_id_eq),
-                { include_blank: "Любая категория" },
-                class: "form-select" %>
-          <small class="form-text text-muted">Выбрать категорию</small>
-        </div>
-      </div>
-      <div class="col-2 d-flex align-items-start gap-2">
-        <%= f.submit "Искать", class: "btn btn-primary me-2" %>
-        <%= link_to "Сброс", root_path, class: "btn btn-outline-primary" %>
-      </div>
+      <%= f.select :category_id_eq,
+            options_from_collection_for_select(@categories, :id, :name, @q.category_id_eq),
+            { include_blank: 'Все категории' },
+            class: 'form-select', aria: { label: 'Категория' } %>
+      <%= select_tag :sort,
+            options_for_select([ [ 'Сначала новые', 'newest' ], [ 'Сначала старые', 'oldest' ],
+                                 [ 'Название А–Я', 'title_asc' ], [ 'Название Я–А', 'title_desc' ] ], @sort),
+            class: 'form-select cl-filter-sort', aria: { label: 'Сортировка объявлений' } %>
+      <%= f.submit 'Искать', class: 'btn btn-primary' %>
+      <%= link_to 'Сброс', root_path, class: 'btn btn-outline-secondary' %>
     </div>
   <% end %>
-</div>
-
-<div class="row g-3">
-  <% @bulletins.each do |b| %>
-    <div class="col-12 col-md-6 col-lg-4">
-      <div class="card h-100">
-        <% if b.image.attached? %>
-          <%= image_tag b.image, class: "card-img-top", alt: b.title %>
+  <% selected_category = params.dig(:q, :category_id_eq).to_s %>
+  <% active_search = params.dig(:q, :title_cont).to_s.strip %>
+  <% title_query = params.dig(:q, :title_cont).presence %>
+  <nav class="cl-category-strip" aria-label="Быстрый выбор категории">
+    <%= link_to 'Все', root_path(q: { title_cont: title_query }.compact, sort: @sort),
+          class: "cl-category-chip #{'is-active' if selected_category.blank?}" %>
+    <% @categories.each do |category| %>
+      <%= link_to category.name,
+            root_path(q: { category_id_eq: category.id, title_cont: title_query }.compact, sort: @sort),
+            class: "cl-category-chip #{'is-active' if selected_category == category.id.to_s}" %>
+    <% end %>
+  </nav>
+  <% if active_search.present? || selected_category.present? || @sort != 'newest' %>
+    <div class="cl-active-filters" aria-label="Применённые фильтры">
+      <span>Применено:</span>
+      <% if active_search.present? %>
+        <span class="cl-active-filter"><i class="bi bi-search" aria-hidden="true"></i> <%= active_search %></span>
+      <% end %>
+      <% if selected_category.present? %>
+        <% category = @categories.find { |item| item.id.to_s == selected_category } %>
+        <% if category %>
+          <span class="cl-active-filter"><i class="bi bi-tag" aria-hidden="true"></i> <%= category.name %></span>
         <% end %>
-        <div class="card-body">
-          <h5 class="card-title mb-1"><%= b.title %></h5>
-          <div class="text-muted small mb-2">
-            Категория: <%= b.category.name %>
-          </div>
-          <p class="card-text"><%= truncate(b.description, length: 140) %></p>
-        </div>
-      </div>
+      <% end %>
+      <% if @sort != 'newest' %>
+        <span class="cl-active-filter">Сортировка: <%= { 'oldest' => 'Сначала старые', 'title_asc' => 'А–Я', 'title_desc' => 'Я–А' }.fetch(@sort) %></span>
+      <% end %>
+      <%= link_to 'Очистить всё', root_path, class: 'cl-active-filters__clear' %>
     </div>
   <% end %>
-</div>
+</section>
 
-<div class="mt-3">
-  <%= paginate @bulletins, params: request.query_parameters %>
-</div>
+<% if @bulletins.any? %>
+  <div class="cl-catalog-grid">
+    <%= render partial: 'bulletin_card', collection: @bulletins, as: :bulletin %>
+  </div>
+  <div class="mt-4">
+    <%= paginate @bulletins, params: request.query_parameters %>
+  </div>
+<% else %>
+  <div class="cl-empty-state" role="status">
+    <i class="bi bi-search" aria-hidden="true"></i>
+    <h3>Объявления не найдены</h3>
+    <p>Попробуй другой запрос или очисти фильтры.</p>
+    <%= link_to 'Все объявления', root_path, class: 'btn btn-primary' %>
+  </div>
+<% end %>

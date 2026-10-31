@@ -32,3 +32,12 @@ local:
 #   service: Mirror
 #   primary: local
 #   mirrors: [ amazon, google, microsoft ]
+
+# Railway S3-compatible private object storage.
+railway_bucket:
+  service: S3
+  access_key_id: <%= ENV['CLASSIFIEDS_S3_ACCESS_KEY_ID'] %>
+  secret_access_key: <%= ENV['CLASSIFIEDS_S3_SECRET_ACCESS_KEY'] %>
+  region: <%= ENV.fetch('CLASSIFIEDS_S3_REGION', 'auto') %>
+  bucket: <%= ENV['CLASSIFIEDS_S3_BUCKET'] %>
+  endpoint: <%= ENV['CLASSIFIEDS_S3_ENDPOINT'] %>

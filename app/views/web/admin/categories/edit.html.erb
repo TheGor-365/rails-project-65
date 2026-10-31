@@ -1,9 +1,11 @@
-<h2 class="mb-3">Редактирование категории</h2>
-<%= form_with model: @category, url: admin_category_path(@category), local: true do |f| %>
-  <div class="mb-3">
-    <%= f.label :name, 'Название', class: 'form-label' %>
-    <%= f.text_field :name, class: 'form-control', required: true %>
+<div class="cl-management-heading">
+  <div>
+    <p class="cl-eyebrow">Панель управления / Категории</p>
+    <h2>Редактировать категорию</h2>
+    <p class="cl-management-lead">Изменение названия отражается в каталоге и связанных объявлениях.</p>
   </div>
-  <%= f.submit 'Сохранить', class: 'btn btn-primary' %>
-  <%= link_to 'Отмена', admin_categories_path, class: 'btn btn-link' %>
-<% end %>
+  <%= link_to 'К категориям', admin_categories_path, class: 'btn btn-outline-secondary' %>
+</div>
+<section class="cl-management-panel cl-management-form">
+  <%= render 'form', category: @category, submit_label: 'Сохранить изменения' %>
+</section>
