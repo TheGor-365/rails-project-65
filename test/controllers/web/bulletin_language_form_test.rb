@@ -14,7 +14,8 @@ module Web
         assert_select "html[lang='#{locale}']"
         assert_select "select[name='bulletin[language]']", count: 1
         assert_select "select[name='bulletin[language]'] option[value='#{locale}'][selected='selected']"
-        assert_select "select[name='bulletin[language]'] option", count: 3
+        assert_select "select[name='bulletin[language]'] option[value='']", count: 1
+        assert_select "select[name='bulletin[language]'] option:not([value=''])", count: 3
       end
     end
 
